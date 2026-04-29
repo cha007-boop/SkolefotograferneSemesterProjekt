@@ -1,4 +1,5 @@
-﻿using SkolefotograferneSemesterProjekt.Models;
+﻿using Microsoft.Data.SqlClient;
+using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Interfaces
 {
