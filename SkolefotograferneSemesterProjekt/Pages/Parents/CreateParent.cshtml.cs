@@ -10,6 +10,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         private IParentServices _parentservices;
         private IWebHostEnvironment _webHost;
 
+        [BindProperty]
         public Parent NewParent { get; set; }
 
         public CreateParentModel(IParentServices parentService, IWebHostEnvironment webHost)
@@ -25,13 +26,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             try
             {
-                await _parentservices.AddParent(NewParent);
+                if (NewParent.Consent == true)
+                {
+                    await _parentservices.AddParent(NewParent);
+                }
             }
             catch (Exception ex)
             {
-                ViewData["Erromessage"] = ex.Message;
+                ViewData["Errormessage"] = ex.Message;
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("Pages/Index");
 
         }
     }
