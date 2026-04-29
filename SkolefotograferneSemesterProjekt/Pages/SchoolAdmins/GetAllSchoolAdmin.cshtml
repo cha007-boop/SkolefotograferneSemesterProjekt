@@ -1,0 +1,42 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.SchoolAdmins.GetAllSchoolAdminModel
+@{
+    ViewData["Title"] = "Get All School Admin";
+}
+
+<div class="text-center">
+    <h2 class="Display-3">List of School admins</h2>
+</div>
+
+<div>
+    <button class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/SchoolAdmins/Create">Create</a>
+    </button>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Contact person</th>
+                <th>SchoolID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SchoolAdmin s in Model.SchoolAdmins)
+            {
+                <tr>
+                    <td>@s.ID</td>
+                    <td>@s.Email</td>
+                    <td>@s.PhoneNumber</td>
+                    <td>@s.ContactPerson</td>
+                    <td>@s.SchoolID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
