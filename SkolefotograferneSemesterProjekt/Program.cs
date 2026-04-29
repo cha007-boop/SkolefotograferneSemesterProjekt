@@ -10,6 +10,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ISchoolAdminService, SchoolAdminService>();
 builder.Services.AddTransient<IParentServices, ParentServices>();
 builder.Services.AddTransient<IPhotographerService, PhotographerService>();
+builder.Services.AddTransient<ITeacherService, TeacherService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
