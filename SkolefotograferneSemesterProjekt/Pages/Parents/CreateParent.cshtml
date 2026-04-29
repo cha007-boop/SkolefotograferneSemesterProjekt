@@ -31,6 +31,14 @@
         <label asp-for="@Model.NewParent.Password" class="control-label"></label>
         <input asp-for="@Model.NewParent.Password" class="form-control" />
     </div>
+
+    <h4>Acceptere du at vi må fotografere dit barn/Børn</h4>
+    <div class="form-group">
+        <input type="hidden" name="Consent" value="false" />
+        <input type="checkbox" id="consent" name="consent" value="true" required />
+        <label for="consent">I accept that my child/children may be photographed</label>
+    </div>
+
     <div class="form-group">
         <input type="submit" value="Create a parent" class="btn btn-primary" />
     </div>
