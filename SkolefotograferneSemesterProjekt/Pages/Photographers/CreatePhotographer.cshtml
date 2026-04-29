@@ -1,0 +1,43 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Photographers.CreatePhotographerModel
+@{
+	ViewData["Title"] = "Signup as Photographer";
+}
+
+<h1>Signup</h1>
+
+<form method="Post" enctype="multipart/form-data">
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<div class="form-group">
+		<label asp-for="@Model.NewPhotographer.FirstName" class="control-label"></label>
+		<input asp-for="@Model.NewPhotographer.FirstName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewPhotographer.Surname" class="control-label"></label>
+		<input asp-for="@Model.NewPhotographer.Surname" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewPhotographer.Email" class="control-label"></label>
+		<input asp-for="@Model.NewPhotographer.Email" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewPhotographer.PhoneNumber" class="control-label"></label>
+		<input asp-for="@Model.NewPhotographer.PhoneNumber" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewPhotographer.Password" class="control-label"></label>
+		<input asp-for="@Model.NewPhotographer.Password" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.VerifyPassword" class="control-label"></label>
+		<input asp-for="@Model.VerifyPassword" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<input type="submit" value="Signup" class="btn-primary" />
+	</div>
+
+	<div>
+		<a asp-page="index">Back to Homepage</a>
+	</div>
+	</form>
