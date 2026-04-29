@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 
@@ -18,7 +19,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 if (reader.HasRows)
                 {
                     reader.Close();
-                    throw new Exception("Email is already used");
+                    throw new TakenMailException("Email is already used");
                 }
             }
             
