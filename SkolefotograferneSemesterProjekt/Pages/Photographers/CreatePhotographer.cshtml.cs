@@ -10,7 +10,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
     {
         #region Instance fields
         private IPhotographerService photographerService;
-        private IWebHostEnvironment webHostEnvironment;
         #endregion
         #region Properties
         [BindProperty]
@@ -19,10 +18,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
         public string VerifyPassword { get; set; }
         #endregion
         #region Constructor
-        public CreatePhotographerModel(IPhotographerService service, IWebHostEnvironment environment)
+        public CreatePhotographerModel(IPhotographerService service)
         {
             photographerService = service;
-            webHostEnvironment = environment;
         }
         #endregion
         #region Methods
@@ -55,7 +53,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             {
                 ViewData["ErrorMessage"] = exc;
             }
-            return RedirectToPage("index");
+            return RedirectToPage("Photographers/index");
         }
         #endregion
     }

@@ -8,6 +8,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ISchoolAdminService, SchoolAdminService>();
+builder.Services.AddTransient<IPhotographerService, PhotographerService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
