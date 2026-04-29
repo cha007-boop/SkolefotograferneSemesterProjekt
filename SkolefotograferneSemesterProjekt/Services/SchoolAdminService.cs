@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data;
 
 namespace SkolefotograferneSemesterProjekt.Services
 {
@@ -8,12 +9,20 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         private IUserService _userService = new UserService();
 
+
+        private string _getAllSql = "SELECT Users.ID, Users.Email, SchoolAdmin.PhoneNumber, SchoolAdmin.ContactPerson, SchoolAdmin.SchoolID " +
+                                    "FROM Users INNER JOIN SchoolAdmin on Users.ID = SchoolAdmin.ID";
+
+
+
         public async Task Add(SchoolAdmin schoolAdmin)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
+                    await conn.OpenAsync();
+
                     int userID = await _userService.Add(conn, schoolAdmin);
 
                     var cmd = new SqlCommand(@"
@@ -36,9 +45,36 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task<List<SchoolAdmin>> GetAll()
+        public async Task<List<SchoolAdmin>> GetAll()
         {
-            throw new NotImplementedException();
+            List<SchoolAdmin> schoolAdmins = new List<SchoolAdmin>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(_getAllSql, conn);
+                    await cmd.Connection.OpenAsync();
+
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        int id = reader.GetInt32("ID");
+                        string email = reader.GetString("Email");
+                        string phoneNumber = reader.GetString("PhoneNumber");
+                        string contactPerson = reader.GetString("ContactPerson");
+                        int schoolID = reader.GetInt32("SchoolID");
+
+                        SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson, SchoolID = schoolID };
+                        schoolAdmins.Add(schoolAdmin);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+
+                }
+            }
+            return schoolAdmins;
         }
 
         public Task<SchoolAdmin> GetByID(int id)
