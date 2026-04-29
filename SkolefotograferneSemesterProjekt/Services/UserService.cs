@@ -8,13 +8,27 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         public async Task<int> Add(SqlConnection conn, User user)
         {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string emailSearch = "Select Email from Users Where Email = @Email";
+                SqlCommand command = new SqlCommand(emailSearch, connection);
+                command.Parameters.AddWithValue("@Email", user.Email);
+                await command.Connection.OpenAsync();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    throw new Exception("Email is already used");
+                }
+            }
+            
             try
             {
 
                 var cmd = new SqlCommand(@"
                 INSERT INTO Users (Email, Password, Role)
                 VALUES (@Email, @Password, @Role);
-                SELECT SCOPE_IDENTITY();
+                SELECT CAST(SCOPE_IDENTITY() AS INT);
             ", conn);
 
                 cmd.Parameters.AddWithValue("@Email", user.Email);

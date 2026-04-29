@@ -1,0 +1,47 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.SchoolAdmins.CreateSchoolAdminModel
+@{
+    ViewData["Title"] = "Create School Admin";
+}
+
+<div>
+    <h2 class="display-3">Create School Admin</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.Email" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.Email" class="form-control"
+                id="PhoneNumber"
+                class="form-control" />
+                <span asp-validation-for="NewSchoolAdmin.Email"
+                      class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.PhoneNumber" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.PhoneNumber" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.ContactPerson" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.ContactPerson" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.SchoolID" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.SchoolID" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.Password" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.Password" />
+            </div>
+            <div class="formgroup mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div>
+        <a asp-page="/GetAllSchoolAdmin">Back to List</a>
+    </div>
+</div>
