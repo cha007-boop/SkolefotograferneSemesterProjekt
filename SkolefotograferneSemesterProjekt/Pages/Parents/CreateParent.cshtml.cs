@@ -13,10 +13,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         [BindProperty]
         public Parent NewParent { get; set; }
 
+        [BindProperty]
+        public bool Consent { get; set; }
+
+        [BindProperty]
+        public string verifyPassword { get; set; }
+
         public CreateParentModel(IParentServices parentService, IWebHostEnvironment webHost)
         {
             _parentservices = parentService;
             _webHost = webHost;
+            
         }
         public void OnGet()
         {
@@ -26,9 +33,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             try
             {
-                if (NewParent.Consent == true)
+                if (Consent)
                 {
-                    await _parentservices.AddParent(NewParent);
+                    if (NewParent.Password == verifyPassword)
+                    {
+                        await _parentservices.AddParent(NewParent);
+                    }
                 }
             }
             catch (Exception ex)

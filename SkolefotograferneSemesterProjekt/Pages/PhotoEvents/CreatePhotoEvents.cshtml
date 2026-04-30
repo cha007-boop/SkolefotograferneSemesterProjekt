@@ -1,0 +1,43 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.CreatePhotoEventsModel
+@{
+    ViewData["Title"] = "Create PhotoEvent";
+}
+
+<h1>Create PhotoEvent</h1>
+
+<form method="post">
+
+    <div class="form-group">
+        <label asp-for="@Model.PhotoEvent.StartTime" class="control-label"></label>
+        <input asp-for="@Model.PhotoEvent.StartTime" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PhotoEvent.EndTime" class="control-label"></label>
+        <input asp-for="@Model.PhotoEvent.EndTime" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PhotoEvent.PhotographerID" class="control-label"></label>
+        <input asp-for="@Model.PhotoEvent.PhotographerID" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PhotoEvent.SchoolAdminID" class="control-label"></label>
+        <input asp-for="@Model.PhotoEvent.SchoolAdminID" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PhotoEvent.Location" class="control-label"></label>
+        <input asp-for="@Model.PhotoEvent.Location" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Click here to create a PhotoEvent" class="btn btn-primary" />
+    </div>
+
+    <div>
+        <a asp-page="index">Back to list of Photo Events</a> @* to index in the photoevents folder *@
+    </div>
+
+    </form>
