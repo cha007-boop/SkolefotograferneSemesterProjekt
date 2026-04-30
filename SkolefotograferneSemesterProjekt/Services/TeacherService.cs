@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.SignalR.Protocol;
+using Microsoft.Data.SqlClient;
+using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using System.Data;
@@ -13,17 +15,20 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
+
                 int userID = await _userService.Add(connection, teacher);
 
                 SqlCommand cmd = new SqlCommand(@"
                 INSERT INTO Teacher 
                 VALUES (@ID, @FirstName, @Surname, @PhoneNumber, @SchoolID)", connection);
-                await cmd.Connection.OpenAsync();
+
                 cmd.Parameters.AddWithValue("@ID", userID);
                 cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
                 cmd.Parameters.AddWithValue("@Surname", teacher.Surname);
                 cmd.Parameters.AddWithValue("@PhoneNumber", teacher.PhoneNumber);
                 cmd.Parameters.AddWithValue("@SchoolID", teacher.SchoolID);
+
                 return await cmd.ExecuteNonQueryAsync();
             }
         }
@@ -32,10 +37,11 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<Teacher> teacherLst = [];
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand(@"
-                SELECT *
-                FROM Teacher", connection);
-                await cmd.Connection.OpenAsync();
+                SqlCommand cmd = new SqlCommand(@"SELECT Teacher.ID AS ID, FirstName, Surname, Email, PhoneNumber, SchoolID
+                    FROM Teacher
+                    INNER JOIN Users 
+                    ON Teacher.ID = Users.ID;", connection);
+                await connection.OpenAsync();
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
                 while (reader.Read())
                 {
@@ -43,6 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     t.ID = reader.GetInt32("ID");
                     t.FirstName = reader.GetString("FirstName");
                     t.Surname = reader.GetString("Surname");
+                    t.Email = reader.GetString("Email");
                     t.PhoneNumber = reader.GetString("PhoneNumber");
                     t.SchoolID = reader.GetInt32("SchoolID");
                     teacherLst.Add(t);
@@ -59,7 +66,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlCommand cmd = new SqlCommand(@"
                 DELETE FROM Teacher 
                 WHERE ID = @ID", connection);
-                await cmd.Connection.OpenAsync();
+                await connection.OpenAsync();
                 cmd.Parameters.AddWithValue("@ID", teacher.ID);
                 await cmd.ExecuteNonQueryAsync();
             }
