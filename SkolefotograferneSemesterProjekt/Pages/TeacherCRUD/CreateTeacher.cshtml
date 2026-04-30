@@ -4,38 +4,55 @@
     ViewData["Title"] = "Create Teacher";
 }
 <h1>Opret bruger</h1>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.FirstName" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.FirstName" class="form-control" />
-    <span asp-validation-for="@Model.NewTeacher.FirstName" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.Surname" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.Surname" class="form-control" />
-    <span asp-validation-for="@Model.NewTeacher.Surname" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.Email" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.Email" class="form-control" />
-    <span asp-validation-for="@Model.NewTeacher.Email" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.PhoneNumber" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.PhoneNumber" class="form-control" />
-    <span asp-validation-for="@Model.NewTeacher.PhoneNumber" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.SchoolID" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.SchoolID" class="form-control" />
-    <span asp-validation-for="@Model.NewTeacher.SchoolID" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="@Model.NewTeacher.Password" class="control-label"></label>
-    <input asp-for="@Model.NewTeacher.Password" class="form-control" />
-</div>
-<div class="form-group">
-    <input type="submit" value="Opret bruger" class="btn btn-primary" />
-</div>
+
+<form method ="post">
+    <input type="hidden" asp-for="@Model.NewTeacher.Password" />
+    <div class="form-group">
+
+        <label asp-for="@Model.NewTeacher.FirstName" class="control-label"></label>
+        <input asp-for="@Model.NewTeacher.FirstName" class="form-control" />
+        <span asp-validation-for="@Model.NewTeacher.FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewTeacher.Surname" class="control-label"></label>
+        <input asp-for="@Model.NewTeacher.Surname" class="form-control" />
+        <span asp-validation-for="@Model.NewTeacher.Surname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewTeacher.Email" class="control-label"></label>
+        <input asp-for="@Model.NewTeacher.Email" class="form-control" />
+        <span asp-validation-for="@Model.NewTeacher.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewTeacher.PhoneNumber" class="control-label"></label>
+        <input asp-for="@Model.NewTeacher.PhoneNumber" class="form-control" />
+        <span asp-validation-for="@Model.NewTeacher.PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewTeacher.SchoolID" class="control-label"></label>
+        <input asp-for="@Model.NewTeacher.SchoolID" class="form-control" />
+        <span asp-validation-for="@Model.NewTeacher.SchoolID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Password" class="control-label">Password</label>
+        <input asp-for="@Model.Password" class="form-control" />
+        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+    </div>
+    @if (!String.IsNullOrEmpty(Model.MsgPassword))
+    {
+        <div class="text-danger">@Model.MsgPassword</div>
+    }
+    <div class="form-group">
+        <label asp-for="@Model.Pass2" class="control-label">Gentag Password</label>
+        <input asp-for="@Model.Pass2" class="form-control" />
+        <span asp-validation-for="@Model.Pass2" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Opret bruger" class="btn btn-primary" />
+    </div>
+
+</form>
+
 <div>
     <a asp-page="GetAllTeachers">Tilbage til listen af lærer </a>
 </div>
