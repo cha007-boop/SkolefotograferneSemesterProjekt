@@ -1,0 +1,43 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Schools.CreateSchoolModel
+@{
+    ViewData["Title"] = "Create school";
+}
+
+<div>
+    <h2 class="display-3">Create School</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchool.Name" class="control-label"></label>
+                <input asp-for="@Model.NewSchool.Name" class="form-control" />                      class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchool.Street" class="control-label"></label>
+                <input asp-for="@Model.NewSchool.Street" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchool.ZipCode" class="control-label"></label>
+                <input asp-for="@Model.NewSchool.ZipCode" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchool.Country" class="control-label"></label>
+                <input asp-for="@Model.NewSchool.Country" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewSchool.StudentCount" class="control-label"></label>
+                <input asp-for="@Model.NewSchool.StudentCount" class="form-control" />
+            </div>
+            <div class="formgroup mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div>
+        <a asp-page="/GetAllSchool">Back to List</a>
+    </div>
+</div>
