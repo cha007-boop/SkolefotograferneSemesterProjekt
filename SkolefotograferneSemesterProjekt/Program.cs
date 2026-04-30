@@ -1,17 +1,19 @@
 using SkolefotograferneSemesterProjekt.Interfaces;
+using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IPhotoEventService, PhotoEvent>();
+
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ISchoolAdminService, SchoolAdminService>();
 builder.Services.AddTransient<IParentServices, ParentServices>();
 builder.Services.AddTransient<IPhotographerService, PhotographerService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
+builder.Services.AddTransient<IPhotoEventService, PhotoEventService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();

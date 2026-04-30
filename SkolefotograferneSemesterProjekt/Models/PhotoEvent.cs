@@ -8,7 +8,7 @@ using System.Reflection.Metadata;
 
 namespace SkolefotograferneSemesterProjekt.Models
 {
-    public class PhotoEvent:IPhotoEventService
+    public class PhotoEvent
     {
         public int ID { get; set; }
         public DateTime StartTime { get; set; }
@@ -20,19 +20,6 @@ namespace SkolefotograferneSemesterProjekt.Models
         {
         }
 
-        public async Task Add(PhotoEvent photoEvent)
-        {
-            using (SqlConnection connection = new SqlConnection(Services.Secret.ConnectionString))
-            {
-                SqlCommand sql = new SqlCommand("insert into PhotoEvent Values(@StartDate,@EndDate,@PhotographerID,@SchoolAdminID)");
-                await sql.Connection.OpenAsync();
-                sql.Parameters.AddWithValue("StartDate", StartTime);
-                sql.Parameters.AddWithValue("EndDate", EndTime);
-                sql.Parameters.AddWithValue("PhotographerID", PhotographerID);
-                sql.Parameters.AddWithValue("SchoolAdminID", SchoolAdminID);
-                sql.Parameters.AddWithValue("Location", Location);
-                await sql.ExecuteNonQueryAsync();
-            }
-        }
+        
     }
 }
