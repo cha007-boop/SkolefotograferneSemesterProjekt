@@ -14,5 +14,10 @@
         {
             Role = UserRole.Photographer;
         }
+
+        public string FilterAll()
+        {
+            return $"{FirstName ?? ""} {Surname ?? ""} {PhoneNumber ?? ""} {Email ?? ""}";
+        }
     }
 }

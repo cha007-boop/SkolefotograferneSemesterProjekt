@@ -7,6 +7,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
     {
         Task Add(Photographer photographer);
         Task<List<Photographer>> GetAll();
+        Task<Photographer> SearchByID(int id);
         Task Update(Photographer newPhotographer);
         
     }

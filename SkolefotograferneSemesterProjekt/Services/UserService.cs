@@ -2,6 +2,7 @@
 using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data;
 
 namespace SkolefotograferneSemesterProjekt.Services
 {
@@ -9,6 +10,10 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         public async Task<int> Add(SqlConnection conn, User user)
         {
+            if(user.Password.Length < 6)
+            {
+                throw new PasswordTooShortException("Password too short");
+            }
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 string emailSearch = "Select Email from Users Where Email = @Email";
@@ -56,9 +61,32 @@ namespace SkolefotograferneSemesterProjekt.Services
             throw new NotImplementedException();
         }
 
-        public User VerifyUser(string mail, string password)
+        public async Task<User> VerifyUser(string mail, string password)
         {
-            throw new NotImplementedException();
+            User foundUser = null;
+             using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Users WHERE Email = @Email AND Password = @Password";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", mail);
+                command.Parameters.AddWithValue("@Password", password);
+                await connection.OpenAsync();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (reader.HasRows)
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        foundUser = new User
+                        {
+                            ID = reader.GetInt32("ID"),
+                            Email = reader.GetString("Email"),
+                            Password = reader.GetString("Password"),
+                            Role = (UserRole)reader.GetInt32("Role")
+                        };
+                    }
+                }
+            }
+            return foundUser;
         }
     }
 }

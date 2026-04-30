@@ -9,6 +9,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Delete(int id);
         Task Update(User user);
 
-        User VerifyUser(string mail, string password);
+        Task<User> VerifyUser(string mail, string password);
     }
 }

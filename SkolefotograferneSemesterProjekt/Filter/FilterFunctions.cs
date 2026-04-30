@@ -24,7 +24,7 @@ namespace SkolefotograferneSemesterProjekt.Helpers.Filter
         /// An item is included in the result only if every predicate in <paramref name="predicates"/>
         /// returns <c>true</c> for that item.
         /// </remarks>
-        public static IEnumerable<T> Filter(IEnumerable<T> values, List<Predicate<T>> predicates)
+        public static IEnumerable<T> Filter(IEnumerable<T> values, IEnumerable<Predicate<T>> predicates)
         {
             List<T> filteredValues = new List<T>();
             foreach (T item in values)
@@ -37,7 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Helpers.Filter
                         count++;
                     }
                 }
-                if(count == predicates.Count)
+                if(count == predicates.Count())
                 {
                     filteredValues.Add(item);
                 }

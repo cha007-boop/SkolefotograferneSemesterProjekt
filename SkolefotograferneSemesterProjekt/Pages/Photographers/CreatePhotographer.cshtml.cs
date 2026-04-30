@@ -30,18 +30,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
 
         public async Task<IActionResult> OnPost()
         {
+            ModelState.Clear();
+            TryValidateModel(NewPhotographer);
             try
             {
                 if(NewPhotographer.Password == VerifyPassword)
                 await photographerService.Add(NewPhotographer);
                 else
                 {
+                    ModelState.AddModelError("NewPhotographer.Password", "Password not the same");
                     return Page();
                 }
             }
             catch (TakenMailException texc)
             {
                 ViewData["ErrorMessage"] = texc;
+                ModelState.AddModelError("NewPhotographer.Email", texc.Message);
                 return Page();
             }
             catch (InvalidMailException iexc)

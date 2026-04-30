@@ -1,0 +1,33 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Parents.IndexModel
+@{
+    ViewData["Title"] = "Parents";
+}
+
+
+<h1>List of Parents</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Firstname</th>
+            <th>Surname</th>
+            <th>PhoneNumber</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Parent p in Model.Parents)
+        {
+            <tr>
+                <td>@p.ID</td>
+                <td>@p.FirstName</td>
+                <td>@p.Surname</td>
+                <td>@p.PhoneNumber</td>
+                <td>@p.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

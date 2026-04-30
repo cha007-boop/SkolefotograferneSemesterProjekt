@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data;
 
 namespace SkolefotograferneSemesterProjekt.Services
 {
@@ -40,19 +41,110 @@ namespace SkolefotograferneSemesterProjekt.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<School>> GetAll()
+        public async Task<List<School>> GetAll()
         {
-            throw new NotImplementedException();
+            List<School> schools = new List<School>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    await conn.OpenAsync();
+                    SqlCommand command = new SqlCommand(@"SELECT * FROM School", conn);
+
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                    while (await reader.ReadAsync())
+                    {
+                        School school = SchoolReader(reader);
+                        schools.Add(school);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+
+                }
+            }
+            return schools;
         }
 
-        public Task<School> GetById(int id)
+        public async Task<School> GetById(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                School school = new School();
+                try
+                {
+                    await conn.OpenAsync();
+                    SqlCommand command = new SqlCommand(@"SELECT * FROM School Where ID = @ID", conn);
+
+                    command.Parameters.AddWithValue("@ID", id);
+
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                    await reader.ReadAsync();
+
+                    school = SchoolReader(reader);
+                    reader.Close();
+
+                    return school;
+                }
+                catch
+                {
+
+                }
+                return school;
+            }
+        }
+
+        public async Task<List<School>> FilterSchools(string fitlerColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                List<School> schools = new List<School>();
+                List<string> validColumns = new List<string> { "ID", "Name", "StudentCount", "Street", "ZipCode", "Country" };
+                
+                if (!validColumns.Contains(fitlerColumn) || !validColumns.Contains(sortColumn))
+                {
+                    throw new ArgumentException("Invalid column name");
+                }
+
+                try
+                {
+                    await conn.OpenAsync();
+                    SqlCommand command = new SqlCommand($@"SELECT * FROM School WHERE {fitlerColumn} LIKE @FilterValue ORDER BY {sortColumn} {sortOrder}", conn);
+                    command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        School school = SchoolReader(reader);
+                        schools.Add(school);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+                }
+                return schools;
+            }
         }
 
         public Task Update(School school)
         {
             throw new NotImplementedException();
+        }
+
+        private School SchoolReader(SqlDataReader reader)
+        {
+            int id = reader.GetInt32("ID");
+            string name = reader.GetString("Name");
+            int studentCount = reader.GetInt32("StudentCount");
+            string street = reader.GetString("Street");
+            string zipCode = reader.GetString("ZipCode");
+            string country = reader.GetString("Country");
+
+            return new School { ID = id, Name = name, StudentCount = studentCount, Street = street, ZipCode = zipCode, Country = country };
+
         }
     }
 }

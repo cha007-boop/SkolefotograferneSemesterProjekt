@@ -15,6 +15,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
         [BindProperty]
         public SchoolAdmin NewSchoolAdmin { get; set; }
 
+        [BindProperty]
+        public string SchoolID { get; set; }
+
+        [BindProperty]
+        public string VerifyPassword { get; set; }
+
         public IEnumerable<SelectListItem> Schools { get; set; }
         public CreateSchoolAdminModel(ISchoolAdminService schoolAdminService, ISchoolService schoolService)
         {
@@ -22,28 +28,45 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
             _schoolService = schoolService;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            List<School> schools = await _schoolService.GetAll();
+            Schools = schools.Select(s => new SelectListItem
+            {
+                Value = Convert.ToString(s.ID),
+                Text = $"{s.Name} - {s.Street} {s.ZipCode}"
+            });
         }
 
         public async Task<IActionResult> OnPost()
         {
+
+            NewSchoolAdmin.SchoolID = Convert.ToInt32(SchoolID);
 
             ModelState.Clear();
             TryValidateModel(NewSchoolAdmin);
 
             try
             {
+                if (NewSchoolAdmin.Password != VerifyPassword)
+                {
+                    ModelState.AddModelError("VerifyPassword", "Passwords do not match");
+                    await OnGet();
+                    return Page();
+                }
+
                 await _schoolAdminService.Add(NewSchoolAdmin);
             }
             catch (TakenMailException Tex)
             {
                 ModelState.AddModelError("NewSchoolAdmin.Email", Tex.Message);
+                await OnGet();
                 return Page();
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                await OnGet();
                 return Page();
             }
             return RedirectToPage("GetAllSchoolAdmin");
