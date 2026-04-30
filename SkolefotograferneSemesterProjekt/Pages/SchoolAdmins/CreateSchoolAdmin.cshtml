@@ -22,7 +22,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.SchoolID" class="control-label"></label>
-                <input asp-for="@Model.NewSchoolAdmin.SchoolID" class="form-control"/>
+                <select asp-for="@Model.SchoolID" 
+                        asp-items="Model.Schools"
+                        id="schoolSelect"
+                        class="form-select">
+                    <option value="">-- Select School --</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.PhoneNumber" class="control-label"></label>
@@ -35,6 +40,11 @@
             <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.Password" class="control-label"></label>
                 <input asp-for="@Model.NewSchoolAdmin.Password" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+                <input asp-for="@Model.VerifyPassword" class="form-control" id="VerifyPassword"/>
+                <span asp-validation-for="VerifyPassword" class="text-danger"></span>
             </div>
             <div class="formgroup mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -13,6 +13,7 @@ builder.Services.AddTransient<ISchoolAdminService, SchoolAdminService>();
 builder.Services.AddTransient<IParentServices, ParentServices>();
 builder.Services.AddTransient<IPhotographerService, PhotographerService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
+builder.Services.AddTransient<ISchoolService, SchoolService>();
 builder.Services.AddTransient<IPhotoEventService, PhotoEventService>();
 
 builder.Services.AddSession();

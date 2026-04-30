@@ -16,7 +16,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
             _schoolAdminService = schoolAdminService;
         }
 
-        public async Task<ActionResult> OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
