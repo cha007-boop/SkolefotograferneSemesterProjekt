@@ -1,7 +1,11 @@
+using SkolefotograferneSemesterProjekt.Interfaces;
+using SkolefotograferneSemesterProjekt.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IPhotoEventService, PhotoEvent>();
 
 var app = builder.Build();
 
@@ -23,3 +27,5 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+
