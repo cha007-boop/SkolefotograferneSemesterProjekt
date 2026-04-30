@@ -18,7 +18,8 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="@Model.NewPhotographer.Email" class="control-label"></label>
-		<input asp-for="@Model.NewPhotographer.Email" class="form-control" />
+		<input asp-for="@Model.NewPhotographer.Email" class="form-control" id="Email"/>
+		<span asp-validation-for="NewPhotographer.Email" class="text-danger"></span>
 	</div>
 	<div class="form-group">
 		<label asp-for="@Model.NewPhotographer.PhoneNumber" class="control-label"></label>
@@ -26,11 +27,13 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="@Model.NewPhotographer.Password" class="control-label"></label>
-		<input asp-for="@Model.NewPhotographer.Password" class="form-control" />
+		<input asp-for="@Model.NewPhotographer.Password" class="form-control" id="Password"/>
+		<span asp-validation-for="NewPhotographer.Password" class="text-danger"></span>
 	</div>
 	<div class="form-group">
 		<label asp-for="@Model.VerifyPassword" class="control-label"></label>
-		<input asp-for="@Model.VerifyPassword" class="form-control" />
+		<input asp-for="@Model.VerifyPassword" class="form-control" id="Password"/>
+		<span asp-validation-for="NewPhotographer.Password" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">

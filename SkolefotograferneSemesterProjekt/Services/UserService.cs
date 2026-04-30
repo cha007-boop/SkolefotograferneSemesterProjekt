@@ -9,6 +9,10 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         public async Task<int> Add(SqlConnection conn, User user)
         {
+            if(user.Password.Length < 6)
+            {
+                throw new PasswordTooShortException("Password too short");
+            }
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 string emailSearch = "Select Email from Users Where Email = @Email";

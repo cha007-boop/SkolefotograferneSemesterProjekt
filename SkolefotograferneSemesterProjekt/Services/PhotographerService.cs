@@ -8,7 +8,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     public class PhotographerService : Connection, IPhotographerService
     {
         #region Instance fields
-        private UserService userService;
+        private IUserService userService;
         #endregion
         #region Constructor
         public PhotographerService()
@@ -53,19 +53,45 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    string firstName = reader.GetString("FirstName");
-                    string surname = reader.GetString("Surname");
-                    string phoneNumber = reader.GetString("PhoneNumber");
-                    string website = reader.GetString("Website");
-                    string cVR = reader.GetString("CVR");
-                    string facebook = reader.GetString("Facebook");
-                    string instagram = reader.GetString("Instagram");
-                    Photographer photographer = new Photographer { FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram };
+                    int id = reader.GetInt32("ID");
+                    string? firstName = reader["FirstName"] as string;
+                    string? surname = reader["Surname"] as string;
+                    string? phoneNumber = reader["PhoneNumber"] as string;
+                    string? website = reader["Website"] as string;
+                    string? cVR = reader["CVR"] as string;
+                    string? facebook = reader["Facebook"] as string;
+                    string? instagram = reader["Instagram"] as string;
+                    Photographer photographer = new Photographer { ID = id , FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram };
                     photographers.Add(photographer);
                 }
                 await reader.CloseAsync();
             }
             return photographers;
+        }
+        public async Task<Photographer> SearchByID(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("select * from Users inner join Photographer on Users.ID = Photographer.ID where Users.ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    string? firstName = reader["FirstName"] as string;
+                    string? surname = reader["Surname"] as string;
+                    string? phoneNumber = reader["PhoneNumber"] as string;
+                    string? website = reader["Website"] as string;
+                    string? cVR = reader["CVR"] as string;
+                    string? facebook = reader["Facebook"] as string;
+                    string? instagram = reader["Instagram"] as string;
+                    string? email = reader["Email"] as string;
+                    Photographer photographer = new Photographer { FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram, Email = email };
+                    await reader.CloseAsync();
+                    return photographer;
+                }
+                return null;
+            }
         }
         public Task Update(Photographer newPhotographer)
         {

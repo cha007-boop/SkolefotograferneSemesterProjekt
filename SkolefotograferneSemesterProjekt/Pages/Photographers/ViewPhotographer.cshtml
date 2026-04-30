@@ -1,0 +1,28 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Photographers.ViewPhotographerModel
+@{
+	ViewData["Title"] = "Photographer Info";
+}
+
+<h1>Viewing @Model.Photographer.FirstName @Model.Photographer.Surname's information</h1>
+
+
+<p>Email: @Model.Photographer.Email</p>
+<p>Phonenumber: @Model.Photographer.PhoneNumber</p>
+<p>Website: @Model.Photographer.Website</p>
+<p>CVR: @Model.Photographer.CVR</p>
+<p>Facebook: @Model.Photographer.Facebook</p>
+<p>Instagram: @Model.Photographer.Instagram</p>
+
+<form>
+	<div>
+		<a asp-page="ShowPhotographers">Back to Photographers</a>
+	</div>
+</form>
+@* <form>
+	@if(sysAdmin role)
+	{
+		
+	}
+</form> *@
