@@ -1,11 +1,20 @@
 using SkolefotograferneSemesterProjekt.Interfaces;
-using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IPhotoEventService, PhotoEvent>();
+
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ISchoolAdminService, SchoolAdminService>();
+builder.Services.AddTransient<IParentServices, ParentServices>();
+builder.Services.AddTransient<IPhotographerService, PhotographerService>();
+builder.Services.AddTransient<ITeacherService, TeacherService>();
+
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -16,6 +25,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

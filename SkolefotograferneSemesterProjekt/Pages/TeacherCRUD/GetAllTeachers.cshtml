@@ -1,0 +1,38 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.TeacherCRUD.GetAllTeachersModel
+@{
+    ViewData["Title"] = "Index (Teacher)";
+}
+<div class="text-center">
+    <h1 class="display-4">Index page (Teacher)</h1>
+</div>
+
+<p>
+    <a asp-page = "CreateTeacher">Opret en bruger</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <form method="get">
+                <th>Navn</th>
+                <th>Efternavn</th>
+                <th>Mail</th>
+                <th>Telefon</th>
+                <th>Skole ID</th>
+            </form>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Teacher t in Model.TeacherList)
+        {
+            <tr>
+                <td>@t.FirstName</td>
+                <td>@t.Surname</td>
+                <td>@t.Email</td>
+                <td>@t.PhoneNumber</td>
+                <td>@t.SchoolID</td>
+            </tr>
+        }
+    </tbody>
+</table>
