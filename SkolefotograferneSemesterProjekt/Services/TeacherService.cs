@@ -72,9 +72,23 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task Update(Teacher teacher)
+        // Work in progress...
+        public async Task Update(Teacher teacher)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("@" +
+                    "UPDATE Teacher" +
+                    "SET FirstName = @FirstName, Surname = @Surname, PhoneNumber = @PhoneNumber, Email = @Email" +
+                    "WHERE ID = @ID", connection);
+                await connection.OpenAsync();
+                cmd.Parameters.AddWithValue("@ID", teacher.ID);
+                cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
+                cmd.Parameters.AddWithValue("@Surname", teacher.Surname);
+                cmd.Parameters.AddWithValue("@PhoneNumber", teacher.PhoneNumber);
+                cmd.Parameters.AddWithValue("@Email", teacher.Email);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
     }
 }
