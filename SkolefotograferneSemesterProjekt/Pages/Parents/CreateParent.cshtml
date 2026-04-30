@@ -7,6 +7,7 @@
 <h1>Register new Parent</h1>
 
 <form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form.group">
         <label asp-for="@Model.NewParent.FirstName" class="control-label"></label>
         <input asp-for="@Model.NewParent.FirstName" class="form-control" />
@@ -28,15 +29,14 @@
         <input asp-for="@Model.NewParent.Password" class="form-control" />
     </div>
     <div class="form.group">
-        <label asp-for="@Model.NewParent.Password" class="control-label"></label>
-        <input asp-for="@Model.NewParent.Password" class="form-control" />
+        <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+        <input asp-for="@Model.VerifyPassword" class="form-control" />
     </div>
 
     <h4>Acceptere du at vi må fotografere dit barn/Børn</h4>
     <div class="form-group">
-        <input type="hidden" name="Consent" value="false" />
-        <input type="checkbox" id="consent" name="consent" value="true" required />
-        <label for="consent">I accept that my child/children may be photographed</label>
+        <input type="checkbox" asp-for="Consent" required />
+        <label asp-for="Consent">I accept that my child/children may be photographed</label>
     </div>
 
     <div class="form-group">

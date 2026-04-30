@@ -1,4 +1,44 @@
 ﻿@page
+@using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Schools.GetAllSchoolModel
 @{
+    ViewData["Title"] = "Get All Schools";
 }
+
+<div class="text-center">
+    <h2 class="Display-3">List of School admins</h2>
+</div>
+
+<div>
+    <button class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Schools/CreateSchool">Create</a>
+    </button>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Street</th>
+                <th>ZipCode</th>
+                <th>Country</th>
+                <th>Student count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (School s in Model.Schools)
+            {
+                <tr>
+                    <td>@s.ID</td>
+                    <td>@s.Name</td>
+                    <td>@s.Street</td>
+                    <td>@s.ZipCode</td>
+                    <td>@s.Country</td>
+                    <td>@s.StudentCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
