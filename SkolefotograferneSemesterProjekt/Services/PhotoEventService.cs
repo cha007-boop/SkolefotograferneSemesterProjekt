@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 using MongoDB.Driver.Core.Configuration;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -9,6 +10,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         
+        
         public PhotoEventService()
         {
             
@@ -17,6 +19,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
             {
+                
                 SqlCommand sql = new SqlCommand(_insertPhotoEventString, connection);
                 await connection.OpenAsync();
                 sql.Parameters.AddWithValue("@StartTime", photoEvent.StartTime);

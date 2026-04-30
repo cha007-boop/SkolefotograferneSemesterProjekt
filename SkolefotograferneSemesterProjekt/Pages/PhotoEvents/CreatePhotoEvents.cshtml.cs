@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data.SqlTypes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
@@ -28,7 +30,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             } 
             catch (SqlException ex)
             {
-                Console.WriteLine( ex.Message);
+                ViewData["ErrorMessage"] = ex;
+                throw;
+            }
+            catch (SqlTypeException tex)
+            {
+                ViewData["ErrorMessage"] = tex;
                 throw;
             }
             return RedirectToPage("/Index"); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
