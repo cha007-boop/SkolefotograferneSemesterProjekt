@@ -21,20 +21,20 @@
                       class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="@Model.NewSchoolAdmin.SchoolID" class="control-label"></label>
+                <input asp-for="@Model.NewSchoolAdmin.SchoolID" class="form-control"/>
+            </div>
+            <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.PhoneNumber" class="control-label"></label>
                 <input asp-for="@Model.NewSchoolAdmin.PhoneNumber" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.ContactPerson" class="control-label"></label>
-                <input asp-for="@Model.NewSchoolAdmin.ContactPerson" />
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.NewSchoolAdmin.SchoolID" class="control-label"></label>
-                <input asp-for="@Model.NewSchoolAdmin.SchoolID" />
+                <input asp-for="@Model.NewSchoolAdmin.ContactPerson" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="@Model.NewSchoolAdmin.Password" class="control-label"></label>
-                <input asp-for="@Model.NewSchoolAdmin.Password" />
+                <input asp-for="@Model.NewSchoolAdmin.Password" class="form-control"/>
             </div>
             <div class="formgroup mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
