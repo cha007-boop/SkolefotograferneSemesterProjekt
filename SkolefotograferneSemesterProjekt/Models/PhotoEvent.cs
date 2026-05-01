@@ -24,6 +24,16 @@ namespace SkolefotograferneSemesterProjekt.Models
         public string Location { get; set; }
         public PhotoEvent()
         {
+            
+        }
+        public PhotoEvent(int id, DateTime startTime, DateTime endTime, int photographerID, int schoolAdminID, string location)
+        {
+            ID = id;
+            StartTime = startTime;
+            EndTime = endTime;
+            PhotographerID = photographerID;
+            SchoolAdminID = schoolAdminID;
+            Location = location;
         }
     }
 }

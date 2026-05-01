@@ -51,6 +51,7 @@
                 </a>
             </th>
             <th>Email</th>
+            <th></th>
             </form>
         </tr>
     </thead>
@@ -63,6 +64,9 @@
                 <td>@p.Surname</td>
                 <td>@p.PhoneNumber</td>
                 <td>@p.Email</td>
+                <td>
+                    <a asp-page="ParentInformation" asp-route-ID="@p.ID">More Information</a>
+                </td>
             </tr>
         }
     </tbody>

@@ -21,7 +21,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
-        
+        public Student student { get; set; }
+        public School school { get; set; }
 
         public IndexModel(IParentServices parentservice)
         {

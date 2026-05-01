@@ -1,4 +1,14 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.IndexModel
 @{
+    ViewData["Title"] = "Index";
 }
+
+<h1>Administrering af Foto Events</h1>
+
+<div>
+    <a asp-page="/PhotoEvents/CreatePhotoEvents">Create a PhotoEvent</a> @* to index in the photoevents folder *@
+</div>
+<div>
+    <a asp-page="/PhotoEvents/ReadPhotoEvents">Read your active PhotoEvents</a> @* to index in the photoevents folder *@
+</div>
