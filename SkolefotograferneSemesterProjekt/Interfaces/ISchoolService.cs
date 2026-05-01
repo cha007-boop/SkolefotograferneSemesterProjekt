@@ -4,7 +4,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 {
     public interface ISchoolService
     {
-        Dictionary<string, string> FilterableColumns { get; }
+        Dictionary<string, string> Columns { get; }
         Task Add(School school);
         Task<School> GetById(int id);
         Task<List<School>> GetAll();

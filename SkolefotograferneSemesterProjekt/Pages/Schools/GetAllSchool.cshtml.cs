@@ -21,7 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
 
         public Dictionary<string, string> FilterableColumns
         {
-            get { return _schoolService.FilterableColumns; }
+            get { return _schoolService.Columns; }
         }
 
         public List<School> Schools { get; set; }

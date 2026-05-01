@@ -8,7 +8,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class SchoolService : Connection, ISchoolService
     {
-        public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
+        public Dictionary<string, string> Columns { get; } = new Dictionary<string, string>
         {
             { "ID", "ID" },
             { "Name", "Name" },
@@ -113,7 +113,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 List<School> schools = new List<School>();
-                IEnumerable<string> validColumns = FilterableColumns.Keys;
+                IEnumerable<string> validColumns = Columns.Keys;
 
                 if (string.IsNullOrWhiteSpace(sortColumn))
                 {
