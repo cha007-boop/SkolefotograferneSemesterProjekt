@@ -8,7 +8,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
     public class GetAllTeachersModel : PageModel
     {
         public ITeacherService _repo;
-
         public List<Teacher> TeacherList { get; set; }
 
         public GetAllTeachersModel(ITeacherService repo)
