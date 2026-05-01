@@ -30,7 +30,7 @@
                 @using Microsoft.AspNetCore.Http;
 @using SkolefotograferneSemesterProjekt.Models
                 @inject IHttpContextAccessor HttpContextAccessor
-                @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserId") == null)
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("ID") == null)
                 {
                     <a class="btn btn-success rounded-pill" asp-area="" asp-page="/Users/Login">
                         <span class="text-light">Log ind</span>
@@ -40,11 +40,11 @@
                 {
                     <div class="dropdown">
                         <button type="button" class="btn btn-outline-success rounded-pill dropdown-toggle" data-bs-toggle="dropdown">
-                            @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("UserRole")) user
+                            @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("Role")) user
                         </button>
                         <ul class="dropdown-menu">
                             <li><a asp-area="" asp-page="/Users/Index" class="dropdown-item">My info</a></li>
-                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserRole") == 1)
+                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page="/PhotoEvents/CreatePhotoEvents">Create a new PhotoEvent</a> @* Create fotoevent *@
