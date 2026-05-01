@@ -16,9 +16,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
             _schoolService = schoolService;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            int? userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            UserRole userRole = (UserRole)(HttpContext.Session.GetInt32("UserRole") ?? 0);
+            if (userId == 0)
+            {
+                return RedirectToPage("/Users/Login");
+            }
+            return Page();
         }
 
         public async Task<IActionResult> OnPost()

@@ -61,7 +61,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             throw new NotImplementedException();
         }
 
-        public async Task<User> VerifyUser(string mail, string password)
+        public async Task<User?> VerifyUser(string mail, string password)
         {
             User foundUser = null;
              using (SqlConnection connection = new SqlConnection(connectionString))
