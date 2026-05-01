@@ -18,11 +18,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
 
         public IActionResult OnGet()
         {
-            int? userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            UserRole userRole = (UserRole)(HttpContext.Session.GetInt32("UserRole") ?? 0);
-            if (userId == 0)
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            int? userRole = HttpContext.Session.GetInt32("UserRole");
+            if (userId == null || userRole == null)
             {
                 return RedirectToPage("/Users/Login");
+            }
+            if ((UserRole)userRole != UserRole.SysAdmin)
+            {
+                return RedirectToPage("/Index");
             }
             return Page();
         }
