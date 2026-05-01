@@ -5,7 +5,7 @@ using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
 
-namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
+namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class CreateTeacherModel : PageModel
     {
@@ -49,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
                     ViewData["ErrorMessage"] = ex.Message;
                     return Page();
                 }
-                return RedirectToPage("GetAllTeachers");
+                return RedirectToPage("Index");
             }
         }
     }

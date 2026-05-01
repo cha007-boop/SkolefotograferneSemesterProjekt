@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 
-namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
+namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
-    public class GetAllTeachersModel : PageModel
+    public class IndexModel : PageModel
     {
         public ITeacherService _repo;
         public List<Teacher> TeacherList { get; set; }
 
-        public GetAllTeachersModel(ITeacherService repo)
+        public IndexModel(ITeacherService repo)
         {
             _repo = repo;
         }

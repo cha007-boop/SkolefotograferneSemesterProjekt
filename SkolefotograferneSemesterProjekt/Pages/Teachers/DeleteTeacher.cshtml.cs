@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 
-namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
+namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class DeleteTeacherModel : PageModel
     {
@@ -47,12 +47,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.TeacherCRUD
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("GetAllTeachers");
+            return RedirectToPage("Index");
         }
 
         public IActionResult OnPost()
         {
-            return RedirectToPage("GetAllTeachers");
+            return RedirectToPage("Index");
         }
 
     }
