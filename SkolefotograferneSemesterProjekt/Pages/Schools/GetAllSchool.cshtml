@@ -15,29 +15,60 @@
     </button>
 </div>
 
+<div class="mt-3">
+    <form>
+        <input type="hidden" asp-for=SortColumn />
+        <input type="hidden" asp-for=SortOrder />
+        search: <input type="text" asp-for="FilterValue" />
+        <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+            <option value="All">-- Select Column --</option>
+            @foreach(var column in Model.FilterableColumns)
+            {
+                <option value="@column.Key">@column.Value</option>
+            }
+        </select>
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
 <div>
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Street</th>
-                <th>ZipCode</th>
-                <th>Country</th>
-                <th>Student count</th>
+                @foreach (var column in Model.FilterableColumns)
+                {
+                    <th>
+                        <a asp-page="./GetAllSchool"
+                           asp-route-FilterColumn="@Model.FilterColumn"
+                           asp-route-FilterValue="@Model.FilterValue"
+                           asp-route-SortColumn="@column.Key"
+                           asp-route-SortOrder="@Model.Toggle(column.Key)" class="text-decoration-none text-dark">
+                            @column.Value @(Model.SortColumn == column.Key ? (Model.SortOrder == "ASC" ? "▲" : "▼") : "")
+                        </a>
+                    </th>
+                }
             </tr>
         </thead>
         <tbody>
             @foreach (School s in Model.Schools)
             {
                 <tr>
+                    @foreach(var column in Model.FilterableColumns)
+                    {
+                        <td>
+                            @typeof(School).GetProperty(column.Key).GetValue(s)
+                        </td>
+                    }
+                </tr>
+                
+                @* <tr>
                     <td>@s.ID</td>
                     <td>@s.Name</td>
                     <td>@s.Street</td>
                     <td>@s.ZipCode</td>
                     <td>@s.Country</td>
                     <td>@s.StudentCount</td>
-                </tr>
+                </tr> *@
             }
         </tbody>
     </table>

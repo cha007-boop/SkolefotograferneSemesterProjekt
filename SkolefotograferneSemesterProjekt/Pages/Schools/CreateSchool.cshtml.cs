@@ -18,8 +18,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
 
         public IActionResult OnGet()
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            int? userRole = HttpContext.Session.GetInt32("UserRole");
+            int? userId = HttpContext.Session.GetInt32("ID");
+            int? userRole = HttpContext.Session.GetInt32("Role");
             if (userId == null || userRole == null)
             {
                 return RedirectToPage("/Users/Login");

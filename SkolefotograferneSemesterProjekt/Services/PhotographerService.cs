@@ -86,7 +86,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string? facebook = reader["Facebook"] as string;
                     string? instagram = reader["Instagram"] as string;
                     string? email = reader["Email"] as string;
-                    Photographer photographer = new Photographer { FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram, Email = email };
+                    Photographer photographer = new Photographer { ID = id, FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram, Email = email };
                     await reader.CloseAsync();
                     return photographer;
                 }
@@ -96,6 +96,16 @@ namespace SkolefotograferneSemesterProjekt.Services
         public Task Update(Photographer newPhotographer)
         {
             throw new NotImplementedException();
+        }
+        public async Task Delete(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("delete from Photographer where ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                await command.ExecuteNonQueryAsync();
+            }
         }
         #endregion
     }

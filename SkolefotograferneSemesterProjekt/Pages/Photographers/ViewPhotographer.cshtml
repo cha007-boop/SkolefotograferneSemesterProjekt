@@ -20,9 +20,12 @@
 		<a asp-page="ShowPhotographers">Back to Photographers</a>
 	</div>
 </form>
-@* <form>
-	@if(sysAdmin role)
+@if(HttpContext.Session.GetInt32("UserRole") == 4)
 	{
-		
+	<form method="Post">
+		<input type="hidden" asp-for="@Model.Photographer.ID" />
+		<td class="form-group">
+			<input type="submit" asp-page-handler="Delete" value="Delete Photographer" class="btn btn-danger" />
+		</td>
+	</form>
 	}
-</form> *@

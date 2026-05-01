@@ -37,9 +37,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 var user = await _userService.VerifyUser(Email, Password);
                 if (user != null)
                 {
-                    HttpContext.Session.SetInt32("UserId", user.ID);
-                    HttpContext.Session.SetString("UserEmail", user.Email);
-                    HttpContext.Session.SetInt32("UserRole", (int)user.Role);
+                    HttpContext.Session.SetInt32("ID", user.ID);
+                    HttpContext.Session.SetString("Email", user.Email);
+                    HttpContext.Session.SetInt32("Role", (int)user.Role);
                     return RedirectToPage("/Index");
                 }
                 else
