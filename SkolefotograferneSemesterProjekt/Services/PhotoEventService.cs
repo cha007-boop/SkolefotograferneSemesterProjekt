@@ -35,7 +35,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task<List<PhotoEvent>> ShowYourActivePhotoEvent()
+        public async Task<List<PhotoEvent>> ShowYourActivePhotoEvent() //GetAll() method
         {
             List<PhotoEvent> yourActivePhotoEvents = new List<PhotoEvent>();
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
