@@ -89,8 +89,36 @@ namespace SkolefotograferneSemesterProjekt.Services
             return parentsList;
         }
 
-
-
-
+        public async Task<Parent> SearchParent(int id)
+        {
+            using SqlConnection conn = new SqlConnection(connectionString);
+            {
+                SqlCommand command = new SqlCommand(@"SELECT * FROM Parent INNER JOIN users ON Parent.ID = users.ID WHERE Parent.ID = @ID", conn);
+                command.Parameters.AddWithValue("@ID", id);
+                await command.Connection.OpenAsync();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    int ID = reader.GetInt32("ID");
+                    string FirstName = reader.GetString("FirstName");
+                    string SurName = reader.GetString("Surname");
+                    string PhoneNumber = reader.GetString("PhoneNumber");
+                    string Email = reader.GetString("Email");
+                    Parent parent = new Parent
+                    {
+                        ID = ID,
+                        FirstName = FirstName,
+                        Surname = SurName,
+                        PhoneNumber = PhoneNumber,
+                        Email = Email,
+                        Password = reader.GetString("Password"),
+                        Role = UserRole.Parent
+                    };
+                    reader.Close();
+                    return parent;
+                }
+                return null;
+            }
+        }
     }
 }

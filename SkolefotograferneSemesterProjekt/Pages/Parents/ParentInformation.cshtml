@@ -1,0 +1,33 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Parents.ParentInformationModel
+@{
+    ViewData["Title"] = "Parent Information";
+}
+
+
+<h1>Welcome @Model.parent.FirstName</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Child ID</th>
+            <th>Child First Name</th>
+            <th>Child Surname</th>
+            <th>Child School</th>
+            <th>Child Class</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Student student in @Model.students)
+        {
+            <tr>
+                <td>@student.ID</td>
+                <td>@student.FirstName</td>
+                <td>@student.Surname</td>
+                
+
+            </tr>
+        }
+    </tbody>
+</table>
