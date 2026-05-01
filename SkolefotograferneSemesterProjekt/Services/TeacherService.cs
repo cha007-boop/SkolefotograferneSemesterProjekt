@@ -123,11 +123,15 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
+
+                await _userService.Delete(teacher.ID);
+
                 SqlCommand cmd = new SqlCommand(@"
                     DELETE FROM Teacher 
                     WHERE ID = @ID", connection);
-                await connection.OpenAsync();
                 cmd.Parameters.AddWithValue("@ID", teacher.ID);
+
                 await cmd.ExecuteNonQueryAsync();
             }
         }

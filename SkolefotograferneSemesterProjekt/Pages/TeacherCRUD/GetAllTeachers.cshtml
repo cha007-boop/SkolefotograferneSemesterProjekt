@@ -34,8 +34,9 @@
                 <td>@t.Email</td>
                 <td>@t.PhoneNumber</td>
                 <td>@t.SchoolID</td>
-                <td><a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a></td>
-            </tr>
+                <td><a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
+                    <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a></td>
+            </tr>   
         }
     </tbody>
 </table>
