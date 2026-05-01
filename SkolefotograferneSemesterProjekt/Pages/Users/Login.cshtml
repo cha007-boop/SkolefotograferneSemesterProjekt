@@ -1,0 +1,24 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Users.LoginModel
+@{
+}
+
+<h3>Login form</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Email" class="control-label"></label>
+                <input asp-for="@Model.Email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Password" class="control-label"></label>
+                <input type="password" asp-for="@Model.Password" class="form-control" />
+            </div>
+            <div class="formgroup mt-3">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -20,12 +20,10 @@ namespace SkolefotograferneSemesterProjekt.Models
         public int PhotographerID { get; set; }
         [Required(ErrorMessage = "SchoolAdminID is required")]
         public int SchoolAdminID { get; set; }
-        [Required(ErrorMessage = "Location is required")]
+        
         public string Location { get; set; }
         public PhotoEvent()
         {
         }
-
-        
     }
 }
