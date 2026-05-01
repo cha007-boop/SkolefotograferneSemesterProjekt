@@ -35,6 +35,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
+
         public async Task<List<Parent>> GetAllParents()
         {
             List<Parent> AllParents = new List<Parent>();
@@ -59,12 +60,33 @@ namespace SkolefotograferneSemesterProjekt.Services
                         Email= Email,
                         Password = reader.GetString("Password"),
                         Role = UserRole.Parent
+
                     };
                     AllParents.Add(parent);
                 }
                 await reader.CloseAsync();
             }
             return AllParents;
+        }
+        public async Task<List<Parent>> FilterParents(string Filter)
+        {
+            List<Parent> parentsList = new List<Parent>();
+            foreach (Parent p in await GetAllParents())
+            {
+                if (p.FirstName.ToLower().Contains(Filter.ToLower()))
+                {
+                    parentsList.Add(p);
+                }
+                else if (p.Surname.ToLower().Contains(Filter.ToLower())) 
+                {
+                    parentsList.Add(p);
+                }
+                else if (p.PhoneNumber.Contains(Filter))
+                {
+                    parentsList.Add(p);
+                }
+            }
+            return parentsList;
         }
 
 

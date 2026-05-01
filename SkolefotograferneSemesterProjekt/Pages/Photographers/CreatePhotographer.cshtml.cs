@@ -9,7 +9,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
     public class CreatePhotographerModel : PageModel
     {
         #region Instance fields
-        private IPhotographerService photographerService;
+        private IPhotographerService _photographerService;
         #endregion
         #region Properties
         [BindProperty]
@@ -20,7 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
         #region Constructor
         public CreatePhotographerModel(IPhotographerService service)
         {
-            photographerService = service;
+            _photographerService = service;
         }
         #endregion
         #region Methods
@@ -35,7 +35,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             try
             {
                 if(NewPhotographer.Password == VerifyPassword)
-                await photographerService.Add(NewPhotographer);
+                await _photographerService.Add(NewPhotographer);
                 else
                 {
                     ModelState.AddModelError("NewPhotographer.Password", "Password not the same");

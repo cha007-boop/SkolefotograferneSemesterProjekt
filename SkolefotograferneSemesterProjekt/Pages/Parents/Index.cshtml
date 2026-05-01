@@ -7,15 +7,51 @@
 
 
 <h1>List of Parents</h1>
+<form>
+    search: <input type="text" asp-for="@Model.Filter" />
+    <input type="submit" value="Filter" />
+</form>
+
 
 <table class="table">
     <thead>
         <tr>
+            <form method="get">
             <th>ID</th>
-            <th>Firstname</th>
-            <th>Surname</th>
-            <th>PhoneNumber</th>
+            @* <th>Firstname</th> *@
+            <th>
+                <a asp-page="Index" 
+                asp-route-SortBy="FirstName" 
+                asp-route-SortOrder="@Model.Toggle("FirstName")"
+                asp-route-Filter="@Model.Filter"
+                class="text-decoration-none text-dark" name="SortBy" value="FirstName">FirstName
+                    @(Model.SortBy == "FirstName" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
+                </a>
+            </th>
+            @* <th>Surname</th> *@
+            <th>
+                <a asp-page="Index"
+                   asp-route-SortBy="Surname"
+                   asp-route-SortOrder="@Model.Toggle("Surname")"
+                   asp-route-Filter="@Model.Filter"
+                   class="text-decoration-none text-dark" name="SortBy" value="Surname">
+                    Surname
+                    @(Model.SortBy == "Surname" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
+                </a>
+            </th>
+            @* <th>PhoneNumber</th> *@
+            <th>
+                <a asp-page="Index"
+                   asp-route-SortBy="PhoneNumber"
+                   asp-route-SortOrder="@Model.Toggle("PhoneNumber")"
+                   asp-route-Filter="@Model.Filter"
+                   class="text-decoration-none text-dark" name="SortBy" value="PhotoNumber">
+                    PhoneNumber
+                    @(Model.SortBy == "PhoneNumber" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
+                </a>
+            </th>
             <th>Email</th>
+            </form>
         </tr>
     </thead>
     <tbody>

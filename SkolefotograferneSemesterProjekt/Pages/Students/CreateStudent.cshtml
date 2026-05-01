@@ -1,0 +1,45 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Students.CreateStudentModel
+@{
+	ViewData["Title"] = "Signup a Student";
+}
+
+<h1>Signup</h1>
+
+<form method="Post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.FirstName" class="control-label"></label>
+		<input asp-for="@Model.NewStudent.FirstName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.Surname" class="control-label"></label>
+		<input asp-for="@Model.NewStudent.Surname" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.SchoolID" class="control-label"></label>
+		<select asp-for="@Model.SchoolID"
+				asp-items="Model.Schools"
+				id="schoolSelect"
+				class="form-select">
+			<option value="">-- Select School --</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.ClassGrade" class="control-label"></label>
+		<input asp-for="@Model.ClassGrade" class="form-control" id="Email" />
+		<span asp-validation-for="ClassGrade" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.ClassLetter" class="control-label"></label>
+		<input asp-for="@Model.ClassLetter" class="form-control" />
+	</div>
+
+	<p>By clicking singup you hereby consent that your child can be fotographed</p>
+	<div class="form-group">
+		<input type="submit" value="Signup" class="btn-primary" />
+	</div>
+
+	<div>
+		<a asp-page="Parents/index">Back to Homepage</a> @* eh *@
+	</div>
+</form>

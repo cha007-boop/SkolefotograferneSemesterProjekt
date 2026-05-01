@@ -16,6 +16,8 @@ builder.Services.AddTransient<ITeacherService, TeacherService>();
 builder.Services.AddTransient<ISchoolService, SchoolService>();
 builder.Services.AddTransient<IPhotoEventService, PhotoEventService>();
 builder.Services.AddTransient<ISysAdminService, SysAdminService>();
+builder.Services.AddTransient<IStudentService, StudentService>();
+builder.Services.AddTransient<ISchoolClassService, SchoolClassService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();

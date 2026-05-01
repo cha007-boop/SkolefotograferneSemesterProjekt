@@ -23,13 +23,38 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/PhotoEvents/CreatePhotoEvents">Create a new PhotoEvent</a> @* Create fotoevent *@
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
+                @using Microsoft.AspNetCore.Http;
+@using SkolefotograferneSemesterProjekt.Models
+                @inject IHttpContextAccessor HttpContextAccessor
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserId") == null)
+                {
+                    <a class="btn btn-success rounded-pill" asp-area="" asp-page="/Users/Login">
+                        <span class="text-light">Log ind</span>
+                    </a>
+                }
+                else
+                {
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-outline-success rounded-pill dropdown-toggle" data-bs-toggle="dropdown">
+                            @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("UserRole")) user
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-page="/Users/Index" class="dropdown-item">My info</a></li>
+                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("UserRole") == 1)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/PhotoEvents/CreatePhotoEvents">Create a new PhotoEvent</a> @* Create fotoevent *@
+                                </li>
+                            }
+                            <li><hr class="dropdown-divider"></hr></li>
+                            <li><a asp-area="" asp-page="/Users/Login" asp-page-handler="Logout" class="dropdown-item">Log out</a></li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
     </header>
