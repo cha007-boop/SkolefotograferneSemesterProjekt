@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Security.Claims;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -16,6 +17,10 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
+                    if(@class.Grade > 10)
+                    {
+                        throw new Exception();
+                    }
                     await connection.OpenAsync();
 
                     SqlCommand sqlCommand = new SqlCommand(@"insert into SchoolClass (ID, SchoolID, TeacherID, Grade, Letter, SchoolYear) values (@ID, @SchoolID, @TeacherID, @Grade, @Letter, @SchoolYear)", connection);
@@ -116,15 +121,27 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("update SchoolClass set Grade = @Grade, Letter = @Letter, SchoolYear = @SchoolYear where ID = @ID", connection);
-                await command.Connection.OpenAsync();
+                try
+                {
+                    if (newSchoolClass.Grade > 10)
+                    {
+                        throw new Exception();
+                    }
+                    SqlCommand command = new SqlCommand("update SchoolClass set Grade = @Grade, Letter = @Letter, SchoolYear = @SchoolYear where ID = @ID", connection);
+                    await command.Connection.OpenAsync();
 
-                command.Parameters.AddWithValue("@ID", newSchoolClass.ID);
-                command.Parameters.AddWithValue("@Grade", newSchoolClass.Grade);
-                command.Parameters.AddWithValue("@Letter", newSchoolClass.Letter);
-                command.Parameters.AddWithValue("@SchoolYear", newSchoolClass.SchoolYear);
+                    command.Parameters.AddWithValue("@ID", newSchoolClass.ID);
+                    command.Parameters.AddWithValue("@Grade", newSchoolClass.Grade);
+                    command.Parameters.AddWithValue("@Letter", newSchoolClass.Letter);
+                    command.Parameters.AddWithValue("@SchoolYear", newSchoolClass.SchoolYear);
 
-                await command.ExecuteNonQueryAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
+                    throw;
+                }
             }
         }
     }

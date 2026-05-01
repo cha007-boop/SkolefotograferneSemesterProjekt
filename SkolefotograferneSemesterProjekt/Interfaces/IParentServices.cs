@@ -10,5 +10,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 
         Task<List<Parent>> FilterParents(String Filter);
 
+        Task<Parent> SearchParent(int id);
+
     }
 }

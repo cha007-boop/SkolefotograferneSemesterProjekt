@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
@@ -56,11 +57,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     ModelState.AddModelError("ClassGrade", "Invalid Grade");
                     return Page();
                 }
-                string year = DateTime.Now.Year.ToString();
-                if(DateTime.Now.Month < 8)
-                {
-                    year = (DateTime.Now.Year - 1).ToString();
-                }
+                string year = SchoolYearCalc.GetSchoolYear();
                 SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.SchoolID, ClassGrade, ClassLetter, year);
                 NewStudent.ClassID = @class.ID;
                 await _studentService.Add(NewStudent);
