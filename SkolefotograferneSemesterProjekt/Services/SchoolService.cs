@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using System.Data;
@@ -7,6 +8,16 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class SchoolService : Connection, ISchoolService
     {
+        public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
+        {
+            { "ID", "ID" },
+            { "Name", "Name" },
+            { "Street", "Street" },
+            { "ZipCode", "Zip Code" },
+            { "Country", "Country" },
+            { "StudentCount", "Student Count" }
+        };
+
         public async Task Add(School school)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -97,14 +108,23 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task<List<School>> FilterSchools(string fitlerColumn, string filterValue, string sortColumn, string sortOrder)
+        public async Task<List<School>> GetAll(string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 List<School> schools = new List<School>();
-                List<string> validColumns = new List<string> { "ID", "Name", "StudentCount", "Street", "ZipCode", "Country" };
-                
-                if (!validColumns.Contains(fitlerColumn) || !validColumns.Contains(sortColumn))
+                IEnumerable<string> validColumns = FilterableColumns.Keys;
+
+                if (string.IsNullOrWhiteSpace(sortColumn))
+                {
+                    sortColumn = "ID";
+                }
+                if (string.IsNullOrWhiteSpace(filterColumn))
+                {
+                    filterColumn = "All";
+                }
+
+                if ((!validColumns.Contains(filterColumn) && filterColumn != "All") || !validColumns.Contains(sortColumn))
                 {
                     throw new ArgumentException("Invalid column name");
                 }
@@ -112,7 +132,22 @@ namespace SkolefotograferneSemesterProjekt.Services
                 try
                 {
                     await conn.OpenAsync();
-                    SqlCommand command = new SqlCommand($@"SELECT * FROM School WHERE {fitlerColumn} LIKE @FilterValue ORDER BY {sortColumn} {sortOrder}", conn);
+                    string query = "SELECT * FROM School";
+                    if (!string.IsNullOrWhiteSpace(filterValue))
+                    {
+                        if (filterColumn == "All")
+                        {
+                            query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
+                        }
+                        else
+                        {
+                            query += $" WHERE {filterColumn} LIKE @FilterValue";
+                        }
+                    }
+                    query += $" ORDER BY {sortColumn} {sortOrder}";
+
+
+                    SqlCommand command = new SqlCommand(query, conn);
                     command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
                     SqlDataReader reader = await command.ExecuteReaderAsync();
                     while (await reader.ReadAsync())

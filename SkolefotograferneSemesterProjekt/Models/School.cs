@@ -12,5 +12,10 @@
         {
             
         }
+
+        public override string ToString()
+        {
+            return $"{ID} {Name} {Street} {ZipCode} {Country} {StudentCount}";
+        }
     }
 }
