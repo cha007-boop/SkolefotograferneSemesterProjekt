@@ -58,7 +58,6 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return teacherLst;
         }
-
         public async Task<bool> IsEmailTaken(Teacher t)
         {
             int id = 0;
@@ -66,6 +65,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
+
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT ID, Email
                     FROM Users
@@ -117,8 +117,6 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return null;
         }
-
-        // Work in progress...
         public async Task Delete(Teacher teacher)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -135,7 +133,6 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await cmd.ExecuteNonQueryAsync();
             }
         }
-
         public async Task Update(Teacher teacher)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

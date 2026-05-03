@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
+using SkolefotograferneSemesterProjekt.Helpers;
+
 
 namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
@@ -17,8 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public string Password { get; set; }
         [BindProperty]
         public string Pass2 { get; set; }
-        public bool PassCheck { get; set; } = true;
-        public string MsgPassword { get; set; }
+        public string Message { get; set; }
 
         public CreateTeacherModel(ITeacherService repo)
         {
@@ -27,30 +29,49 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public void OnGet()
         {
         }
-
         public async Task<IActionResult> OnPost()
         {
-            if (String.IsNullOrEmpty(Password) || String.IsNullOrEmpty(Pass2) || Password != Pass2)
+            ModelState.Remove("NewTeacher.Password");
+            ModelState.CustomizedMessages("Feltet mangler");
+
+            if (Password != Pass2)
             {
-
-                MsgPassword = "Koderne er ikke ens eller tomme";
-
+                ModelState.AddModelError("Password", "Koderne er ikke ens");
+            }
+            if (Password.Length < 6)
+            {
+                ModelState.AddModelError("Password", "Dit kodeord er for kort");
+            }
+            if (await _repo.IsEmailTaken(NewTeacher))
+            {
+                ModelState.AddModelError("NewTeacher.Email", "Mailen er optaget");
+            }
+            if (!ModelState.IsValid)
+            {
                 return Page();
             }
-            else
+            NewTeacher.Password = Password;
+
+            try
             {
-                NewTeacher.Password = Password;
-                try
-                {
-                    await _repo.Add(NewTeacher);
-                }
-                catch (Exception ex)
-                {
-                    ViewData["ErrorMessage"] = ex.Message;
-                    return Page();
-                }
-                return RedirectToPage("Index");
+                await _repo.Add(NewTeacher);
             }
+            catch (PasswordTooShortException ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+            catch (TakenMailException ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+            return RedirectToPage("Index");
         }
     }
 }

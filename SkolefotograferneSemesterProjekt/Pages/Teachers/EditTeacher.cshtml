@@ -4,10 +4,6 @@
     ViewData["Title"] = "Opdater bruger";
 }
 
-@if (!String.IsNullOrEmpty(Model.Message))
-{
-    <div class="text-danger">@Model.Message</div>
-}
 <form method="post">
     <input type="hidden" asp-for="@Model.TeacherToEdit.ID" />
     <input type="hidden" asp-for="@Model.TeacherToEdit.SchoolID" />

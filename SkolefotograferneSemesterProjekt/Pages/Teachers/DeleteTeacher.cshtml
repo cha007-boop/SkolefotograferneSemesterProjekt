@@ -5,10 +5,9 @@
 }
 
 <h1>Slet Bruger (Lærer)</h1>
-@Model.Message
 <form method="post">
-    <label>Navn</label>: @Model.TeacherToDelete.FirstName<br/>
-    <label>Navn</label>: @Model.TeacherToDelete.Surname<br/>
+    <label>Navn</label>: @Model.TeacherToDelete!.FirstName<br/>
+    <label>Efternavn</label>: @Model.TeacherToDelete.Surname<br/>
     <input type="submit" onlick="return confirm('Er du sikker?')" asp-page-handler="Delete" asp-route-id="@Model.TeacherToDelete.ID" class="btn btn-danger" value="Slet" />
     <input type="submit" class="btn btn-warning" value="Fortryd" />
 </form>

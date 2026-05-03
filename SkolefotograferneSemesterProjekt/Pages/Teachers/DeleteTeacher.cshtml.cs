@@ -9,33 +9,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
     {
         private ITeacherService _repo;
 
-        [BindProperty]
         public Teacher? TeacherToDelete { get; set; }
-        public string Message { get; set; }
 
         public DeleteTeacherModel(ITeacherService repo)
         {
             _repo = repo;
         }
-
-        public async Task<IActionResult> OnGet(int id)
+        public async Task OnGet(int id)
         {
             TeacherToDelete = await _repo.GetByID(id);
-            return Page();
         }
-
         public async Task<IActionResult> OnPostDelete(int id)
         {
-            //TeacherToDelete = await _repo.GetByID(id);
-            ModelState.Remove("TeacherToDelete.Password");
-            if (!ModelState.IsValid)
+            TeacherToDelete = await _repo.GetByID(id);
+            if (TeacherToDelete == null)
             {
-                
-                return Page();
-            }
-            else if (TeacherToDelete == null)
-            {
-                Message = "Brugeren er null";
                 return Page();
             }
             try
@@ -49,11 +37,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             }
             return RedirectToPage("Index");
         }
-
         public IActionResult OnPost()
         {
             return RedirectToPage("Index");
         }
-
     }
 }
