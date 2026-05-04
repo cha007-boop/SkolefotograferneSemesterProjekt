@@ -1,4 +1,8 @@
-﻿namespace SkolefotograferneSemesterProjekt.Models
+﻿using System.Threading.Tasks;
+using SkolefotograferneSemesterProjekt.Interfaces;
+using SkolefotograferneSemesterProjekt.Services;
+
+namespace SkolefotograferneSemesterProjekt.Models
 {
     public class Student
     {
@@ -10,7 +14,7 @@
         public int ClassID { get; set; }
         public Student()
         {
-            
+
         }
     }
 }

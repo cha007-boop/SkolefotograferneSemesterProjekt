@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Security.Cryptography.Xml;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -33,14 +34,40 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("delete from Student where ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                await command.ExecuteNonQueryAsync();
+            }
         }
 
-        public Task<List<Student>> GetAll()
+        public async Task<List<Student>> GetAll()
         {
-            throw new NotImplementedException();
+            List<Student> students = new List<Student>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(@"select * from Student", connection);
+                await command.Connection.OpenAsync();
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32("ID");
+                    string firstName = reader.GetString("FirstName");
+                    string surName = reader.GetString("Surname");
+                    int parentID = reader.GetInt32("ParentID");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    int classID = reader.GetInt32("ClassID");
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+                    students.Add(student);
+                }
+                await reader.CloseAsync();
+            }
+            return students;
         }
 
         public async Task<List<Student>> GetAllByParent(int parentID)
@@ -69,14 +96,46 @@ namespace SkolefotograferneSemesterProjekt.Services
             return students;
         }
 
-        public Task<Student> GetById(int id)
+        public async Task<Student> GetById(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("select * from Student where ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    string firstName = reader.GetString("FirstName");
+                    string surName = reader.GetString("Surname");
+                    int parentID = reader.GetInt32("ParentID");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    int classID = reader.GetInt32("ClassID");
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+                    await reader.CloseAsync();
+                    return student;
+                }
+                return null;
+            }
         }
 
-        public Task Update(Student student)
+        public async Task Update(Student student)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand command = new SqlCommand("update student set FirstName = @FirstName, Surname = @Surname, ParentID = @ParentID, SchoolID = @SchoolID, ClassID = @ClassID where ID = @ID", connection);
+
+                command.Parameters.AddWithValue("@ID", student.ID);
+                command.Parameters.AddWithValue("@FirstName", student.FirstName);
+                command.Parameters.AddWithValue("@Surname", student.Surname);
+                command.Parameters.AddWithValue("@ParentID", student.ParentID);
+                command.Parameters.AddWithValue("@SchoolID", student.SchoolID);
+                command.Parameters.AddWithValue("@ClassID", student.ClassID);
+
+                await command.ExecuteNonQueryAsync();
+            }
         }
     }
 }

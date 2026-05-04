@@ -1,0 +1,45 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Students.ListStudentsModel
+@{
+	ViewData["Title"] = "List Students";
+}
+
+
+<h1>Students</h1>
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<form method="get">
+			<th>Name</th>
+			<th>Surname</th>
+			<th>School Name</th>
+			<th>Class</th>
+			</form>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Student student in Model.Students)
+		{
+			<tr>
+				<td>@student.FirstName</td>
+				<td>@student.Surname</td>
+				<td>@</td>
+				<td>@</td>
+				<td>
+					<a asp-page="" asp-route-id="@" class="btn btn-primary">Update/Edit</a>
+				</td>
+				@if(HttpContext.Session.GetInt32("UserRole") == 0)
+				{
+					<form method="Post">
+				<td class="form-group">
+					<input type="submit" asp-page-handler="Delete" asp-route-id-="@" value="Delete Student" class="btn btn-danger" />
+				</td>
+				</form>
+				}
+			</tr>
+		}
+	</tbody>
+</table>
