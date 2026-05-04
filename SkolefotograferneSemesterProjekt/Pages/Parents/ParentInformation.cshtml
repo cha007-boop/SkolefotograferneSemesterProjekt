@@ -25,20 +25,9 @@
                 <td>@student.ID</td>
                 <td>@student.FirstName</td>
                 <td>@student.Surname</td>
-                @foreach (School school in Model.Schools)
-                {
-                    if(school.ID == student.SchoolID)
-                    {
-                        <td>@school.Name</td>
-                    }
-                }
-                @foreach (SchoolClass classes in Model.Classes)
-                {
-                    @if(classes.ID == student.ClassID)
-                    {
-                        <td>@classes.Grade @classes.Letter</td>
-                    }
-                }
+                <td>@student.TheSchool.Name</td>
+                <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+
             </tr>
         }
     </tbody>

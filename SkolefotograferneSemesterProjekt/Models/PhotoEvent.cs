@@ -17,22 +17,22 @@ namespace SkolefotograferneSemesterProjekt.Models
         [Required(ErrorMessage = "EndTime is required")]
         public DateTime EndTime { get; set; }
         [Required(ErrorMessage = "PhotographerID is required")]
-        public int PhotographerID { get; set; }
+        public Photographer ThePhotographer { get; set; }
         [Required(ErrorMessage = "SchoolAdminID is required")]
-        public int SchoolAdminID { get; set; }
+        public SchoolAdmin TheSchoolAdmin { get; set; }
         
         public string Location { get; set; }
         public PhotoEvent()
         {
             
         }
-        public PhotoEvent(int id, DateTime startTime, DateTime endTime, int photographerID, int schoolAdminID, string location)
+        public PhotoEvent(int id, DateTime startTime, DateTime endTime, Photographer thePhotographer, SchoolAdmin theSchoolAdmin, string location)
         {
             ID = id;
             StartTime = startTime;
             EndTime = endTime;
-            PhotographerID = photographerID;
-            SchoolAdminID = schoolAdminID;
+            ThePhotographer = thePhotographer;
+            TheSchoolAdmin = theSchoolAdmin;
             Location = location;
         }
     }

@@ -41,7 +41,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
         public async Task<IActionResult> OnPost()
         {
 
-            NewSchoolAdmin.SchoolID = Convert.ToInt32(SchoolID);
+            NewSchoolAdmin.TheSchool = _schoolService.GetById(Convert.ToInt32(SchoolID)).Result;
 
             ModelState.Clear();
             TryValidateModel(NewSchoolAdmin);

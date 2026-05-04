@@ -20,7 +20,7 @@
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
-                <th>Skole ID</th>
+                <th>Skole navn</th>
             </form>
         </tr>
     </thead>
@@ -33,7 +33,7 @@
                 <td>@t.Surname</td>
                 <td>@t.Email</td>
                 <td>@t.PhoneNumber</td>
-                <td>@t.SchoolID</td>
+                <td>@t.TheSchool.Name</td>
                 <td><a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
                     <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a></td>
             </tr>   

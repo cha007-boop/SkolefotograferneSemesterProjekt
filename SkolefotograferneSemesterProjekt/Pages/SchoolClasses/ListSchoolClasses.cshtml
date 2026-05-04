@@ -15,6 +15,7 @@
 			<th>Grade</th>
 			<th>Letter</th>
 			<th>Year</th>
+			<th>School name</th>
 			</form>
 		</tr>
 	</thead>
@@ -25,12 +26,13 @@
 				<td>@schoolClass.Grade</td>
 				<td>@schoolClass.Letter</td>
 				<td>@schoolClass.SchoolYear</td>
+				<td>@schoolClass.TheSchool.Name</td>
 				<td>
 					<a asp-page="UpdateSchoolClass" asp-route-id="@schoolClass.ID" class="btn btn-primary">Update/Edit</a>
 				</td>
 				<form method="Post">
 				<td class="form-group">
-					<input type="submit" asp-page-handler="Delete" asp-route-sailnumber="@schoolClass.ID" value="Delete SchoolClass" class="btn btn-danger" />
+					<input type="submit" asp-page-handler="Delete" asp-route-id="@schoolClass.ID" value="Delete SchoolClass" class="btn btn-danger" />
 				</td>
 				</form>
 			</tr>
