@@ -40,7 +40,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         }
         public async Task<IActionResult> OnPost()
         {
+            await OnGet();
             ModelState.Remove("NewTeacher.Password");
+            //ModelState.Remove("Password");
+            ModelState.Remove("NewTeacher.TheSchool.ID");
+            ModelState.Remove("NewTeacher.TheSchool.Name");
+            ModelState.Remove("NewTeacher.TheSchool.Street");
+            ModelState.Remove("NewTeacher.TheSchool.Country");
+            ModelState.Remove("NewTeacher.TheSchool.ZipCode");    
             ModelState.CustomizedMessages("Feltet mangler");
 
             if (Password != Pass2)
@@ -59,10 +66,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 return Page();
             }
-            NewTeacher.Password = Password;
 
             try
             {
+                NewTeacher.Password = Password;
                 await _repo.Add(NewTeacher);
             }
             catch (PasswordTooShortException ex)
