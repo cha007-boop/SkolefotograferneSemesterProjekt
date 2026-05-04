@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 
@@ -42,9 +43,30 @@ namespace SkolefotograferneSemesterProjekt.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Student>> GetAllByParent(int parentID)
+        public async Task<List<Student>> GetAllByParent(int parentID)
         {
-            throw new NotImplementedException();
+            List<Student> students = new List<Student>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(@"select * from Student where ParentID = @ParentID", connection);
+                await command.Connection.OpenAsync();
+
+                command.Parameters.AddWithValue("@ParentID", parentID);
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32("ID");
+                    string firstName = reader.GetString("FirstName");
+                    string surName = reader.GetString("Surname");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    int classID = reader.GetInt32("ClassID");
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+                    students.Add(student);
+                }
+                await reader.CloseAsync();
+            }
+            return students;
         }
 
         public Task<Student> GetById(int id)
