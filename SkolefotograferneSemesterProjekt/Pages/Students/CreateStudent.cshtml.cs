@@ -60,7 +60,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
 
         public async Task<IActionResult> OnPost()
         {
-            NewStudent.SchoolID = Convert.ToInt32(SchoolID);
+            NewStudent.TheSchool.ID = Convert.ToInt32(SchoolID);
             ModelState.Clear();
             TryValidateModel(ClassGrade);
             try

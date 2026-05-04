@@ -6,9 +6,34 @@
 
 <h1>List of your Active Photo Events</h1>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>StartTime</th>
+            <th>EndTIme</th>
+            <th>PhotographerID</th>
+            <th>SchoolAdminID</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PhotoEvents) // Changed from Model.PhotoEvent to Model.PhotoEvents
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+                <td>@item.ThePhotographer.ID</td>
+                <td>@item.ThePhotographer.ID</td>
+                <td>@item.Location</td>
+                @* <td><a asp-page="CreatePhotoEvents" asp-route</td> || make a add child into this td *@
+                @* make an edit td *@
+            </tr>
+        }
+    </tbody>
+</table>
 <form method="post">
-
-
 
     <div>
         <a asp-page="index">Back to index of Photo Events</a> @* to index in the photoevents folder *@
