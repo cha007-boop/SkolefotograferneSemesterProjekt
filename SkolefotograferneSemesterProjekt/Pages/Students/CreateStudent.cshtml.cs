@@ -41,7 +41,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         {
             try
             {
-                if(HttpContext.Session.GetInt32("UserRole") != 0)
+                if(HttpContext.Session.GetInt32("Role") != 0)
                 {
                     throw new Exception();
                 }

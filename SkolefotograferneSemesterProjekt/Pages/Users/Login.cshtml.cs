@@ -24,9 +24,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
 
         public IActionResult OnGetLogOut()
         {
-            HttpContext.Session.Remove("UserId");
-            HttpContext.Session.Remove("UserEmail");
-            HttpContext.Session.Remove("UserRole");
+            HttpContext.Session.Remove("ID");
+            HttpContext.Session.Remove("Email");
+            HttpContext.Session.Remove("Role");
             return RedirectToPage("/Index");
         }
         

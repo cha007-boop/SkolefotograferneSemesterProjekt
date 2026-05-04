@@ -20,7 +20,7 @@
 		<a asp-page="ShowPhotographers">Back to Photographers</a>
 	</div>
 </form>
-@if(HttpContext.Session.GetInt32("UserRole") == 4)
+@if(HttpContext.Session.GetInt32("Role") == 4)
 	{
 	<form method="Post">
 		<input type="hidden" asp-for="@Model.Photographer.ID" />

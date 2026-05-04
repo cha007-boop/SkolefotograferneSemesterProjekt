@@ -21,7 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             _photographerService = service;
         }
         #endregion
-        public async Task/*<IActionResult>*/ OnGet(int id)
+        public async Task OnGet(int id)
         {
             try
             {
@@ -31,7 +31,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             {
                 ViewData["ErrorMessage"] = ex.Message;
             }
-            //return Page();
         }
         public async Task<IActionResult> OnPostDelete()
         {
