@@ -7,6 +7,10 @@
 <form method="post">
     <input type="hidden" asp-for="@Model.TeacherToEdit.ID" />
     <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.ID" />
+    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Name" />
+    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Street" />
+    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Country" />
+    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.ZipCode" />
 
     <div class="form-group">
 
