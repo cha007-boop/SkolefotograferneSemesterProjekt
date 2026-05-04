@@ -11,6 +11,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Parent Name</th>
             <th>Child ID</th>
             <th>Child First Name</th>
             <th>Child Surname</th>
@@ -22,6 +23,7 @@
         @foreach (Student student in @Model.Students)
         {
             <tr>
+                <td>@Model.Parent.FirstName @Model.Parent.Surname</td>
                 <td>@student.ID</td>
                 <td>@student.FirstName</td>
                 <td>@student.Surname</td>

@@ -27,13 +27,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             try
             {
-                Parent = await _parentService.SearchParent(ID);
-                Students = await _studentService.GetAllByParent(ID);
+                Parent = await _parentService.SearchParent(Id);
+                Students = await _studentService.GetAllByParent(Id);
             }
             catch (Exception ex)
             {
                 ViewData["Errormessage"] = ex.Message;
             }
         }
+        //Do so that you can click create child if the parent has not yet registered a child/student!!!
+        // and make a button so the can see the pictures of the childen/students...
     }
 }

@@ -11,9 +11,36 @@ namespace SkolefotograferneSemesterProjekt.Services
         private ISchoolService _schoolService = new SchoolService();
 
 
+
+
         private string _getAllSql = "SELECT Users.ID, Users.Email, SchoolAdmin.PhoneNumber, SchoolAdmin.ContactPerson, SchoolAdmin.SchoolID " +
                                     "FROM Users INNER JOIN SchoolAdmin on Users.ID = SchoolAdmin.ID";
 
+        public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
+        {
+            { "ID", "ID" },
+            { "Email", "Email" },
+            { "PhoneNumber", "PhoneNumber" },
+            { "ContactPerson", "ContactPerson" },
+            { "SchoolID", "SchoolID" },
+            { "Name", "School Name" },
+            { "Street", "School Street" },
+            { "ZipCode", "School ZipCode" },
+            { "Country", "School Country" },
+            { "StudentCount", "School Student Count" }
+        };
+
+        public Dictionary<string, string> SortableColumns { get; } = new Dictionary<string, string>
+        {
+            { "ID", "ID" },
+            { "Email", "Email" },
+            { "PhoneNumber", "PhoneNumber" },
+            { "ContactPerson", "ContactPerson" },
+            { "Name", "School Name" },
+            { "Street", "School Street" },
+            { "ZipCode", "School ZipCode" },
+            { "StudentCount", "School Student Count" }
+        };
 
 
         public async Task Add(SchoolAdmin schoolAdmin)
@@ -80,6 +107,67 @@ namespace SkolefotograferneSemesterProjekt.Services
             return schoolAdmins;
         }
 
+        public async Task<List<SchoolAdmin>> GetAll(string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            List<SchoolAdmin> schoolAdmins = new List<SchoolAdmin>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+
+                IEnumerable<string> validColumns = FilterableColumns.Keys;
+
+                if (string.IsNullOrWhiteSpace(sortColumn))
+                {
+                    sortColumn = "ID";
+                }
+                if (string.IsNullOrWhiteSpace(filterColumn))
+                {
+                    filterColumn = "All";
+                }
+
+                if ((!validColumns.Contains(filterColumn) && filterColumn != "All") || !validColumns.Contains(sortColumn))
+                {
+                    throw new ArgumentException("Invalid column name");
+                }
+
+                try
+                {
+                    await conn.OpenAsync();
+                    string query = "Select Users.ID, Users.Email, SchoolAdmin.ContactPerson, SchoolAdmin.PhoneNumber, SchoolAdmin.SchoolID, School.[Name], School.Street, School.ZipCode, School.Country, School.StudentCount " +
+                        "FROM Users " +
+                        "INNER JOIN SchoolAdmin ON Users.ID = SchoolAdmin.ID " +
+                        "INNER JOIN School ON SchoolAdmin.SchoolID = School.ID";
+                    if (!string.IsNullOrWhiteSpace(filterValue))
+                    {
+                        if (filterColumn == "All")
+                        {
+                            query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
+                        }
+                        else
+                        {
+                            query += $" WHERE {filterColumn} LIKE @FilterValue";
+                        }
+                    }
+                    query += $" ORDER BY {sortColumn} {sortOrder}";
+
+
+                    SqlCommand command = new SqlCommand(query, conn);
+                    command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        SchoolAdmin schoolAdmin = SchoolAdminReader(reader);
+                        schoolAdmins.Add(schoolAdmin);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+                }
+
+            }
+            return schoolAdmins;
+        }
+
         public Task<SchoolAdmin> GetById(int id)
         {
             throw new NotImplementedException();
@@ -88,6 +176,18 @@ namespace SkolefotograferneSemesterProjekt.Services
         public Task Update(SchoolAdmin schoolAdmin)
         {
             throw new NotImplementedException();
+        }
+
+        private SchoolAdmin SchoolAdminReader(SqlDataReader reader)
+        {
+            int id = reader.GetInt32("ID");
+            string email = reader.GetString("Email");
+            string phoneNumber = reader.GetString("PhoneNumber");
+            string contactPerson = reader.GetString("ContactPerson");
+            int schoolID = reader.GetInt32("SchoolID");
+            School school = _schoolService.GetById(schoolID).Result;
+            SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson, TheSchool = school };
+            return schoolAdmin;
         }
     }
 }
