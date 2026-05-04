@@ -77,7 +77,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return schoolAdmins;
         }
 
-        public Task<SchoolAdmin> GetByID(int id)
+        public Task<SchoolAdmin> GetById(int id)
         {
             throw new NotImplementedException();
         }
