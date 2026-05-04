@@ -21,9 +21,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
 
-        public CreatePhotoEventsModel(IPhotoEventService photoEventService)
+        public CreatePhotoEventsModel()
         {
-            _photoEventService = photoEventService;
         }
         public void OnGet()
         {
