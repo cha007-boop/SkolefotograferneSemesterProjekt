@@ -1,14 +1,13 @@
 ﻿@page
-@model SkolefotograferneSemesterProjekt.Pages.TeacherCRUD.CreateTeacherModel
+@model SkolefotograferneSemesterProjekt.Pages.Teachers.CreateTeacherModel
 @{
     ViewData["Title"] = "Create Teacher";
 }
 <h1>Opret bruger</h1>
 
 <form method ="post">
-    <input type="hidden" asp-for="@Model.NewTeacher.Password" />
-    <div class="form-group">
 
+    <div class="form-group">
         <label asp-for="@Model.NewTeacher.FirstName" class="control-label"></label>
         <input asp-for="@Model.NewTeacher.FirstName" class="form-control" />
         <span asp-validation-for="@Model.NewTeacher.FirstName" class="text-danger"></span>
@@ -38,9 +37,9 @@
         <input asp-for="@Model.Password" class="form-control" />
         <span asp-validation-for="@Model.Password" class="text-danger"></span>
     </div>
-    @if (!String.IsNullOrEmpty(Model.MsgPassword))
+    @if (!String.IsNullOrEmpty(Model.Message))
     {
-        <div class="text-danger">@Model.MsgPassword</div>
+        <div class="text-danger">@Model.Message</div>
     }
     <div class="form-group">
         <label asp-for="@Model.Pass2" class="control-label">Gentag Password</label>
@@ -54,5 +53,5 @@
 </form>
 
 <div>
-    <a asp-page="GetAllTeachers">Tilbage til listen af lærer </a>
+    <a asp-page="Index">Tilbage til listen af lærer</a>
 </div>
