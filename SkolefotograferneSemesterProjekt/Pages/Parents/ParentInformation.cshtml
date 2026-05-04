@@ -6,7 +6,7 @@
 }
 
 
-<h1>Welcome @Model.parent.FirstName</h1>
+<h1>Welcome @Model.Parent.FirstName</h1>
 
 <table class="table">
     <thead>
@@ -19,14 +19,26 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Student student in @Model.students)
+        @foreach (Student student in @Model.Students)
         {
             <tr>
                 <td>@student.ID</td>
                 <td>@student.FirstName</td>
                 <td>@student.Surname</td>
-                
-
+                @foreach (School school in Model.Schools)
+                {
+                    if(school.ID == student.SchoolID)
+                    {
+                        <td>@school.Name</td>
+                    }
+                }
+                @foreach (SchoolClass classes in Model.Classes)
+                {
+                    @if(classes.ID == student.ClassID)
+                    {
+                        <td>@classes.Grade @classes.Letter</td>
+                    }
+                }
             </tr>
         }
     </tbody>
