@@ -4,7 +4,8 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 {
     public interface IPhotoEventService
     {
-        Task Add(PhotoEvent photoEvent);
-        Task<List<PhotoEvent>> ShowYourActivePhotoEvent();
+        Task<int> Add(PhotoEvent photoEvent);
+        Task<List<PhotoEvent>> ShowActivePhotoEvent();
+        Task<IEnumerable<PhotoEvent>> SearchEventByPhortographerID(int ID);
     }
 }
