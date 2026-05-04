@@ -58,7 +58,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
 
         public async Task<IActionResult> OnPost()
         {
-            NewStudent.SchoolID = Convert.ToInt32(SchoolID);
+            NewStudent.TheSchool.ID = Convert.ToInt32(SchoolID);
             ModelState.Clear();
             TryValidateModel(ClassGrade);
             try
@@ -69,9 +69,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     return Page();
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
-                SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.SchoolID, ClassGrade, ClassLetter, year);
-                NewStudent.ClassID = @class.ID;
-                NewStudent.ParentID = (int)HttpContext.Session.GetInt32("ID");
+                SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.TheSchool.ID, ClassGrade, ClassLetter, year);
+                NewStudent.TheSchoolClass.ID = @class.ID;
+                NewStudent.TheParent.ID = (int)HttpContext.Session.GetInt32("ID");
                 await _studentService.Add(NewStudent);
             }
 
