@@ -1,0 +1,31 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.SchoolClasses.UpdateSchoolClassModel
+@{
+	ViewData["Title"] = "Update Class";
+}
+
+
+<h1>Update/Edit</h1>
+
+
+<form method="post">
+    <input type="hidden" asp-for="@Model.NewSchoolClass.ID" />
+    <div class="form-group">
+        <label asp-for="@Model.NewSchoolClass.Grade" class="control-label"></label>
+        <input asp-for="@Model.NewSchoolClass.Grade" class="form-control" />
+        <span asp-validation-for="@Model.NewSchoolClass.Grade" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewSchoolClass.Letter" class="control-label"></label>
+        <input asp-for="@Model.NewSchoolClass.Letter" class="form-control" />
+        <span asp-validation-for="@Model.NewSchoolClass.Letter" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewSchoolClass.SchoolYear" class="control-label"></label>
+        <input asp-for="@Model.NewSchoolClass.SchoolYear" class="form-control" />
+        <span asp-validation-for="@Model.NewSchoolClass.SchoolYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" asp-route-id="@Model.NewSchoolClass.ID" value="Opdater bruger" class="btn btn-primary" />
+    </div>
+</form>

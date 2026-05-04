@@ -33,7 +33,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             try
             {
                 ThisTeacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
-                if (!HttpContext.Session.GetInt32("ID").HasValue)
+                if (HttpContext.Session.GetInt32("UserRole") != 2)
                 {
                     throw new Exception();
                 }

@@ -42,6 +42,17 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
+        public async Task Delete(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("delete from SchoolClass where ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
         public async Task<List<SchoolClass>> GetAll()
         {
             List<SchoolClass> classes = new List<SchoolClass>();
@@ -59,6 +70,32 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
                     SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherID, Grade = grade, Letter = letter, SchoolYear = year };
+                    classes.Add(schoolClass);
+                }
+                await reader.CloseAsync();
+            }
+            return classes;
+        }
+
+        public async Task<List<SchoolClass>> GetAllByTeacher(int teacherid)
+        {
+            List<SchoolClass> classes = new List<SchoolClass>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(@"select * from SchoolClass where TeacherID = @TeacherID", connection);
+                await command.Connection.OpenAsync();
+
+                command.Parameters.AddWithValue("@TeacherID", teacherid);
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32("ID");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    int grade = reader.GetInt32("Grade");
+                    string letter = reader.GetString("Letter");
+                    string year = reader.GetString("SchoolYear");
+                    SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherid, Grade = grade, Letter = letter, SchoolYear = year };
                     classes.Add(schoolClass);
                 }
                 await reader.CloseAsync();

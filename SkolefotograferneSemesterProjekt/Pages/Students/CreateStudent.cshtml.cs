@@ -37,6 +37,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         #region Methods
         public async Task OnGetAsync()
         {
+            try
+            {
+                if(HttpContext.Session.GetInt32("UserRole") != 0)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+            }
             List<School> schools = await _schoolService.GetAll();
             Schools = schools.Select(s => new SelectListItem
             {
@@ -60,6 +71,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 string year = SchoolYearCalc.GetSchoolYear();
                 SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.SchoolID, ClassGrade, ClassLetter, year);
                 NewStudent.ClassID = @class.ID;
+                NewStudent.ParentID = (int)HttpContext.Session.GetInt32("ID");
                 await _studentService.Add(NewStudent);
             }
 

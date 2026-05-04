@@ -26,8 +26,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     await connection.OpenAsync();
 
                     int userID = await userService.Add(connection, photographer);
-                    
-                    SqlCommand sqlCommand = new SqlCommand(@"insert into Photographer (ID, FirstName, Surname, PhoneNumber) values (@ID, @FirstName, @Surname, @PhoneNumber)", connection);
+
+                    SqlCommand sqlCommand = new SqlCommand(@"insert into Photographer 
+                                         (ID, FirstName, Surname, PhoneNumber) 
+                                         values (@ID, @FirstName, @Surname, @PhoneNumber)",
+                                         connection);
 
                     sqlCommand.Parameters.AddWithValue("@ID", userID);
                     sqlCommand.Parameters.AddWithValue("@FirstName", photographer.FirstName);
@@ -61,7 +64,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string? cVR = reader["CVR"] as string;
                     string? facebook = reader["Facebook"] as string;
                     string? instagram = reader["Instagram"] as string;
-                    Photographer photographer = new Photographer { ID = id , FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram };
+                    Photographer photographer = new Photographer { ID = id, FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram };
                     photographers.Add(photographer);
                 }
                 await reader.CloseAsync();
