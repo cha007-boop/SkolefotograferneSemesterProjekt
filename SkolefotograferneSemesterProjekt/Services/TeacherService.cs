@@ -11,6 +11,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     public class TeacherService : Connection, ITeacherService
     {
         private IUserService _userService = new UserService();
+        private ISchoolService _schoolService = new SchoolService();
         public async Task<int> Add(Teacher teacher)
         {
             using(SqlConnection connection = new SqlConnection(connectionString))
@@ -27,7 +28,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
                 cmd.Parameters.AddWithValue("@Surname", teacher.Surname);
                 cmd.Parameters.AddWithValue("@PhoneNumber", teacher.PhoneNumber);
-                cmd.Parameters.AddWithValue("@SchoolID", teacher.SchoolID);
+                cmd.Parameters.AddWithValue("@SchoolID", teacher.TheSchool.ID);
 
                 return await cmd.ExecuteNonQueryAsync();
             }
@@ -52,7 +53,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     t.Surname = reader.GetString("Surname");
                     t.Email = reader.GetString("Email");
                     t.PhoneNumber = reader.GetString("PhoneNumber");
-                    t.SchoolID = reader.GetInt32("SchoolID");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    t.TheSchool = await _schoolService.GetById(schoolID);
                     teacherLst.Add(t);
                 }
             }
@@ -111,7 +113,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     t.Surname = reader.GetString("Surname");
                     t.Email = reader.GetString("Email");
                     t.PhoneNumber = reader.GetString("PhoneNumber");
-                    t.SchoolID = reader.GetInt32("SchoolID");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    t.TheSchool = await _schoolService.GetById(schoolID);
                     return t;
                 }
             }

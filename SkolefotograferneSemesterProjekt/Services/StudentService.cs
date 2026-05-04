@@ -8,6 +8,10 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class StudentService : Connection, IStudentService
     {
+        private IParentServices _parentService = new ParentServices();
+        private ISchoolService _schoolService = new SchoolService();
+        private ISchoolClassService _schoolClassService = new SchoolClassService();
+
         public async Task Add(Student student)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -20,9 +24,9 @@ namespace SkolefotograferneSemesterProjekt.Services
 
                     command.Parameters.AddWithValue("@FirstName", student.FirstName);
                     command.Parameters.AddWithValue("@Surname", student.Surname);
-                    command.Parameters.AddWithValue("@ParentID", student.ParentID);
-                    command.Parameters.AddWithValue("@SchoolID", student.SchoolID);
-                    command.Parameters.AddWithValue("@ClassID", student.ClassID);
+                    command.Parameters.AddWithValue("@ParentID", student.TheParent.ID);
+                    command.Parameters.AddWithValue("@SchoolID", student.TheSchool.ID);
+                    command.Parameters.AddWithValue("@ClassID", student.TheSchoolClass.ID);
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -62,7 +66,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int parentID = reader.GetInt32("ParentID");
                     int schoolID = reader.GetInt32("SchoolID");
                     int classID = reader.GetInt32("ClassID");
-                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+
+                    Parent parent = await _parentService.SearchParent(parentID);
+                    School school = await _schoolService.GetById(schoolID);
+                    SchoolClass schoolClass = await _schoolClassService.GetByID(classID);
+
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, TheParent = parent, TheSchool = school, TheSchoolClass = schoolClass };
                     students.Add(student);
                 }
                 await reader.CloseAsync();
@@ -88,7 +97,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string surName = reader.GetString("Surname");
                     int schoolID = reader.GetInt32("SchoolID");
                     int classID = reader.GetInt32("ClassID");
-                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+
+                    Parent parent = await _parentService.SearchParent(parentID);
+                    School school = await _schoolService.GetById(schoolID);
+                    SchoolClass schoolClass = await _schoolClassService.GetByID(classID);
+
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, TheParent = parent, TheSchool = school, TheSchoolClass = schoolClass };
                     students.Add(student);
                 }
                 await reader.CloseAsync();
@@ -111,7 +125,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int parentID = reader.GetInt32("ParentID");
                     int schoolID = reader.GetInt32("SchoolID");
                     int classID = reader.GetInt32("ClassID");
-                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, ParentID = parentID, SchoolID = schoolID, ClassID = classID };
+
+                    Parent parent = await _parentService.SearchParent(parentID);
+                    School school = await _schoolService.GetById(schoolID);
+                    SchoolClass schoolClass = await _schoolClassService.GetByID(classID);
+
+                    Student student = new Student { ID = id, FirstName = firstName, Surname = surName, TheParent = parent, TheSchool = school, TheSchoolClass = schoolClass };
                     await reader.CloseAsync();
                     return student;
                 }
@@ -130,9 +149,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                 command.Parameters.AddWithValue("@ID", student.ID);
                 command.Parameters.AddWithValue("@FirstName", student.FirstName);
                 command.Parameters.AddWithValue("@Surname", student.Surname);
-                command.Parameters.AddWithValue("@ParentID", student.ParentID);
-                command.Parameters.AddWithValue("@SchoolID", student.SchoolID);
-                command.Parameters.AddWithValue("@ClassID", student.ClassID);
+                command.Parameters.AddWithValue("@ParentID", student.TheParent.ID);
+                command.Parameters.AddWithValue("@SchoolID", student.TheSchool.ID);
+                command.Parameters.AddWithValue("@ClassID", student.TheSchoolClass.ID);
 
                 await command.ExecuteNonQueryAsync();
             }

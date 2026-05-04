@@ -7,7 +7,7 @@ namespace SkolefotograferneSemesterProjekt.Models
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
-        public int SchoolID { get; set; }
+        public School TheSchool { get; set; }
         public Teacher()
             :base()
         {

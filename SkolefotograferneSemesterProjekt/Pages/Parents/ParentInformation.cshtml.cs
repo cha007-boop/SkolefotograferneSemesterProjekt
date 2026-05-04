@@ -10,35 +10,37 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         private IParentServices _parentService;
         private IStudentService _studentService;
         private ISchoolService _schoolService;
+        private ISchoolClassService _classService;
 
         [BindProperty]
         public int ID { get; set; }
-        public Parent parent { get; set; }
+        public Parent Parent { get; set; }
 
         [BindProperty]
-        public List<Student> students { get; set; }
+        public List<Student> Students { get; set; }
 
         [BindProperty]
-        public List<School> schools { get; set; }
+        public List<School> Schools { get; set; }
 
-        public ParentInformationModel(IParentServices parentService, IStudentService studentService, ISchoolService schoolService)
+        public List<SchoolClass> Classes { get; set; }
+
+        public ParentInformationModel(IParentServices parentService, IStudentService studentService, ISchoolService schoolService, ISchoolClassService classService)
         {
             _parentService = parentService;
             _studentService = studentService;
             _schoolService = schoolService;
+            _classService = classService;
         }
 
-        public async Task OnGet()
+        public async Task OnGet(int Id)
         {
             try
             {
-                parent = await _parentService.SearchParent(ID);
-                students = await _studentService.GetAllByParent(ID);
-                foreach (Student s in students)
-                {
-                    School school = await _schoolService.GetById(s.SchoolID);
-                    schools.Add(school);
-                }
+                Parent = await _parentService.SearchParent(ID);
+                Students = await _studentService.GetAllByParent(ID);
+
+                Classes = await _classService.GetAll();
+                Schools = await _schoolService.GetAll();
 
             }
             catch (Exception ex)

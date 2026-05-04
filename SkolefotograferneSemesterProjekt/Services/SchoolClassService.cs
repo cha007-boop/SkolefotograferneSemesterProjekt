@@ -11,6 +11,9 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class SchoolClassService : Connection, ISchoolClassService
     {
+        private ISchoolService _schoolService = new SchoolService();
+        private ITeacherService _teacherService = new TeacherService();
+
         public async Task Add(SchoolClass @class)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -26,8 +29,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     SqlCommand sqlCommand = new SqlCommand(@"insert into SchoolClass (ID, SchoolID, TeacherID, Grade, Letter, SchoolYear) values (@ID, @SchoolID, @TeacherID, @Grade, @Letter, @SchoolYear)", connection);
 
                     sqlCommand.Parameters.AddWithValue("@ID", @class.ID);
-                    sqlCommand.Parameters.AddWithValue("@SchoolID", @class.SchoolID);
-                    sqlCommand.Parameters.AddWithValue("@TeacherID", @class.TeacherID);
+                    sqlCommand.Parameters.AddWithValue("@SchoolID", @class.TheSchool.ID);
+                    sqlCommand.Parameters.AddWithValue("@TeacherID", @class.TheTeacher.ID);
                     sqlCommand.Parameters.AddWithValue("@Grade", @class.Grade);
                     sqlCommand.Parameters.AddWithValue("@Letter", @class.Letter);
                     sqlCommand.Parameters.AddWithValue("@SchoolYear", @class.SchoolYear);
@@ -69,7 +72,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
-                    SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherID, Grade = grade, Letter = letter, SchoolYear = year };
+
+                    School school = await _schoolService.GetById(schoolID);
+                    Teacher teacher = await _teacherService.GetByID(teacherID);
+
+                    SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     classes.Add(schoolClass);
                 }
                 await reader.CloseAsync();
@@ -95,7 +102,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
-                    SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherid, Grade = grade, Letter = letter, SchoolYear = year };
+
+                    School school = await _schoolService.GetById(schoolID);
+                    Teacher teacher = await _teacherService.GetByID(teacherid);
+
+                    SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     classes.Add(schoolClass);
                 }
                 await reader.CloseAsync();
@@ -120,7 +131,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
-                    SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherID, Grade = grade, Letter = letter, SchoolYear = year };
+
+                    School school = await _schoolService.GetById(schoolID);
+                    Teacher teacher = await _teacherService.GetByID(teacherID);
+
+                    SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     await reader.CloseAsync();
                     return schoolClass;
                 }
@@ -146,7 +161,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int id = reader.GetInt32("ID");
                     int teacherID = reader.GetInt32("TeacherID");
 
-                    SchoolClass schoolClass = new SchoolClass { ID = id, SchoolID = schoolID, TeacherID = teacherID, Grade = grade, Letter = letter, SchoolYear = year };
+                    School school = await _schoolService.GetById(schoolID);
+                    Teacher teacher = await _teacherService.GetByID(teacherID);
+
+                    SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     await reader.CloseAsync();
                     return schoolClass;
                 }

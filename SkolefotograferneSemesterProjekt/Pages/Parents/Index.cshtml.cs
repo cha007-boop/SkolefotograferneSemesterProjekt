@@ -21,8 +21,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
-        public Student student { get; set; }
-        public School school { get; set; }
+        public Student Student { get; set; }
+        public School School { get; set; }
 
         public IndexModel(IParentServices parentservice)
         {
@@ -40,6 +40,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                     Parents = await _parentService.GetAllParents();
 
                 Parents = SortParents(Parents);
+                
             }
             catch (Exception ex)
             {
