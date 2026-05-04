@@ -22,12 +22,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         {
         }
 
-        public void OnGetLogOut()
+        public IActionResult OnGetLogOut()
         {
             HttpContext.Session.Remove("UserId");
             HttpContext.Session.Remove("UserEmail");
             HttpContext.Session.Remove("UserRole");
-            RedirectToPage("/Index");
+            return RedirectToPage("/Index");
         }
         
         public async Task<IActionResult> OnPost()
