@@ -8,6 +8,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     public class SchoolAdminService : Connection, ISchoolAdminService
     {
         private IUserService _userService = new UserService();
+        private ISchoolService _schoolService = new SchoolService();
 
 
         private string _getAllSql = "SELECT Users.ID, Users.Email, SchoolAdmin.PhoneNumber, SchoolAdmin.ContactPerson, SchoolAdmin.SchoolID " +
@@ -33,7 +34,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     cmd.Parameters.AddWithValue("@ID", userID);
                     cmd.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
                     cmd.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
-                    cmd.Parameters.AddWithValue("@SchoolID", schoolAdmin.SchoolID);
+                    cmd.Parameters.AddWithValue("@SchoolID", schoolAdmin.TheSchool.ID);
 
                     await cmd.ExecuteNonQueryAsync();
                 }
@@ -64,7 +65,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                         string contactPerson = reader.GetString("ContactPerson");
                         int schoolID = reader.GetInt32("SchoolID");
 
-                        SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson, SchoolID = schoolID };
+                        SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson };
+                        School school = await _schoolService.GetById(schoolID);
+                        schoolAdmin.TheSchool = school;
                         schoolAdmins.Add(schoolAdmin);
                     }
                     reader.Close();

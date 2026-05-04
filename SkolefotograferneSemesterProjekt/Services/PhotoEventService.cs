@@ -12,6 +12,9 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class PhotoEventService : IPhotoEventService
     {
+        private IPhotographerService _photographerService = new PhotographerService();
+        private ISchoolAdminService _schoolAdminService = new SchoolAdminService();
+
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         private string _selectPhotoEventString = "select * from PhotoEvent";
         private string _selectPhotoEventStringBySpecificPhotographID = "select * from PhotoEvent where PhotographerID = @PhotographerID";
@@ -28,9 +31,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlCommand sql = new SqlCommand(_insertPhotoEventString, connection);
                 await connection.OpenAsync();
                 sql.Parameters.AddWithValue("@StartTime", photoEvent.StartTime);
-                sql.Parameters.AddWithValue("@EndTIme", photoEvent.EndTime);
-                sql.Parameters.AddWithValue("@PhotographerID", photoEvent.PhotographerID);
-                sql.Parameters.AddWithValue("@SchoolAdminID", photoEvent.SchoolAdminID);
+                sql.Parameters.AddWithValue("@EndTime", photoEvent.EndTime);
+                sql.Parameters.AddWithValue("@PhotographerID", photoEvent.ThePhotographer.ID);
+                sql.Parameters.AddWithValue("@SchoolAdminID", photoEvent.TheSchoolAdmin.ID);
                 sql.Parameters.AddWithValue("@Location", photoEvent.Location);
                 var result = await sql.ExecuteNonQueryAsync();
                 return Convert.ToInt32(result);
@@ -53,7 +56,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int photographerID = sqlDataReader.GetInt32("PhotographerID");
                     int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
                     string location = sqlDataReader.GetString("Location");
-                    PhotoEvent photoEvent = new PhotoEvent(photoEventID, startTime, endTime, photographerID, schoolAdminID, 
+
+                    Photographer photographer = await _photographerService.SearchByID(photographerID);
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(schoolAdminID);
+
+                    PhotoEvent photoEvent = new PhotoEvent(photoEventID, startTime, endTime, photographer, schoolAdmin, 
                     location);
                     photoEvents.Add(photoEvent);
                 }
@@ -78,7 +85,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
                     string location = sqlDataReader.GetString("Location");
-                    PhotoEvent photoEvent = new PhotoEvent(photoEventID, startTime, endTime, ID, schoolAdminID,
+
+                    Photographer photographer = await _photographerService.SearchByID(ID);
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(schoolAdminID);
+
+                    PhotoEvent photoEvent = new PhotoEvent(photoEventID, startTime, endTime, photographer, schoolAdmin,
                     location);
                     eventGetter.Add(photoEvent);
                 }

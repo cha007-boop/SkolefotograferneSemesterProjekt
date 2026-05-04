@@ -4,7 +4,7 @@
     {
         public string PhoneNumber { get; set; }
         public string ContactPerson { get; set; }
-        public int SchoolID { get; set; }
+        public School TheSchool { get; set; }
         public SchoolAdmin()
         {
             Role = UserRole.SchoolAdmin;
