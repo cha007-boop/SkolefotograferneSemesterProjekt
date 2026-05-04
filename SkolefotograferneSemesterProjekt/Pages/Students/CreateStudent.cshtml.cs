@@ -14,6 +14,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         private IStudentService _studentService;
         private ISchoolService _schoolService;
         private ISchoolClassService _schoolClassService;
+        private IParentServices _parentServices;
         #endregion
         #region Properties
         [BindProperty]
@@ -27,11 +28,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         public IEnumerable<SelectListItem> Schools { get; set; }
         #endregion
         #region Constructor
-        public CreateStudentModel(IStudentService service, ISchoolService schoolService, ISchoolClassService schoolClassService)
+        public CreateStudentModel(IStudentService service, ISchoolService schoolService, ISchoolClassService schoolClassService, IParentServices parentServices)
         {
             _studentService = service;
             _schoolService = schoolService;
             _schoolClassService = schoolClassService;
+            _parentServices = parentServices;
         }
         #endregion
         #region Methods
@@ -69,9 +71,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     return Page();
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
-                SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.SchoolID, ClassGrade, ClassLetter, year);
-                NewStudent.ClassID = @class.ID;
-                NewStudent.ParentID = (int)HttpContext.Session.GetInt32("ID");
+                SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.TheSchool.ID, ClassGrade, ClassLetter, year);
+                NewStudent.TheSchoolClass = @class;
+                NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Add(NewStudent);
             }
 
