@@ -36,8 +36,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             try
             {
-                parent = await _parentService.SearchParent(ID);
-                students = await _studentService.GetAllByParent(ID);
+                Parent = await _parentService.SearchParent(ID);
+                Students = await _studentService.GetAllByParent(ID);
 
                 Classes = await _classService.GetAll();
                 Schools = await _schoolService.GetAll();
