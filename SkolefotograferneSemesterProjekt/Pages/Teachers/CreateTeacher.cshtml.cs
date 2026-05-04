@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SkolefotograferneSemesterProjekt.Exceptions;
+using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
-using SkolefotograferneSemesterProjekt.Helpers;
 
 
 namespace SkolefotograferneSemesterProjekt.Pages.Teachers
@@ -13,6 +14,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
     public class CreateTeacherModel : PageModel
     {
         private ITeacherService _repo;
+        private ISchoolService _schoolService;
 
         [BindProperty]
         public Teacher NewTeacher { get; set; }
@@ -20,14 +22,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public string Password { get; set; }
         [BindProperty]
         public string Pass2 { get; set; }
-        public string Message { get; set; }
+        public IEnumerable<SelectListItem> Schools { get; set; }
 
-        public CreateTeacherModel(ITeacherService repo)
+        public CreateTeacherModel(ITeacherService repo, ISchoolService schoolService)
         {
             _repo = repo;
+            _schoolService = schoolService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
+            List<School> schools = await _schoolService.GetAll();
+            Schools = schools.Select(s => new SelectListItem
+            {
+                Value = Convert.ToString(s.ID),
+                Text = $"{s.Name} - {s.Street} {s.ZipCode}"
+            });
         }
         public async Task<IActionResult> OnPost()
         {
