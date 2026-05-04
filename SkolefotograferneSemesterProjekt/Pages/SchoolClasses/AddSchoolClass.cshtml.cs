@@ -49,8 +49,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             TryValidateModel(NewSchoolClass);
             try
             {
-                NewSchoolClass.TheTeacher.ID = ThisTeacher.ID;
-                NewSchoolClass.TheSchool.ID = ThisTeacher.TheSchool.ID;
+                NewSchoolClass.TheTeacher = ThisTeacher;
+                NewSchoolClass.TheSchool = ThisTeacher.TheSchool;
                 NewSchoolClass.SchoolYear = SchoolYearCalc.GetSchoolYear();
                 if (NewSchoolClass.Grade < 11)
                     await _schoolClassService.Add(NewSchoolClass);
