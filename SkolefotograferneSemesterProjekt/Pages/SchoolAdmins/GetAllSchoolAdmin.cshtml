@@ -15,7 +15,60 @@
     </button>
 </div>
 
+<div class="mt-3">
+    <form>
+        <input type="hidden" asp-for=SortColumn />
+        <input type="hidden" asp-for=SortOrder />
+        search: <input type="text" asp-for="FilterValue" />
+        <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+            <option value="All">-- Select Column --</option>
+            @foreach (var column in Model.FilterableColumns)
+            {
+                <option value="@column.Key">@column.Value</option>
+            }
+        </select>
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
 <div>
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var column in Model.SortableColumns)
+                {
+                    <th>
+                        <a asp-page="./GetAllSchoolAdmin"
+                           asp-route-FilterColumn="@Model.FilterColumn"
+                           asp-route-FilterValue="@Model.FilterValue"
+                           asp-route-SortColumn="@column.Key"
+                           asp-route-SortOrder="@Model.Toggle(column.Key)" class="text-decoration-none text-dark">
+                            @column.Value @(Model.SortColumn == column.Key ? (Model.SortOrder == "ASC" ? "▲" : "▼") : "")
+                        </a>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SchoolAdmin s in Model.SchoolAdmins)
+            {
+                <tr>
+                    <td>@s.ID</td>
+                    <td>@s.Email</td>
+                    <td>@s.PhoneNumber</td>
+                    <td>@s.ContactPerson</td>
+                    <td>@s.TheSchool.Name</td>
+                    <td>@s.TheSchool.Street</td>
+                    <td>@s.TheSchool.ZipCode</td>
+                    <td>@s.TheSchool.StudentCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@* <div>
     <table class="table">
         <thead>
             <tr>
@@ -25,6 +78,7 @@
                 <th>Contact person</th>
                 <th>SchoolID</th>
                 <th>School name</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -37,8 +91,11 @@
                     <td>@s.ContactPerson</td>
                     <td>@s.TheSchool.ID</td>
                     <td>@s.TheSchool.Name</td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/SchoolAdmins/ViewSchoolAdmin" asp-route-id="@s.ID">View</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-</div>
+</div> *@

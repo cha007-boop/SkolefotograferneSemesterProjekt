@@ -25,7 +25,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
             {
                 RedirectToPage("/Users/Login");
             }
-            if ((UserRole)userRole != UserRole.SchoolAdmin)
+            if ((UserRole)userRole != UserRole.SchoolAdmin && (UserRole)userRole != UserRole.SysAdmin)
             {
                 RedirectToPage("/Index");
             }

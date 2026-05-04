@@ -110,9 +110,10 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task<List<School>> GetAll(string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
+            List<School> schools = new List<School>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                List<School> schools = new List<School>();
+                
                 IEnumerable<string> validColumns = Columns.Keys;
 
                 if (string.IsNullOrWhiteSpace(sortColumn))
@@ -160,8 +161,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                 catch
                 {
                 }
-                return schools;
+                
             }
+            return schools;
         }
 
         public Task Update(School school)
