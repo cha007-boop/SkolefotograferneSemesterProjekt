@@ -11,19 +11,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private IWebHostEnvironment _webHostEnvironment;
         private IPhotoService _photoService;
         private IStudentService _studentService;
+        private IPhotoEventService _photoEventService;
 
         public Student TheStudent { get; set; }
+        public PhotoEvent ThePhotoEvent { get; set; }
 
         [BindProperty]
         public IFormFile Portrait { get; set; }
-        public UploadPortraitModel(IWebHostEnvironment webHostEnvironment, IPhotoService photoService, IStudentService studentService)
+        public UploadPortraitModel(IWebHostEnvironment webHostEnvironment, IPhotoService photoService, IStudentService studentService, IPhotoEventService photoEventService)
         {
             _webHostEnvironment = webHostEnvironment;
             _photoService = photoService;
             _studentService = studentService;
+            _photoEventService = photoEventService;
         }
 
-        public async Task<IActionResult> OnGet(int studentid)
+        public async Task<IActionResult> OnGet(int studentid, int photoeventid)
         {
             try
             {
@@ -33,6 +36,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
 
                 TheStudent = await _studentService.GetById(studentid);
+                ThePhotoEvent = await _photoEventService.GetByID(photoeventid);
+
             }
             catch(UnauthorizedAccessException)
             {
@@ -46,6 +51,24 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             }
 
             return Page();   
+        }
+
+        public async Task<IActionResult> OnPost()
+        {
+            if (Portrait != null)
+            {
+                Photo portrait = new Photo 
+                { 
+                    Filename = ProcessUploadedFile(), 
+                    ThePhotoEvent = ThePhotoEvent, 
+                    Child = TheStudent, 
+                    TheSchoolClass = TheStudent.TheSchoolClass 
+                };
+
+
+                await _photoService.Add(portrait);
+            }
+            return RedirectToPage("/PhotoEvents/Details", new { id = ThePhotoEvent.ID });
         }
 
         private string ProcessUploadedFile()
