@@ -1,4 +1,10 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Students.UpdateStudentModel
 @{
+	if (HttpContext.Session.GetInt32("Role") == 0)
+		ViewData["Title"] = "Update Student";
+	else
+		ViewData["Title"] = "View Student Details";
 }
+
+
