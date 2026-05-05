@@ -21,6 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             _studentService = studentService;
             _photoservice = photoService;
+            Photos = new List<Photo>();
         }
 
         public async Task<IActionResult> OnGet(int id)
@@ -33,9 +34,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                 }
                 TheStudent = await _studentService.GetById(id);
                 TheParent = TheStudent.TheParent;
-                foreach (Photo ph in await _photoservice.GetPortraitsByStudentId(id)) 
+                foreach (Photo ph in await _photoservice.GetPortraitsByStudentId(id))
                 {
-                    Photos.Add(ph);
+                    if (ph != null)
+                        Photos.Add(ph);
                 }
                 if (Photos.Count == 0)
                 {
