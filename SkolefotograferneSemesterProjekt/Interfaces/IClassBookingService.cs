@@ -2,9 +2,9 @@
 
 namespace SkolefotograferneSemesterProjekt.Interfaces
 {
-    public interface IPhotoBookingService
+    public interface IClassBookingService
     {
-        Task<int> Book(Teacher teacher);
+        Task<int> Book(SchoolClass schoolClass);
         Task<ClassBooking> GetByID(int id);
         Task Update(ClassBooking classBooking);
         Task Delete(ClassBooking classBooking);
