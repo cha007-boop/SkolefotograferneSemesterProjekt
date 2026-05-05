@@ -10,7 +10,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     {
         private IPhotoEventService PEService;
         [BindProperty]
-        public PhotoEvent PhotoEvent { get; set; }
         public List<PhotoEvent> PhotoEvents { get; set; }
         public ReadPhotoEventsModel(IPhotoEventService pEService)
         {

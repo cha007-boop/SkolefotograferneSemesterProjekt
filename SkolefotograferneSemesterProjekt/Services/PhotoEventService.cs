@@ -51,7 +51,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader sqlDataReader = await sql.ExecuteReaderAsync();
                 while (sqlDataReader.Read())
                 {
-                    int photoEventID = sqlDataReader.GetInt32("PhotoEventID");
+                    int photoEventID = sqlDataReader.GetInt32("ID");
                     DateTime startTime = sqlDataReader.GetDateTime("StartTime");
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int photographerID = sqlDataReader.GetInt32("PhotographerID");
@@ -69,7 +69,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return photoEvents;
         }
-
+        
         public async Task<IEnumerable<PhotoEvent>> SearchEventByPhortographerID(int ID)
         {
             List<PhotoEvent> eventGetter = new List<PhotoEvent>();
@@ -81,7 +81,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader sqlDataReader = await sql.ExecuteReaderAsync();
                 while (sqlDataReader.Read())
                 {
-                    int photoEventID = sqlDataReader.GetInt32("PhotoEventID");
+                    int photoEventID = sqlDataReader.GetInt32("ID");
                     DateTime startTime = sqlDataReader.GetDateTime("StartTime");
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
