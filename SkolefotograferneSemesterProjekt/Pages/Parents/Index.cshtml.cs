@@ -29,10 +29,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             _parentService = parentservice;
             SortOrder = "asc";
         }
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
+                if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException("You do not have permission to access this page.");
+                }
                 if (!string.IsNullOrEmpty(Filter))
                 {
                     Parents = await _parentService.FilterParents(Filter);
@@ -42,10 +46,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                 Parents = SortParents(Parents);
                 
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                ViewData["Errormessage"] = ex.Message;
+                return RedirectToPage("/Index");
+            }
             catch (Exception ex)
             {
                 ViewData["Errormessage"] = ex.Message;
             }
+            return Page();
         }
 
         public string Toggle(string column)

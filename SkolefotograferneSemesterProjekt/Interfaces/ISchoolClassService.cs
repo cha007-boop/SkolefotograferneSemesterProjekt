@@ -8,8 +8,10 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task<List<SchoolClass>> GetAll();
         Task<SchoolClass> GetByID(int id);
         Task<SchoolClass> SearchSchoolClass(int schoolID, int grade, string letter, string year);
+        Task<List<SchoolClass>> GetByPhotoEvent(int photoEventID);
         Task Update(SchoolClass newSchoolClass);
         Task<List<SchoolClass>> GetAllByTeacher(int teacherid);
         Task Delete(int id);
+        Task<List<SchoolClass>> GetBySchool(int schoolID);
     }
 }

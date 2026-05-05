@@ -1,0 +1,61 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.PhotoEventDetailsModel
+@{
+    ViewData["Title"] = "PhotoEvent Details";
+}
+
+<div>
+    <h3 class="Display-3">
+        Photo Event @Model.ThePhotoEvent.ID
+    </h3>
+</div>
+
+<form>
+    <a asp-page="./EditPhotoEvent" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-primary">Edit</a>
+</form>
+
+<div>
+    <p><strong>School name:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</p>
+    <p><strong>School address:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Street @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.ZipCode</p>
+    <p><strong>Photo Event Date:</strong> @Model.ThePhotoEvent.StartTime.ToShortDateString()</p>
+</div>
+
+<div class="mt-3">
+    <form>
+        <select asp-for="SelectedClassId" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+            <option value="">-- Select Class --</option>
+            @foreach (var schoolClass in Model.SchoolClasses)
+                        {
+                <option value="@schoolClass.ID">@schoolClass.Grade @schoolClass.Letter</option>
+            }
+        </select>
+        <input type="submit" class="btn btn-primary" value="Select" />
+    </form>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                    <td>@student.ID</td>
+                    <td>@student.FirstName @student.Surname</td>
+                    <td>
+                        <a asp-page=""
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

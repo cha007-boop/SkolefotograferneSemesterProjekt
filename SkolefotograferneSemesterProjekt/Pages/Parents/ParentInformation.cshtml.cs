@@ -23,19 +23,28 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             _studentService = studentService;
         }
 
-        public async Task OnGet(int Id)
+        public async Task<IActionResult> OnGet(int Id)
         {
             try
             {
+                if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException("You do not have permission to access this page.");
+                }
                 Parent = await _parentService.SearchParent(Id);
                 Students = await _studentService.GetAllByParent(Id);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                ViewData["Errormessage"] = ex.Message;
+                return RedirectToPage("/Index");
             }
             catch (Exception ex)
             {
                 ViewData["Errormessage"] = ex.Message;
             }
+            return Page();
         }
-        //Do so that you can click create child if the parent has not yet registered a child/student!!!
         // and make a button so the can see the pictures of the childen/students...
     }
 }
