@@ -38,3 +38,18 @@
     </a>
 </div>
 
+<h4>
+    The Class Photo
+</h4>
+@if (Model.ClassPhoto != null)
+{
+    @foreach (Photo cp in Model.ClassPhoto)
+    {
+        <img src="~images/ClassPhotos/@cp.Filename" alt="Class Photo" />
+    
+    }
+}else
+{
+    <p>There is not Class Photo yet</p>
+}
+

@@ -45,6 +45,5 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             }
             return Page();
         }
-        // and make a button so the can see the pictures of the childen/students...
     }
 }
