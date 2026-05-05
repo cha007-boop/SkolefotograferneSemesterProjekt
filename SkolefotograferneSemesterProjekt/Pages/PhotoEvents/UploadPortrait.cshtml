@@ -13,6 +13,8 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="@Model.TheStudent.ID" />
+            <input type="hidden" asp-for="@Model.ThePhotoEvent.ID" />
             <div class="form-group">
                 <label asp-for="@Model.Portrait" class="control-label"></label>
                 <div class="custom-file">

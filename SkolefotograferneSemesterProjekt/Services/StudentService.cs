@@ -118,6 +118,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlCommand command = new SqlCommand(@"select * from student where ClassID = @ClassID", connection);
                 command.Parameters.AddWithValue("@ClassID", classID);
 
+                await command.Connection.OpenAsync();
+
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 while(await reader.ReadAsync())
                 {
