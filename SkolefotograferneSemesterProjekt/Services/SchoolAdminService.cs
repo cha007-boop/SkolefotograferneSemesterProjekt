@@ -181,15 +181,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     if (await reader.ReadAsync())
                     {
-                        string email = reader.GetString("Email");
-                        string phoneNumber = reader.GetString("PhoneNumber");
-                        string contactPerson = reader.GetString("ContactPerson");
-                        int schoolID = reader.GetInt32("SchoolID");
-
-                        schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson };
-                        School school = await _schoolService.GetById(schoolID);
-                        schoolAdmin.TheSchool = school;
-                        
+                        schoolAdmin = SchoolAdminReader(reader);
                     }
                     reader.Close();
                 }
