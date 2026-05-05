@@ -10,25 +10,36 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>SchoolName</th>
+            <th>SchoolAddress</th>
             <th>StartTime</th>
             <th>EndTIme</th>
             <th>PhotographerID</th>
             <th>SchoolAdminID</th>
             <th>Location</th>
+            <th>Student Count</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.PhotoEvents)
+        @foreach (var photoEventItem in Model.PhotoEvents)
         {
-            <tr>
-                <td>@item.ID</td>
-                <td>@item.StartTime</td>
-                <td>@item.EndTime</td>
-                <td>@item.ThePhotographer.ID</td>
-                <td>@item.ThePhotographer.ID</td>
-                <td>@item.Location</td>
-                @* make an edit td *@
-            </tr>
+            @foreach(var schoolItem in Model.schools)
+            {
+                <tr>
+                    <td>@photoEventItem.ID</td>
+                    <td>@schoolItem.Name</td>
+                    <td>@schoolItem.Street</td>
+                    <td>@schoolItem.ZipCode</td>
+                    <td>@schoolItem.ZipCode</td>
+                    <td>@photoEventItem.StartTime</td>
+                    <td>@photoEventItem.EndTime</td>
+                    <td>@photoEventItem.ThePhotographer.ID</td>
+                    <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                    <td>@photoEventItem.Location</td>
+                    <td>@schoolItem.StudentCount</td>
+                    <td><a asp-page="PhotoEventInfo" asp-route-ID="@photoEventItem.ID">Click to see further information</a></td>
+                </tr>
+            }
         }
     </tbody>
 </table>

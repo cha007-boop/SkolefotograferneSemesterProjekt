@@ -6,7 +6,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
     {
         Task<int> Add(PhotoEvent photoEvent);
         Task<List<PhotoEvent>> ShowActivePhotoEvent();
-        Task<IEnumerable<PhotoEvent>> SearchEventByPhortographerID(int ID);
+        Task<List<PhotoEvent>> SearchEventByPhortographerID(int ID);
         Task<List<PhotoEvent>> GetAll();
         Task<PhotoEvent?> GetByID(int id);
     }
