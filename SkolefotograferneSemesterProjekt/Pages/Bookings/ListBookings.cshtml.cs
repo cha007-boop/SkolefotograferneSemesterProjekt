@@ -13,7 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         #endregion
         #region Properties
         [BindProperty]
-        public List<ClassBooking> Bookings { get; set; }
+        public List<ClassBooking> Bookings { get; set; } = new(); // Instansieres, så den ikke er null
         public Teacher ThisTeacher { get; set; }
         #endregion
         #region Constructor
@@ -32,10 +32,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 {
                     foreach(ClassBooking booking in await _classBookingService.GetBookingsByTeacher(await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"))))
                     {
-                        if(booking.StartTime > DateTime.Now)
-                        {
-                            Bookings.Add(booking);
-                        }
+                        // Udkommenteret til debugging 
+                        //if(booking.StartTime > DateTime.Now)
+                        //{
+                        //    Bookings.Add(booking);
+                        //}
+                        Bookings.Add(booking);
                     }
                 }
                 //if (HttpContext.Session.GetInt32("Role") == 3)
