@@ -20,8 +20,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                 int userID = await _userService.Add(connection, teacher);
 
                 SqlCommand cmd = new SqlCommand(@"
-                INSERT INTO Teacher 
-                VALUES (@ID, @FirstName, @Surname, @PhoneNumber, @SchoolID)", connection);
+                    INSERT INTO Teacher 
+                    VALUES (@ID, @FirstName, @Surname, @PhoneNumber, @SchoolID)", connection);
 
                 cmd.Parameters.AddWithValue("@ID", userID);
                 cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
