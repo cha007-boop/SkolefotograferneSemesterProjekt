@@ -51,13 +51,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             {
                 foreach (var schoolClass in SchoolClasses)
                 {
-                    //var studentsInClass = await _studentService.GetByClass(schoolClass.ID);
-                    //Students.AddRange(studentsInClass);
+                    var studentsInClass = await _studentService.GetByClass(schoolClass.ID);
+                    Students.AddRange(studentsInClass);
                 }
             }
             else
             {
-                //Students = await _studentService.GetByClass(Convert.ToInt32(SelectedClassId));
+                Students = await _studentService.GetByClass(Convert.ToInt32(SelectedClassId));
             }
 
             return Page();
