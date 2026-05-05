@@ -38,7 +38,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 }
                 if (HttpContext.Session.GetInt32("Role") == 1)
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException();//skal dirigeres fra et fotoevent, skal vises børn tilknyttet til klasser der er oprettet til fotoeventet.
                 }
                 if (HttpContext.Session.GetInt32("Role") == 4)
                 {

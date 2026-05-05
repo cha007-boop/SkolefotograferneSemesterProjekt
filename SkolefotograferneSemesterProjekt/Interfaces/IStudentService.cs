@@ -7,8 +7,9 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Add(Student student);
         Task<Student> GetById(int id);
         Task<List<Student>> GetAll();
-        Task<List<Student>> GetAllByParent(int parentID);//måske. kan nok bare bruge GetAll metoden og filtrere på den ud fra parentID...
+        Task<List<Student>> GetAllByParent(int parentID);
         Task Update(Student student);
         Task Delete(int id);
+        Task<List<Student>> GetByClass(int classID);
     }
 }

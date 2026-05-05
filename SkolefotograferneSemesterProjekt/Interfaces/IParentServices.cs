@@ -8,7 +8,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 
         Task <List<Parent>> GetAllParents();
 
-        Task<List<Parent>> FilterParents(String Filter);
+        Task<List<Parent>> FilterParents(string Filter);
 
         Task<Parent> SearchParent(int id);
 
