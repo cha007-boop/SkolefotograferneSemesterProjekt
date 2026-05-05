@@ -51,7 +51,7 @@
                     <td>@student.ID</td>
                     <td>@student.FirstName @student.Surname</td>
                     <td>
-                        <a asp-page=""
+                        <a asp-page="./UploadPortrait" asp-route-studentid="@student.ID" class="btn btn-secondary">Upload Portrait</a>
                     </td>
                 </tr>
             }

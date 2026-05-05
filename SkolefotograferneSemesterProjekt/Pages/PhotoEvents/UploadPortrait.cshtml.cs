@@ -1,14 +1,70 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Interfaces;
+using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
     public class UploadPortraitModel : PageModel
     {
         private IWebHostEnvironment _webHostEnvironment;
+        private IPhotoService _photoService;
+        private IStudentService _studentService;
 
-        public void OnGet()
+        public Student TheStudent { get; set; }
+
+        [BindProperty]
+        public IFormFile Portrait { get; set; }
+        public UploadPortraitModel(IWebHostEnvironment webHostEnvironment, IPhotoService photoService, IStudentService studentService)
         {
+            _webHostEnvironment = webHostEnvironment;
+            _photoService = photoService;
+            _studentService = studentService;
+        }
+
+        public async Task<IActionResult> OnGet(int studentid)
+        {
+            try
+            {
+                if (HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                TheStudent = await _studentService.GetById(studentid);
+            }
+            catch(UnauthorizedAccessException)
+            {
+                ViewData["ErrorMessage"] = "You do not have permission to access this page.";
+                return RedirectToPage("/Index");
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return RedirectToPage("/Index");
+            }
+
+            return Page();   
+        }
+
+        private string ProcessUploadedFile()
+        {
+            string uniqueFileName = null;
+            if (Portrait != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/Portrais");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Portrait.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    Portrait.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }
