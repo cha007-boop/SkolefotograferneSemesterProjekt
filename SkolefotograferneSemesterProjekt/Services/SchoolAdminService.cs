@@ -168,9 +168,37 @@ namespace SkolefotograferneSemesterProjekt.Services
             return schoolAdmins;
         }
 
-        public Task<SchoolAdmin> GetById(int id)
+        public async Task<SchoolAdmin> GetById(int id)
         {
-            throw new NotImplementedException();
+            SchoolAdmin schoolAdmin = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(_getAllSql, conn);
+                    await cmd.Connection.OpenAsync();
+
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    if (await reader.ReadAsync())
+                    {
+                        string email = reader.GetString("Email");
+                        string phoneNumber = reader.GetString("PhoneNumber");
+                        string contactPerson = reader.GetString("ContactPerson");
+                        int schoolID = reader.GetInt32("SchoolID");
+
+                        schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson };
+                        School school = await _schoolService.GetById(schoolID);
+                        schoolAdmin.TheSchool = school;
+                        
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+
+                }
+            }
+            return schoolAdmin;
         }
 
         public Task Update(SchoolAdmin schoolAdmin)
