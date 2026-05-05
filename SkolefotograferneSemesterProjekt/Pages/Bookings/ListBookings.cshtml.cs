@@ -9,14 +9,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
     {
         #region Instance fields
         private IClassBookingService _classBookingService;
+        private ITeacherService _teacherService;
         #endregion
         #region Properties
+        [BindProperty]
         public List<ClassBooking> Bookings { get; set; }
+        public Teacher ThisTeacher { get; set; }
         #endregion
         #region Constructor
-        public ListBookingsModel(IClassBookingService classBookingService)
+        public ListBookingsModel(IClassBookingService classBookingService, ITeacherService teacherService)
         {
             _classBookingService = classBookingService;
+            _teacherService = teacherService;
         }
         #endregion
         #region Methods
@@ -26,16 +30,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             {
                 if (HttpContext.Session.GetInt32("Role") == 2)
                 {
-                    //Bookings = await _classBookingService.GetByTeacherID(HttpContext.Session.GetInt32("ID"));
+                    foreach(ClassBooking booking in await _classBookingService.GetBookingsByTeacher(await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"))))
+                    {
+                        if(booking.StartTime > DateTime.Now)
+                        {
+                            Bookings.Add(booking);
+                        }
+                    }
                 }
-                if (HttpContext.Session.GetInt32("Role") == 3)
-                {
-                    throw new NotImplementedException();
-                }
-                if (HttpContext.Session.GetInt32("Role") == 4)
-                {
-                    //Bookings = await _classBookingService.GetAll();
-                }
+                //if (HttpContext.Session.GetInt32("Role") == 3)
+                //{
+                //    throw new NotImplementedException();
+                //}
+                //if (HttpContext.Session.GetInt32("Role") == 4)
+                //{
+                //    Bookings = await _classBookingService.GetAll();
+                //}
             }
             catch (Exception exc)
             {

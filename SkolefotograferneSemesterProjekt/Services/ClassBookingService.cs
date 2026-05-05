@@ -29,7 +29,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 return await cmd.ExecuteNonQueryAsync();
             }
         }
-        public async Task<List<ClassBooking>> GetAll(int id)
+        public async Task<List<ClassBooking>> GetAll()
         {
             List<ClassBooking> cbList = [];
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
@@ -137,6 +137,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                 while (reader.Read())
                 {
                     ClassBooking cb = new ClassBooking();
+                    cb.ThePhotoEvent = new PhotoEvent();
+                    cb.TheTeacher = new Teacher();
+                    cb.TheSchoolClass = new SchoolClass();
                     cb.ID = reader.GetInt32("ID");
                     cb.StartTime = reader.GetDateTime("StartTime");
                     cb.ThePhotoEvent.ID = reader.GetInt32("PhotoEventID");
