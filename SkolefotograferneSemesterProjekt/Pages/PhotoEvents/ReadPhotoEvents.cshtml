@@ -12,35 +12,33 @@
             <th>ID</th>
             <th>SchoolName</th>
             <th>SchoolAddress</th>
+            <th>ZipCode</th>
+            <th>StudenCount</th>
             <th>StartTime</th>
             <th>EndTIme</th>
             <th>PhotographerID</th>
             <th>SchoolAdminID</th>
             <th>Location</th>
-            <th>Student Count</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var photoEventItem in Model.PhotoEvents)
         {
-            @foreach(var schoolItem in Model.schools)
-            {
-                <tr>
-                    <td>@photoEventItem.ID</td>
-                    <td>@schoolItem.Name</td>
-                    <td>@schoolItem.Street</td>
-                    <td>@schoolItem.ZipCode</td>
-                    <td>@schoolItem.ZipCode</td>
-                    <td>@photoEventItem.StartTime</td>
-                    <td>@photoEventItem.EndTime</td>
-                    <td>@photoEventItem.ThePhotographer.ID</td>
-                    <td>@photoEventItem.TheSchoolAdmin.ID</td>
-                    <td>@photoEventItem.Location</td>
-                    <td>@schoolItem.StudentCount</td>
-                    <td><a asp-page="PhotoEventDetail" asp-route-ID="@photoEventItem.ID">Click to see further information</a></td>
-                </tr>
-            }
-        }
+            <tr>
+                <td>@photoEventItem.ID</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                <td>@photoEventItem.TheSchoolAdmin</td>
+                <td>@photoEventItem.StartTime</td>
+                <td>@photoEventItem.EndTime</td>
+                <td>@photoEventItem.ThePhotographer.ID</td>
+                <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                <td>@photoEventItem.Location</td>
+                <td><a asp-page="PhotoEventDetail" asp-route-ID="@photoEventItem.ID">Click to see further information</a></td>
+            </tr>
+        }   
     </tbody>
 </table>
 <form method="post">
