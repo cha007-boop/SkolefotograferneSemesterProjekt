@@ -163,6 +163,25 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
+        public async Task<List<SchoolClass>> GetBySchool(int schoolID)
+        {
+            List<SchoolClass> classes = new List<SchoolClass>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("select * from SchoolClass where SchoolID = @SchoolID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@SchoolID", schoolID);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    SchoolClass schoolClass = SchoolClassReader(reader);
+                    classes.Add(schoolClass);
+                }
+                await reader.CloseAsync();
+            }
+            return classes;
+        }
+
         public async Task<SchoolClass> SearchSchoolClass(int schoolID, int grade, string letter, string year)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

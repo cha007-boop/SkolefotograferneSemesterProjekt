@@ -12,5 +12,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Update(SchoolClass newSchoolClass);
         Task<List<SchoolClass>> GetAllByTeacher(int teacherid);
         Task Delete(int id);
+        Task<List<SchoolClass>> GetBySchool(int schoolID);
     }
 }
