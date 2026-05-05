@@ -12,6 +12,14 @@
     <a asp-page="/Students/CreateStudent">Add Child</a>
 </p>
 
+<p>
+    First Name: @Model.Parent.FirstName <br />
+    Surname: @Model.Parent.Surname <br />
+    PhoneNumber: @Model.Parent.PhoneNumber <br />
+    Email: @Model.Parent.Email <br />
+    You have registered @Model.Students.Count() child/children to you. <br/>
+</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -38,3 +46,6 @@
         }
     </tbody>
 </table>
+<p>
+    Here you can see the pictures of your child
+</p>
