@@ -10,6 +10,10 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>SchoolName</th>
+            <th>SchoolAddress</th>
+            <th>ZipCode</th>
+            <th>StudenCount</th>
             <th>StartTime</th>
             <th>EndTIme</th>
             <th>PhotographerID</th>
@@ -18,18 +22,23 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.PhotoEvents)
+        @foreach (var photoEventItem in Model.PhotoEvents)
         {
             <tr>
-                <td>@item.ID</td>
-                <td>@item.StartTime</td>
-                <td>@item.EndTime</td>
-                <td>@item.ThePhotographer.ID</td>
-                <td>@item.ThePhotographer.ID</td>
-                <td>@item.Location</td>
-                @* make an edit td *@
+                <td>@photoEventItem.ID</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                <td>@photoEventItem.TheSchoolAdmin</td>
+                <td>@photoEventItem.StartTime</td>
+                <td>@photoEventItem.EndTime</td>
+                <td>@photoEventItem.ThePhotographer.ID</td>
+                <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                <td>@photoEventItem.Location</td>
+                <td><a asp-page="PhotoEventDetail" asp-route-ID="@photoEventItem.ID">Click to see further information</a></td>
             </tr>
-        }
+        }   
     </tbody>
 </table>
 <form method="post">

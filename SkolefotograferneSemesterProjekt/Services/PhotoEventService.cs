@@ -71,7 +71,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return photoEvents;
         }
         
-        public async Task<IEnumerable<PhotoEvent>> SearchEventByPhortographerID(int ID)
+        public async Task<List<PhotoEvent>> SearchEventByPhortographerID(int ID)
         {
             List<PhotoEvent> eventGetter = new List<PhotoEvent>();
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))

@@ -21,8 +21,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
 
-        public CreatePhotoEventsModel()
+        public CreatePhotoEventsModel(IPhotoEventService photoEventService)
         {
+            _photoEventService = photoEventService;
         }
         public void OnGet()
         {
@@ -33,7 +34,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             TryValidateModel(PhotoEvent);
             try
             {
-                //This is used to validate if the statements below is true or false - doesnt work
+                //This is used to validate if the statements below is true or false - doesnt work atm
                 //if (_queryStringPhotographerIDFinder != VerifyPhotographerID.ToString())
                 //{
                 //    ModelState.AddModelError("PhotoEvent.PhotographerID", "pls input an existing photographers id");

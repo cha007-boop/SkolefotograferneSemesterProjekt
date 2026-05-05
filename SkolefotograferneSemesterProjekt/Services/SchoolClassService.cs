@@ -13,6 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         private ISchoolService _schoolService = new SchoolService();
         private ITeacherService _teacherService = new TeacherService();
+        private IClassBookingService _classBookingService = new ClassBookingService();
 
         public async Task Add(SchoolClass @class)
         {
@@ -114,6 +115,25 @@ namespace SkolefotograferneSemesterProjekt.Services
             return classes;
         }
 
+        public async Task<List<SchoolClass>> GetByPhotoEvent(int photoEventId)
+        {
+            List<SchoolClass> classes = new List<SchoolClass>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(@"select sc.* from SchoolClass sc join ClassBooking cb on sc.ID = cb.ClassID where cb.PhotoEventID = @PhotoEventID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@PhotoEventID", photoEventId);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    SchoolClass schoolClass = SchoolClassReader(reader);
+                    classes.Add(schoolClass);
+                }
+                await reader.CloseAsync();
+            }
+            return classes;
+        }
+
         public async Task<SchoolClass> GetByID(int id)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -141,6 +161,25 @@ namespace SkolefotograferneSemesterProjekt.Services
                 }
                 return null;
             }
+        }
+
+        public async Task<List<SchoolClass>> GetBySchool(int schoolID)
+        {
+            List<SchoolClass> classes = new List<SchoolClass>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("select * from SchoolClass where SchoolID = @SchoolID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@SchoolID", schoolID);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    SchoolClass schoolClass = SchoolClassReader(reader);
+                    classes.Add(schoolClass);
+                }
+                await reader.CloseAsync();
+            }
+            return classes;
         }
 
         public async Task<SchoolClass> SearchSchoolClass(int schoolID, int grade, string letter, string year)
@@ -198,6 +237,20 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw;
                 }
             }
+        }
+
+        private SchoolClass SchoolClassReader(SqlDataReader reader)
+        {
+            int id = reader.GetInt32("ID");
+            int schoolID = reader.GetInt32("SchoolID");
+            int teacherID = reader.GetInt32("TeacherID");
+            int grade = reader.GetInt32("Grade");
+            string letter = reader.GetString("Letter");
+            string year = reader.GetString("SchoolYear");
+            School school = _schoolService.GetById(schoolID).Result;
+            Teacher teacher = _teacherService.GetByID(teacherID).Result;
+            SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
+            return schoolClass;
         }
     }
 }
