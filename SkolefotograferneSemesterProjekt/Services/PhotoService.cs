@@ -17,7 +17,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "INSERT INTO Photos (Filename, PhotoEventID, ClassID, ChildID) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID)";
+                    string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Filename", photo.Filename);
                     command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent.ID);
@@ -40,7 +40,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photos";
+                    string query = "SELECT * FROM Photo";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -72,7 +72,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photos WHERE Filename = @Filename";
+                    string query = "SELECT * FROM Photo WHERE Filename = @Filename";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Filename", filename);
                     conn.Open();
@@ -103,7 +103,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photos WHERE ClassId = @SchoolClassId";
+                    string query = "SELECT * FROM Photo WHERE ClassId = @SchoolClassId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
                     conn.Open();
@@ -136,7 +136,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photos WHERE ChildID = @StudentId";
+                    string query = "SELECT * FROM Photo WHERE ChildID = @StudentId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@StudentId", studentId);
                     conn.Open();
