@@ -25,6 +25,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
         {
             try
             {
+                //check Role
                 Photographer = await _photographerService.SearchByID(id);
             }
             catch (Exception ex)
@@ -41,6 +42,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+            }
+            if(HttpContext.Session.GetInt32("ID") == Photographer.ID)
+            {
+                return RedirectToPage("/Index");
             }
             return RedirectToPage("Photographers/ShowPhotographers");
         }

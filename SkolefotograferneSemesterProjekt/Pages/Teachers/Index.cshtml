@@ -15,7 +15,6 @@
     <thead>
         <tr>
             <form method="get">
-                <th>ID</th>
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
@@ -28,7 +27,6 @@
         @foreach(Teacher t in Model.TeacherList)
         {
             <tr>
-                <td>@t.ID</td>
                 <td>@t.FirstName</td>
                 <td>@t.Surname</td>
                 <td>@t.Email</td>
