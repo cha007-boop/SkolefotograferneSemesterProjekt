@@ -20,6 +20,7 @@ builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<ISchoolClassService, SchoolClassService>();
 builder.Services.AddTransient<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IPhotoEventService, PhotoEventService>();
+builder.Services.AddTransient<IClassBookingService, ClassBookingService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
