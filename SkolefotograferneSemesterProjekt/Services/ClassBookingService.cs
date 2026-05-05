@@ -4,10 +4,10 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Services
 {
-    public class PhotoBookingService : Connection, IPhotoBookingService
+    public class ClassBookingService : Connection, IClassBookingService
     {
         private IPhotoEventService _photoES = new PhotoEventService();
-        public async Task<int> Book(Teacher teacher)
+        public async Task<int> Book(SchoolClass sc)
         {
             throw new NotImplementedException();
             //using (SqlConnection connection = new SqlConnection(connectionString))
