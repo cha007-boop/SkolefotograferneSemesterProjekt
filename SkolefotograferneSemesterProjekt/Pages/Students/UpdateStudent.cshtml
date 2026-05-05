@@ -1,4 +1,33 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Students.UpdateStudentModel
 @{
+	if (HttpContext.Session.GetInt32("Role") == 0)
+		ViewData["Title"] = "Update Student";
+	else
+		ViewData["Title"] = "View Student Details";
+}
+
+
+@if(HttpContext.Session.GetInt32("Role") == 0)
+{
+	
+}
+else
+{
+	<h1>Student Information</h1>
+
+	<p>First Name: @Model.NewStudent.FirstName</p>
+	<p>Surname: @Model.NewStudent.Surname</p>
+	@if(HttpContext.Session.GetInt32("Role") == 4)
+	{
+		<p>Parent ID: @Model.NewStudent.TheParent.ID</p>
+	}
+	<p>School: @Model.NewStudent.TheSchool.Name</p>
+	<p>Class: @Model.NewStudent.TheSchoolClass.Grade @Model.NewStudent.TheSchoolClass.Letter</p>
+
+	<form>
+	<div>
+	<a asp-page="Students/ListStudents">Back to List of Students</a>
+	</div>
+	</form>
 }

@@ -15,6 +15,7 @@ namespace SkolefotograferneSemesterProjekt.Services
     {
         private IPhotographerService _photographerService = new PhotographerService();
         private ISchoolAdminService _schoolAdminService = new SchoolAdminService();
+        private ISchoolService _schoolService = new SchoolService();
 
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         private string _selectPhotoEventString = "select * from PhotoEvent";
@@ -97,6 +98,71 @@ namespace SkolefotograferneSemesterProjekt.Services
                 sqlDataReader.Close();
             }
             return eventGetter;
+        }
+        public async Task<List<PhotoEvent>> GetAll()
+        {
+            List<PhotoEvent> photoEventList = [];
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT 
+                        pe.ID, pe.StartTime, pe.EndTime, pe.Location,
+                        p.ID AS PhotographerID, p.FirstName, p.Surname, p.PhoneNumber, p.Website, p.CVR, p.Facebook, p.Instagram,
+                        sa.ID AS SchoolAdminID, sa.PhoneNumber, sa.ContactPerson, sa.SchoolID
+                    FROM PhotoEvent pe
+                    INNER JOIN Photographer p ON pe.PhotographerID = p.ID
+                    INNER JOIN SchoolAdmin sa ON pe.SchoolAdminID = sa.ID", connection);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    PhotoEvent photoEvent = new PhotoEvent();
+                    photoEvent.ID = reader.GetInt32("ID");
+                    photoEvent.StartTime = reader.GetDateTime("StartTime");
+                    photoEvent.EndTime = reader.GetDateTime("EndTime");
+                    //photoEvent.Location = reader.GetString("Location");
+                    photoEvent.Location = reader.IsDBNull("Location") ? "Location is not set" : reader.GetString("Location");
+                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber = reader.GetString("PhoneNumber"), Website = reader.GetString("Website"), CVR = reader.GetString("CVR"), Facebook = reader.GetString("Facebook"), Instagram = reader.GetString("Instagram") };
+                    photoEvent.TheSchoolAdmin = new SchoolAdmin { ID = reader.GetInt32("SchoolAdminID"), PhoneNumber = reader.GetString("PhoneNumber"), ContactPerson = reader.GetString("ContactPerson"), TheSchool = await _schoolService.GetById(reader.GetInt32("SchoolID")) };
+                    photoEventList.Add(photoEvent);
+                }
+            }
+            return photoEventList;
+        }
+        public async Task<PhotoEvent?> GetByID(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT 
+                        pe.ID, pe.StartTime, pe.EndTime, pe.Location,
+                        p.ID AS PhotographerID, p.FirstName, p.Surname, p.PhoneNumber, p.Website, p.CVR, p.Facebook, p.Instagram,
+                        sa.ID AS SchoolAdminID, sa.PhoneNumber, sa.ContactPerson, sa.SchoolID
+                    FROM PhotoEvent pe
+                    INNER JOIN Photographer p ON pe.PhotographerID = p.ID
+                    INNER JOIN SchoolAdmin sa ON pe.SchoolAdminID = sa.ID
+                    WHERE pe.ID = @ID", connection);
+                cmd.Parameters.AddWithValue("@ID", id);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    PhotoEvent photoEvent = new PhotoEvent();
+                    photoEvent.ID = reader.GetInt32("ID");
+                    photoEvent.StartTime = reader.GetDateTime("StartTime");
+                    photoEvent.EndTime = reader.GetDateTime("EndTime");
+                    //photoEvent.Location = reader.GetString("Location");
+                    photoEvent.Location = reader.IsDBNull("Location") ? "Location is not set" : reader.GetString("Location");
+                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber = reader.GetString("PhoneNumber"), Website = reader.GetString("Website"), CVR = reader.GetString("CVR"), Facebook = reader.GetString("Facebook"), Instagram = reader.GetString("Instagram") };
+                    photoEvent.TheSchoolAdmin = new SchoolAdmin { ID = reader.GetInt32("SchoolAdminID"), PhoneNumber = reader.GetString("PhoneNumber"), ContactPerson = reader.GetString("ContactPerson"), TheSchool = await _schoolService.GetById(reader.GetInt32("SchoolID")) };
+                    return photoEvent;
+                }
+            }
+            return null;
         }
     }
 }

@@ -8,33 +8,34 @@
 <form method ="post">
 
     <div class="form-group">
-        <label asp-for="@Model.NewTeacher.FirstName" class="control-label"></label>
+        <label asp-for="@Model.NewTeacher.FirstName" class="control-label">Navn</label>
         <input asp-for="@Model.NewTeacher.FirstName" class="form-control" />
         <span asp-validation-for="@Model.NewTeacher.FirstName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.NewTeacher.Surname" class="control-label"></label>
+        <label asp-for="@Model.NewTeacher.Surname" class="control-label">Efternavn</label>
         <input asp-for="@Model.NewTeacher.Surname" class="form-control" />
         <span asp-validation-for="@Model.NewTeacher.Surname" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.NewTeacher.Email" class="control-label"></label>
+        <label asp-for="@Model.NewTeacher.Email" class="control-label">Mail</label>
         <input asp-for="@Model.NewTeacher.Email" class="form-control" />
         <span asp-validation-for="@Model.NewTeacher.Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.NewTeacher.PhoneNumber" class="control-label"></label>
+        <label asp-for="@Model.NewTeacher.PhoneNumber" class="control-label">Telefon</label>
         <input asp-for="@Model.NewTeacher.PhoneNumber" class="form-control" />
         <span asp-validation-for="@Model.NewTeacher.PhoneNumber" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.NewTeacher.TheSchool.ID" class="control-label"></label>
+        <label asp-for="@Model.NewTeacher.TheSchool.ID" class="control-label">Skole</label>
         <select asp-for="@Model.NewTeacher.TheSchool.ID"
                 asp-items="@Model.Schools"
                 id="schoolSelect"
                 class="form-select">
             <option value="">-- Vælg Skole --</option>
         </select>
+        <span asp-validation-for="@Model.NewTeacher.TheSchool.ID" class="text-danger"></span>
     </div>
     @* <div class="form-group">
         <label asp-for="@Model.NewTeacher.SchoolID" class="control-label"></label>
@@ -42,12 +43,12 @@
         <span asp-validation-for="@Model.NewTeacher.SchoolID" class="text-danger"></span>
     </div> *@
     <div class="form-group">
-        <label asp-for="@Model.Password" class="control-label">Password</label>
+        <label asp-for="@Model.Password" class="control-label">Adgangskode</label>
         <input asp-for="@Model.Password" class="form-control" />
         <span asp-validation-for="@Model.Password" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.Pass2" class="control-label">Gentag Password</label>
+        <label asp-for="@Model.Pass2" class="control-label">Gentag Adgangskode</label>
         <input asp-for="@Model.Pass2" class="form-control" />
         <span asp-validation-for="@Model.Pass2" class="text-danger"></span>
     </div>

@@ -18,6 +18,7 @@ builder.Services.AddTransient<IPhotoEventService, PhotoEventService>();
 builder.Services.AddTransient<ISysAdminService, SysAdminService>();
 builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<ISchoolClassService, SchoolClassService>();
+builder.Services.AddTransient<IPhotoService, PhotoService>();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
@@ -44,5 +45,3 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
-
-

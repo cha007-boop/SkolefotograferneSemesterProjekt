@@ -17,12 +17,11 @@ namespace SkolefotograferneSemesterProjekt.Services
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-
                 int userID = await _userService.Add(connection, teacher);
 
                 SqlCommand cmd = new SqlCommand(@"
-                INSERT INTO Teacher 
-                VALUES (@ID, @FirstName, @Surname, @PhoneNumber, @SchoolID)", connection);
+                    INSERT INTO Teacher 
+                    VALUES (@ID, @FirstName, @Surname, @PhoneNumber, @SchoolID)", connection);
 
                 cmd.Parameters.AddWithValue("@ID", userID);
                 cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
@@ -38,13 +37,15 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<Teacher> teacherLst = [];
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
+
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT Teacher.ID AS ID, FirstName, Surname, Email, PhoneNumber, SchoolID
                     FROM Teacher
                     INNER JOIN Users 
                     ON Teacher.ID = Users.ID", connection);
-                await connection.OpenAsync();
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
                 while (reader.Read())
                 {
                     Teacher t = new Teacher();
@@ -60,88 +61,12 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return teacherLst;
         }
-        public async Task<bool> IsEmailTaken(Teacher t)
-        {
-            int id = 0;
-            string email = "";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-
-                SqlCommand cmd = new SqlCommand(@"
-                    SELECT ID, Email
-                    FROM Users
-                    WHERE Email = @Email", connection);
-                cmd.Parameters.AddWithValue("@Email", t.Email);
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                int i = 0;
-                while (reader.Read())
-                {
-                    id = reader.GetInt32("ID");
-                    email = reader.GetString("Email");
-                    i++;
-                }
-                if (i > 1)
-                {
-                    return true;
-                }
-            }
-            return id != t.ID && email == t.Email;
-        }
-
-        public async Task<Teacher?> GetByID(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand(@"
-                    SELECT Teacher.ID AS ID, FirstName, Surname, Email, PhoneNumber, SchoolID
-                    FROM Teacher
-                    INNER JOIN Users
-                    ON Teacher.ID = Users.ID
-                    WHERE Teacher.ID = @ID", connection);
-
-                cmd.Parameters.AddWithValue("@ID", id);
-
-                await connection.OpenAsync();
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                while (reader.Read())
-                {
-                    Teacher t = new Teacher();
-                    t.ID = reader.GetInt32("ID");
-                    t.FirstName = reader.GetString("FirstName");
-                    t.Surname = reader.GetString("Surname");
-                    t.Email = reader.GetString("Email");
-                    t.PhoneNumber = reader.GetString("PhoneNumber");
-                    int schoolID = reader.GetInt32("SchoolID");
-                    t.TheSchool = await _schoolService.GetById(schoolID);
-                    return t;
-                }
-            }
-            return null;
-        }
-        public async Task Delete(Teacher teacher)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-
-                await _userService.Delete(teacher.ID);
-
-                SqlCommand cmd = new SqlCommand(@"
-                    DELETE FROM Teacher 
-                    WHERE ID = @ID", connection);
-                cmd.Parameters.AddWithValue("@ID", teacher.ID);
-
-                await cmd.ExecuteNonQueryAsync();
-            }
-        }
         public async Task Update(Teacher teacher)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                
+
                 SqlCommand cmdUsers = new SqlCommand(@"
                     UPDATE Users
                     SET Email = @Email
@@ -162,6 +87,81 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await cmdTeachers.ExecuteNonQueryAsync();
             }
         }
-        
+        public async Task Delete(Teacher teacher)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                await _userService.Delete(teacher.ID);
+
+                SqlCommand cmd = new SqlCommand(@"
+                    DELETE FROM Teacher 
+                    WHERE ID = @ID", connection);
+                cmd.Parameters.AddWithValue("@ID", teacher.ID);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+        public async Task<bool> IsEmailTaken(Teacher t)
+        {
+            int id = 0;
+            string email = "";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT ID, Email
+                    FROM Users
+                    WHERE Email = @Email", connection);
+                cmd.Parameters.AddWithValue("@Email", t.Email);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                int i = 0;
+                while (reader.Read())
+                {
+                    id = reader.GetInt32("ID");
+                    email = reader.GetString("Email");
+                    i++;
+                }
+                if (i > 1)
+                {
+                    return true;
+                }
+            }
+            return id != t.ID && email == t.Email;
+        }
+
+        public async Task<Teacher?> GetByID(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT Teacher.ID AS ID, FirstName, Surname, Email, PhoneNumber, SchoolID
+                    FROM Teacher
+                    INNER JOIN Users
+                    ON Teacher.ID = Users.ID
+                    WHERE Teacher.ID = @ID", connection);
+                cmd.Parameters.AddWithValue("@ID", id);
+
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    Teacher t = new Teacher();
+                    t.ID = reader.GetInt32("ID");
+                    t.FirstName = reader.GetString("FirstName");
+                    t.Surname = reader.GetString("Surname");
+                    t.Email = reader.GetString("Email");
+                    t.PhoneNumber = reader.GetString("PhoneNumber");
+                    int schoolID = reader.GetInt32("SchoolID");
+                    t.TheSchool = await _schoolService.GetById(schoolID);
+                    return t;
+                }
+            }
+            return null;
+        }
     }
 }
