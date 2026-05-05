@@ -73,6 +73,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
                 NewStudent.TheSchoolClass = await _schoolClassService.SearchSchoolClass(Convert.ToInt32(SchoolID), ClassGrade, ClassLetter, year);
+                NewStudent.TheSchool = await _schoolService.GetById(Convert.ToInt32(SchoolID));
                 NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Add(NewStudent);
             }

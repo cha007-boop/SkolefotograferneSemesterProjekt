@@ -23,20 +23,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         }
         #endregion
         #region Methods
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") == 0)
+                if (HttpContext.Session.GetInt32("Role") == null)
                 {
-
+                    throw new Exception();
                 }
                 NewStudent = await _studentService.GetById(id);
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return RedirectToPage("/Index");
             }
+            return Page();
         }
         public void OnPost()
         {

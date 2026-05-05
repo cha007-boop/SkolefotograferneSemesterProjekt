@@ -8,3 +8,36 @@
 }
 
 
+@if(HttpContext.Session.GetInt32("Role") == 0)
+{
+	
+}
+else
+{
+	<h1>Student Information</h1>
+
+	
+}
+
+
+// <p>Email: @Model.Photographer.Email</p>
+// <p>Phonenumber: @Model.Photographer.PhoneNumber</p>
+// <p>Website: @Model.Photographer.Website</p>
+// <p>CVR: @Model.Photographer.CVR</p>
+// <p>Facebook: @Model.Photographer.Facebook</p>
+// <p>Instagram: @Model.Photographer.Instagram</p>
+
+// <form>
+// 	<div>
+// 		<a asp-page="ShowPhotographers">Back to Photographers</a>
+// 	</div>
+// </form>
+// @if (HttpContext.Session.GetInt32("Role") == 4)
+// {
+// 	<form method="Post">
+// 		<input type="hidden" asp-for="@Model.Photographer.ID" />
+// 		<td class="form-group">
+// 			<input type="submit" asp-page-handler="Delete" value="Delete Photographer" class="btn btn-danger" />
+// 		</td>
+// 	</form>
+// }
