@@ -16,28 +16,18 @@ else
 {
 	<h1>Student Information</h1>
 
-	
+	<p>First Name: @Model.NewStudent.FirstName</p>
+	<p>Surname: @Model.NewStudent.Surname</p>
+	@if(HttpContext.Session.GetInt32("Role") == 4)
+	{
+		<p>Parent ID: @Model.NewStudent.TheParent.ID</p>
+	}
+	<p>School: @Model.NewStudent.TheSchool.Name</p>
+	<p>Class: @Model.NewStudent.TheSchoolClass.Grade @Model.NewStudent.TheSchoolClass.Letter</p>
+
+	<form>
+	<div>
+	<a asp-page="Students/ListStudents">Back to List of Students</a>
+	</div>
+	</form>
 }
-
-
-// <p>Email: @Model.Photographer.Email</p>
-// <p>Phonenumber: @Model.Photographer.PhoneNumber</p>
-// <p>Website: @Model.Photographer.Website</p>
-// <p>CVR: @Model.Photographer.CVR</p>
-// <p>Facebook: @Model.Photographer.Facebook</p>
-// <p>Instagram: @Model.Photographer.Instagram</p>
-
-// <form>
-// 	<div>
-// 		<a asp-page="ShowPhotographers">Back to Photographers</a>
-// 	</div>
-// </form>
-// @if (HttpContext.Session.GetInt32("Role") == 4)
-// {
-// 	<form method="Post">
-// 		<input type="hidden" asp-for="@Model.Photographer.ID" />
-// 		<td class="form-group">
-// 			<input type="submit" asp-page-handler="Delete" value="Delete Photographer" class="btn btn-danger" />
-// 		</td>
-// 	</form>
-// }
