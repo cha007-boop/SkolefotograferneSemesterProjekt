@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using MongoDB.Driver.Core.Configuration;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Pages;
 using System.Data;
 using System.Reflection;
 using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;

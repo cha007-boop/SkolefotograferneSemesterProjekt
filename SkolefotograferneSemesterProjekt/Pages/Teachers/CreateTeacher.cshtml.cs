@@ -41,32 +41,42 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public async Task<IActionResult> OnPost()
         {
             await OnGet();
-            ModelState.Remove("NewTeacher.Password");
-            //ModelState.Remove("Password");
-            ModelState.Remove("NewTeacher.TheSchool.ID");
-            ModelState.Remove("NewTeacher.TheSchool.Name");
-            ModelState.Remove("NewTeacher.TheSchool.Street");
-            ModelState.Remove("NewTeacher.TheSchool.Country");
-            ModelState.Remove("NewTeacher.TheSchool.ZipCode");    
+            ModelState.Remove("NewTeacher.Password"); 
             ModelState.CustomizedMessages("Feltet mangler");
 
-            if (Password != Pass2)
+            if (!String.IsNullOrEmpty(Password))
             {
-                ModelState.AddModelError("Password", "Koderne er ikke ens");
+                if (Password != Pass2)
+                {
+                    ModelState.AddModelError("Password", "Koderne er ikke ens");
+                }
+                if (Password.Length < 6)
+                {
+                    ModelState.AddModelError("Password", "Dit kodeord er for kort");
+                }
             }
-            if (Password.Length < 6)
+            if(!String.IsNullOrEmpty(NewTeacher.Email))
             {
-                ModelState.AddModelError("Password", "Dit kodeord er for kort");
+                if (await _repo.IsEmailTaken(NewTeacher))
+                {
+                    ModelState.AddModelError("NewTeacher.Email", "Mailen er optaget");
+                }
             }
-            if (await _repo.IsEmailTaken(NewTeacher))
+            if(NewTeacher.TheSchool.ID <= 0)
             {
-                ModelState.AddModelError("NewTeacher.Email", "Mailen er optaget");
+                ModelState.AddModelError("NewTeacher.TheSchool.ID", "Du skal vælge en skole");
+            }
+            if(NewTeacher.TheSchool != null)
+            {
+                ModelState.Remove("NewTeacher.TheSchool.Name");
+                ModelState.Remove("NewTeacher.TheSchool.Street");
+                ModelState.Remove("NewTeacher.TheSchool.Country");
+                ModelState.Remove("NewTeacher.TheSchool.ZipCode");
             }
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
             try
             {
                 NewTeacher.Password = Password;

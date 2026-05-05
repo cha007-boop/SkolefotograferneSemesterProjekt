@@ -1,4 +1,6 @@
-﻿namespace SkolefotograferneSemesterProjekt.Services
+﻿using SkolefotograferneSemesterProjekt.Pages;
+
+namespace SkolefotograferneSemesterProjekt.Services
 {
     public abstract class Connection
     {
