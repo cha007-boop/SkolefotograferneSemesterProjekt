@@ -7,8 +7,9 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Add(Photo photo);
         Task<Photo> GetByFilename(string filename);
         Task<List<Photo>> GetAll();
-        Task<List<Photo>> GetClassPhotosByClass(SchoolClass schoolClass);
-        Task<List<Photo>> GetPortraitsByStudent(Student student);
+        Task<List<Photo>> GetClassPhotosByClassId(int schoolClassId);
+        Task<List<Photo>> GetPortraitsByStudentId(int studentId);
+        Task<List<Photo>> GetByPhotoEventId(int photoEventId);
         Task RemovePhoto(Photo photo);
 
     }
