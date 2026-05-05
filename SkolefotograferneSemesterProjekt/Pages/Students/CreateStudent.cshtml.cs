@@ -37,7 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         }
         #endregion
         #region Methods
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
@@ -49,6 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
+                return RedirectToPage("/Index");
             }
             List<School> schools = await _schoolService.GetAll();
             Schools = schools.Select(s => new SelectListItem
@@ -56,11 +57,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 Value = Convert.ToString(s.ID),
                 Text = $"{s.Name} - {s.Street} {s.ZipCode}"
             });
+            return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            NewStudent.TheSchool.ID = Convert.ToInt32(SchoolID);
             ModelState.Clear();
             TryValidateModel(ClassGrade);
             try
@@ -71,8 +72,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     return Page();
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
-                SchoolClass @class = await _schoolClassService.SearchSchoolClass(NewStudent.TheSchool.ID, ClassGrade, ClassLetter, year);
-                NewStudent.TheSchoolClass = @class;
+                NewStudent.TheSchoolClass = await _schoolClassService.SearchSchoolClass(Convert.ToInt32(SchoolID), ClassGrade, ClassLetter, year);
+                NewStudent.TheSchool = await _schoolService.GetById(Convert.ToInt32(SchoolID));
                 NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Add(NewStudent);
             }
