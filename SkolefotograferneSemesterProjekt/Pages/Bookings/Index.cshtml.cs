@@ -15,7 +15,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         #endregion
         #region Properties
         [BindProperty]
-        public List<PhotoEvent> PhotoEvents { get; set; }
+        public List<PhotoEvent> PhotoEvents { get; set; } = [];
         [BindProperty]
         public List<ClassBooking> Bookings { get; set; } = new(); // Instansieres, så den ikke er null
         [BindProperty]
@@ -25,10 +25,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         public bool IsUser { get; set; }
         #endregion
         #region Constructor
-        public IndexModel(IClassBookingService classBookingService, ITeacherService teacherService)
+        public IndexModel(IClassBookingService classBookingService, ITeacherService teacherService, IPhotoEventService photoEventService)
         {
             _classBookingService = classBookingService;
             _teacherService = teacherService;
+            _photoEventService = photoEventService;
         }
         #endregion
         #region Methods
@@ -44,12 +45,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                     ThisTeacher = t;
                 }
             }
-            PhotoEvents = await _photoEventService.GetAll();
 
+            PhotoEvents = await _photoEventService.GetAll();
             // Udkommenteret for debugging
-            //foreach(PhotoEvent pe in await _photoEventService.GetAll())
+            //foreach (PhotoEvent pe in await _photoEventService.GetAll())
             //{
-            //    if(pe.StartTime > DateTime.Now)
+            //    if (pe.StartTime > DateTime.Now)
             //    {
             //        PhotoEvents.Add(pe);
             //    }

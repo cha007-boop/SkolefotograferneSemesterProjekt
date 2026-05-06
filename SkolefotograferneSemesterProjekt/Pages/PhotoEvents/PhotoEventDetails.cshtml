@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int}"
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.PhotoEventDetailsModel
 @{
     ViewData["Title"] = "PhotoEvent Details";
@@ -9,53 +9,78 @@
         Photo Event @Model.ThePhotoEvent.ID
     </h3>
 </div>
-
-<form>
-    <a asp-page="./EditPhotoEvent" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-primary">Edit</a>
-</form>
+<p>DEBUG Id: @Model.Id</p>
 
 <div>
-    <p><strong>School name:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</p>
-    <p><strong>School address:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Street @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.ZipCode</p>
-    <p><strong>Photo Event Date:</strong> @Model.ThePhotoEvent.StartTime.ToShortDateString()</p>
-</div>
+    <div class="row">
+        <div class="col">
+            <form>
+                <a asp-page="./EditPhotoEvent" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-primary">Edit</a>
+            </form>
 
-<div class="mt-3">
-    <form>
-        <select asp-for="SelectedClassId" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
-            <option value="">-- Select Class --</option>
-            @foreach (var schoolClass in Model.SchoolClasses)
-                        {
-                <option value="@schoolClass.ID">@schoolClass.Grade @schoolClass.Letter</option>
-            }
-        </select>
-        <input type="submit" class="btn btn-primary" value="Select" />
-    </form>
-</div>
+            <div>
+                <p><strong>School name:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</p>
+                <p><strong>School address:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Street @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.ZipCode</p>
+                <p><strong>Photo Event Date:</strong> @Model.ThePhotoEvent.StartTime.ToShortDateString()</p>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Class</th>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var student in Model.Students)
-            {
-                <tr>
-                    <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
-                    <td>@student.ID</td>
-                    <td>@student.FirstName @student.Surname</td>
-                    <td>
-                        <a asp-page="./UploadPortrait" asp-route-photoeventid="@Model.ThePhotoEvent.ID" asp-route-studentid="@student.ID" class="btn btn-secondary">Upload Portrait</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row mt-3">
+        <div class="col-8">
+            <form method="get">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <select asp-for="SelectedClassId" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+                    <option value="">-- Select Class --</option>
+                    @foreach (var schoolClass in Model.SchoolClasses)
+                    {
+                        <option value="@schoolClass.ID">@schoolClass.Grade @schoolClass.Letter</option>
+                    }
+                </select>
+                <input type="submit" class="btn btn-primary" value="Select" />
+            </form>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.SelectedClassId) && Model.SelectedClassId != "0")
+        {
+            <div class="col-4">
+                <a asp-page="./UploadClassPhoto"
+                   asp-route-photoeventid="@Model.Id"
+                   asp-route-schoolclassid="@Model.SelectedClassId" class="btn btn-secondary">
+                    Upload Class Photo
+                </a>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        <tr>
+                            <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                            <td>@student.ID</td>
+                            <td>@student.FirstName @student.Surname</td>
+                            <td>
+                                <a asp-page="./UploadPortrait"
+                                   asp-route-photoeventid="@Model.Id"
+                                   asp-route-studentid="@student.ID" class="btn btn-secondary">
+                                    Upload Portrait
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 

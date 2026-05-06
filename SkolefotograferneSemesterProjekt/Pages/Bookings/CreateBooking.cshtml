@@ -1,0 +1,27 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Bookings.CreateBookingModel
+@{
+    ViewData["Title"] = "Book";
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="@Model.NewBooking.TheSchoolClass.Grade" class="control-label"></label>
+        <input asp-for="@Model.NewBooking.TheSchoolClass.Grade" class="form-control" />
+        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Grade" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="control-label"></label>
+        <input asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="form-control" />
+        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Letter" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="control-label"></label>
+        <input asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="form-control" />
+        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Letter" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" asp-route-id="@Model.NewBooking" value="Opret booking" class="btn btn-primary" />
+    </div>
+</form>
