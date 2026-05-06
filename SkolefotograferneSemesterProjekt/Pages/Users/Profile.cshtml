@@ -3,15 +3,7 @@
 @{
 	ViewData["Title"] = "Profile";
 }
-@* @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#myModal').on('shown.bs.modal', function () {
-                $('#myInput').trigger('focus');
-            });
-        });
-    </script>
-} *@
+
 <h1>Viewing Profile</h1>
 
 <form method="postupdate">
@@ -192,7 +184,53 @@
     </div>
 </form>
 @*delete button*@
-<form method="postdelete">
-    <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" class="btn btn-danger"@*  data-toggle="modal" data-target="#exampleModalCenter" *@ value="Slet" />
-<input type="submit" class="btn btn-warning" value="Fortryd" />
+<form method="post">
+    @* <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" class="btn btn-danger" value="Slet" /> *@
+    <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
+@* <input type="submit" class="btn btn-warning" value="Fortryd" /> *@
 </form>
+
+<form method="post" asp-page-handler="Delete" id="deleteForm">
+    <input type="hidden" name="id" id="deleteId" />
+</form>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete you account?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+@section Scripts{
+        <script>
+            function DisplayConfirmDeleteModal(id) {
+                document.getElementById("deleteId").value = id;
+
+                var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                modal.show();
+            }
+
+            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+                document.getElementById("deleteForm").submit();
+            });
+        </script>
+}

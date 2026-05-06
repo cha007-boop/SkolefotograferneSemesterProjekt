@@ -189,6 +189,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
             try
             {
                 await _userService.Delete(id);
+                HttpContext.Session.Remove("ID");
+                HttpContext.Session.Remove("Email");
+                HttpContext.Session.Remove("Role");
             }
             catch (Exception exc)
             {

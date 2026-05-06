@@ -56,8 +56,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc;
+                return Page();
             }
-            return RedirectToPage("Photographers/index");
+            return RedirectToPage("/index");
         }
         #endregion
     }
