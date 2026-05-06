@@ -120,5 +120,16 @@ namespace SkolefotograferneSemesterProjekt.Services
                 return null;
             }
         }
+
+        public async Task deleteParent(Parent parent)
+        {
+            using SqlConnection conn = new SqlConnection(connectionString);
+            {
+                SqlCommand command = new SqlCommand(@"DELETE FROM Users WHERE ID = @ID", conn);
+                command.Parameters.AddWithValue("@ID", parent.ID);
+                await command.Connection.OpenAsync();
+                await command.ExecuteReaderAsync();
+            }
+        }
     }
 }
