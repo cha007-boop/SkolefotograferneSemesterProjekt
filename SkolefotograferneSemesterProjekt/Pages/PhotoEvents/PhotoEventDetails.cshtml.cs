@@ -13,7 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private ISchoolClassService _schoolClassService;
         private IStudentService _studentService;
 
-
+        [BindProperty]
         public PhotoEvent ThePhotoEvent { get; set; }
 
         [BindProperty]
