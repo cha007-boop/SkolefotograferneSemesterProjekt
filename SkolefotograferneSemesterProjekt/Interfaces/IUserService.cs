@@ -10,5 +10,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Update(User user);
 
         Task<User> VerifyUser(string mail, string password);
+        Task<bool> IsEmailTaken(User user);
     }
 }
