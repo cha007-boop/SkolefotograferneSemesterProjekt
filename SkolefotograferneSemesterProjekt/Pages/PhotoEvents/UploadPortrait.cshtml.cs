@@ -57,23 +57,20 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 
         public async Task<IActionResult> OnPost()
         {
-            ThePhotoEvent = await _photoEventService.GetByID(ThePhotoEvent.ID);
-            TheStudent = await _studentService.GetById(TheStudent.ID);
-
             if (Portrait != null)
             {
                 Photo portrait = new Photo 
                 { 
                     Filename = ProcessUploadedFile(), 
-                    ThePhotoEvent = this.ThePhotoEvent, 
-                    Child = this.TheStudent, 
-                    TheSchoolClass = this.TheStudent.TheSchoolClass 
+                    ThePhotoEvent = ThePhotoEvent, 
+                    Child = TheStudent, 
+                    TheSchoolClass = TheStudent.TheSchoolClass 
                 };
 
 
                 await _photoService.Add(portrait);
             }
-            return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = ThePhotoEvent.ID });
+            return RedirectToPage("/PhotoEvents/Details", new { id = ThePhotoEvent.ID });
         }
 
         private string ProcessUploadedFile()
