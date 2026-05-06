@@ -13,15 +13,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private ISchoolClassService _schoolClassService;
         private IStudentService _studentService;
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
+        public int Id { get; set; }
         public PhotoEvent ThePhotoEvent { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet =true)]
         public string SelectedClassId { get; set; }
+        
 
         public IEnumerable<SelectListItem> SchoolClassesSelectList { get; set; }
         public List<SchoolClass> SchoolClasses { get; set; }
         public List<Student> Students { get; set; }
+
 
         public PhotoEventDetailsModel(IPhotoEventService photoEventService, IClassBookingService classBookingService, ISchoolClassService schoolClassService, IStudentService studentService)
         {
@@ -29,19 +32,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _classBookingService = classBookingService;
             _schoolClassService = schoolClassService;
             _studentService = studentService;
+
             Students = new List<Student>();
+            SchoolClasses = new List<SchoolClass>();
         }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet()
         {
-            ThePhotoEvent = await _photoEventService.GetByID(id);
+
+            ThePhotoEvent = await _photoEventService.GetByID(Id);
             if (ThePhotoEvent == null)
             {
                 return NotFound();
             }
-            //SchoolClasses = await _classBookingService.GetAll();
 
-            SchoolClasses = await _schoolClassService.GetByPhotoEvent(id);
+            SchoolClasses = await _schoolClassService.GetByPhotoEvent(Id);
             SchoolClassesSelectList = SchoolClasses.Select(c => new SelectListItem
             {
                 Value = c.ID.ToString(),
