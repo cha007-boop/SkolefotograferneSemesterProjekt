@@ -1,4 +1,5 @@
 ﻿using SkolefotograferneSemesterProjekt.Models;
+using System.Runtime.CompilerServices;
 
 namespace SkolefotograferneSemesterProjekt.Interfaces
 {
@@ -9,5 +10,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task<List<PhotoEvent>> SearchEventByPhortographerID(int ID);
         Task<List<PhotoEvent>> GetAll();
         Task<PhotoEvent?> GetByID(int id);
+        Task DeletePhotoEvent(PhotoEvent photoEvent);
     }
 }

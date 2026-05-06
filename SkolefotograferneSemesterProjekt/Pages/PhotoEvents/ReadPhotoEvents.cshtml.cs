@@ -11,8 +11,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private IPhotoEventService PEService;
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; }
-        [BindProperty]
-        public List<School> schools { get; set; }
         public ReadPhotoEventsModel(IPhotoEventService pEService)
         {
             PEService = pEService;
@@ -20,13 +18,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public async Task OnGet()
         {
             try
-            { //recently changed
+            {
                 PhotoEvents = PhotoEventSort(await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
             }
+        }
+        public IActionResult OnPostDeletePhotoEvents(PhotoEvent photoEvent)
+        {
+            PEService.DeletePhotoEvent(photoEvent);
+
+            return RedirectToPage();
         }
         private List<PhotoEvent> PhotoEventSort(List<PhotoEvent> photoEvents)
         {
