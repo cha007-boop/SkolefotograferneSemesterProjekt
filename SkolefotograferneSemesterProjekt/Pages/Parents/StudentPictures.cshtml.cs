@@ -16,6 +16,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         public Student TheStudent { get; set; }
         [BindProperty]
         public List<Photo> Photos { get; set; }
+        [BindProperty]
+        public List<Photo> ClassPhoto { get; set; }
 
         public StudentPicturesModel(IStudentService studentService, IPhotoService photoService)
         {
@@ -48,6 +50,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         TheSchoolClass = new SchoolClass(),
                         Child = TheStudent
                     };
+                }
+                if(ClassPhoto != null)
+                {
+                    ClassPhoto = await _photoservice.GetClassPhotosByClassId(TheStudent.TheSchoolClass.ID);
                 }
             }
             catch (UnauthorizedAccessException uex)

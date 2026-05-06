@@ -8,33 +8,65 @@
 <h1> Pictures of @Model.TheStudent.FirstName </h1>
 
 <p>
-    The Parent is @Model.TheParent.FirstName With the email @Model.TheParent.Email <br/>
+    The Parent is @Model.TheParent.FirstName With the email @Model.TheParent.Email <br />
 </p>
-
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1" ></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2" ></li>
-    </ol>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="~images/Portraits/@Model.Photos[0].Filename" alt="First slide">
+<div class="container-sm">
+    <div style="background-color:beige" id="carouselExampleIndicators" class="carousel slide w-100 h-50" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            @for (int i = 0; i < 5; i++)
+            {
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+            }
+        </ol>
+        <div class="carousel-inner">
+            @foreach (Photo p in Model.Photos)
+            {
+                <div class="carousel-item @((p == Model.Photos.First()) ? "active" : "")">
+                    <img style="margin:auto; height:500px " class="d-block" src="~/images/Portraits/@p.Filename" alt="Slide">
+                </div>
+            }
         </div>
-        @foreach(Photo p in @Model.Photos.Skip(1))
-        {
-            <div class="carousel-item">
-                <img class="d-block w-100" src="~images/Portraits/@p.Filename" alt="Slide">
-            </div>
-        }
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" style="color:darkgrey" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" style="color:darkgrey" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
 </div>
+<br/>
+<br />
+<h4>
+    The Class Photo
+</h4>
+@if (Model.ClassPhoto != null)
+{
+    @foreach (Photo cp in Model.ClassPhoto)
+    {
+        <img src="~images/ClassPhotos/@cp.Filename" alt="Class Photo" />
+
+    }
+}
+else
+{
+    <p>There is not a Class Photo yet</p>
+}
+<br />
+<br />
+<h4>All Pictures</h4>
+@if (Model.Photos != null)
+{
+    <div class="row" style="display:flex; flex-wrap:wrap">
+        <div class="column" style="flex:50%">
+            @foreach (Photo p in Model.Photos)
+            {
+                <img style="width:auto; max-height:300px; " src="~/images/Portraits/@p.Filename" alt="Student Photo" />
+            }
+        </div>
+    </div>
+}
+
+
 

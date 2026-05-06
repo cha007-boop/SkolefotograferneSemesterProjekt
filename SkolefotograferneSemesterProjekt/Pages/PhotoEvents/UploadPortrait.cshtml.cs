@@ -13,7 +13,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private IStudentService _studentService;
         private IPhotoEventService _photoEventService;
 
+        [BindProperty(SupportsGet =true)]
         public Student TheStudent { get; set; }
+        [BindProperty(SupportsGet =true)]
         public PhotoEvent ThePhotoEvent { get; set; }
 
         [BindProperty]
@@ -68,7 +70,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 
                 await _photoService.Add(portrait);
             }
-            return RedirectToPage("/PhotoEvents/Details", new { id = ThePhotoEvent.ID });
+            return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = ThePhotoEvent.ID });
         }
 
         private string ProcessUploadedFile()
@@ -76,7 +78,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             string uniqueFileName = null;
             if (Portrait != null)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/Portrais");
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/Portraits");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + Portrait.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 

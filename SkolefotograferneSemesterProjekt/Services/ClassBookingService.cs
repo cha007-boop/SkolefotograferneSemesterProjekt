@@ -8,7 +8,6 @@ namespace SkolefotograferneSemesterProjekt.Services
     public class ClassBookingService : Connection, IClassBookingService
     {
         private IPhotoEventService _photoES = new PhotoEventService();
-        private ITeacherService _teacherService = new TeacherService();
         public async Task<int> Book(ClassBooking cs, SchoolClass sc, int photoEventID)
         {
             PhotoEvent? photoEvent = await _photoES.GetByID(photoEventID);
@@ -29,7 +28,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 return await cmd.ExecuteNonQueryAsync();
             }
         }
-        public async Task<List<ClassBooking>> GetAll(int id)
+        public async Task<List<ClassBooking>> GetAll()
         {
             List<ClassBooking> cbList = [];
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
@@ -47,9 +46,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
                     cb.StartTime = reader.GetDateTime("StartTime");
-                    cb.ThePhotoEvent.ID = reader.GetInt32("PhotoEventID");
-                    cb.TheTeacher.ID = reader.GetInt32("TeacherID");
-                    cb.TheSchoolClass.ID = reader.GetInt32("ClassID");
+                    cb.ThePhotoEvent = new PhotoEvent { ID = reader.GetInt32("PhotoEventID") };
+                    cb.TheTeacher = new Teacher { ID = reader.GetInt32("TeacherID") };
+                    cb.TheSchoolClass = new SchoolClass { ID = reader.GetInt32("ClassID") };
                     cbList.Add(cb);
                 }
             }
@@ -133,15 +132,14 @@ namespace SkolefotograferneSemesterProjekt.Services
                     WHERE TeacherID = @ID", connection);
                     cmd.Parameters.AddWithValue("@ID", teacher.ID);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
                 while (reader.Read())
                 {
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
                     cb.StartTime = reader.GetDateTime("StartTime");
-                    cb.ThePhotoEvent.ID = reader.GetInt32("PhotoEventID");
-                    cb.TheTeacher.ID = reader.GetInt32("TeacherID");
-                    cb.TheSchoolClass.ID = reader.GetInt32("ClassID");
+                    cb.ThePhotoEvent = new PhotoEvent { ID = reader.GetInt32("PhotoEventID") };
+                    cb.TheTeacher = new Teacher { ID = reader.GetInt32("TeacherID") };
+                    cb.TheSchoolClass = new SchoolClass { ID = reader.GetInt32("ClassID") };
                     cbList.Add(cb);
                 }
             }
@@ -167,9 +165,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
                     cb.StartTime = reader.GetDateTime("StartTime");
-                    cb.ThePhotoEvent.ID = reader.GetInt32("PhotoEventID");
-                    cb.TheTeacher.ID = reader.GetInt32("TeacherID");
-                    cb.TheSchoolClass.ID = reader.GetInt32("ClassID");
+                    cb.ThePhotoEvent = new PhotoEvent { ID = reader.GetInt32("PhotoEventID") };
+                    cb.TheTeacher = new Teacher { ID = reader.GetInt32("TeacherID") };
+                    cb.TheSchoolClass = new SchoolClass { ID = reader.GetInt32("ClassID") };
                     cbList.Add(cb);
                 }
             }

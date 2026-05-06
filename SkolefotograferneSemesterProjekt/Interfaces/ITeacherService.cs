@@ -9,6 +9,5 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task<List<Teacher>> GetAll();
         Task Update(Teacher teacher);
         Task Delete(Teacher teacher);
-        Task<bool> IsEmailTaken(Teacher teacher);
     }
 }

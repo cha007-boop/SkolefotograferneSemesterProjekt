@@ -95,5 +95,34 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return foundUser;
         }
+        public async Task<bool> IsEmailTaken(User user)
+        {
+            int id = 0;
+            string email = "";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT ID, Email
+                    FROM Users
+                    WHERE Email = @Email", connection);
+                cmd.Parameters.AddWithValue("@Email", user.Email);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                int i = 0;
+                while (reader.Read())
+                {
+                    id = reader.GetInt32("ID");
+                    email = reader.GetString("Email");
+                    i++;
+                }
+                if (i > 1)
+                {
+                    return true;
+                }
+            }
+            return id != user.ID && email == user.Email;
+        }
     }
 }

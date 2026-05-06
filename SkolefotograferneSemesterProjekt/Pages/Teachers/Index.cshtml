@@ -4,39 +4,100 @@
 @{
     ViewData["Title"] = "Index (Teacher)";
 }
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus');
+            });
+        });
+    </script>
+} *@
+
+
 <div class="text-center">
     <h1 class="display-4">Index page (Teacher)</h1>
 </div>
 
-<p>
-    <a asp-page = "CreateTeacher">Opret en bruger</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <form method="get">
-                <th>ID</th>
+<h1>List af lærer</h1>
+
+@if (HttpContext.Session.GetInt32("Role") == 4)
+{
+    <form method="get">
+        <input type="text" asp-for="@Model.FilterCriteria" />
+        <select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+            <option value="t.TheSchool.Name">Skole</option>
+            <option value="t.Email">Mail</option>
+        </select>
+
+        <input type="submit" value="Søg" />
+    </form>
+    <p1>
+        <a asp-page="CreateTeacher">Opret en bruger</a>
+    </p1>
+    <table class="table">
+        <thead>
+            <tr>
+                <form method="get">
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
-                <th>Skole navn</th>
-            </form>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(Teacher t in Model.TeacherList)
-        {
+                <th>Skole</th>
+                </form>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Teacher t in Model.TeacherFList)
+            {
+                <tr>
+                    <td>@t.FirstName</td>
+                    <td>@t.Surname</td>
+                    <td>@t.Email</td>
+                    <td>@t.PhoneNumber</td>
+                    <td>@t.TheSchool.Name</td>
+                    <td>
+                        <a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
+                        <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.IsUser)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@t.ID</td>
-                <td>@t.FirstName</td>
-                <td>@t.Surname</td>
-                <td>@t.Email</td>
-                <td>@t.PhoneNumber</td>
-                <td>@t.TheSchool.Name</td>
-                <td><a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
-                    <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a></td>
-            </tr>   
-        }
-    </tbody>
-</table>
+                <form method="get">
+                <th>Navn</th>
+                <th>Efternavn</th>
+                <th>Mail</th>
+                <th>Telefon</th>
+                <th>Skole</th>
+                </form>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.TheTeacher.FirstName</td>
+                <td>@Model.TheTeacher.Surname</td>
+                <td>@Model.TheTeacher.Email</td>
+                <td>@Model.TheTeacher.PhoneNumber</td>
+                <td>@Model.TheTeacher.TheSchool.Name</td>
+                <td>
+                    <a asp-page="EditTeacher" asp-route-id="@Model.TheTeacher.ID">Opdater</a> |
+                    <a asp-page="DeleteTeacher" asp-route-id="@Model.TheTeacher.ID">Slet</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <h2 style="text-align: center;">Access denied...</h2>
+    <h3 style="text-align: center">
+        <a asp-page="CreateTeacher">Opret en bruger</a>
+    </h3>
+}

@@ -13,7 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         private ISchoolClassService _schoolClassService;
         private IStudentService _studentService;
 
-
+        [BindProperty]
         public PhotoEvent ThePhotoEvent { get; set; }
 
         [BindProperty]
@@ -29,6 +29,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _classBookingService = classBookingService;
             _schoolClassService = schoolClassService;
             _studentService = studentService;
+            Students = new List<Student>();
         }
 
         public async Task<IActionResult> OnGet(int id)
