@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 
@@ -24,9 +25,33 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await userService.Add(connection, sysAdmin);
             }
         }
-        public Task<List<SysAdmin>> GetAll()
+        public async Task<List<SysAdmin>> GetAll()
         {
-            throw new NotImplementedException();
+            List<SysAdmin> sysAdmins = new List<SysAdmin>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"select * from Users where Role = 4", conn);
+                    await cmd.Connection.OpenAsync();
+
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        int id = reader.GetInt32("ID");
+                        string email = reader.GetString("Email");
+
+                        SysAdmin sysAdmin = new SysAdmin { ID = id, Email = email };
+                        sysAdmins.Add(sysAdmin);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+
+                }
+            }
+            return sysAdmins;
         }
 
         public Task<SysAdmin> SearchByID(int id)

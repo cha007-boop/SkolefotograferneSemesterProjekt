@@ -1,0 +1,29 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.SysAdmins.ListSysAdminsModel
+@{
+	ViewData["Title"] = "List of SysAdmins";
+}
+
+
+<h1>Sys-Admins</h1>
+
+<table class="table">
+<thead>
+	<tr>
+		<form method="get">
+		<th>ID</th>
+		<th>Mail</th>
+		</form>
+	</tr>
+</thead>
+<tbody>
+	@foreach (SysAdmin sysAdmin in Model.SysAdmins)
+	{
+		<tr>
+			<td>@sysAdmin.ID</td>
+			<td>@sysAdmin.Email</td>
+		</tr>
+	}
+</tbody>
+</table>
