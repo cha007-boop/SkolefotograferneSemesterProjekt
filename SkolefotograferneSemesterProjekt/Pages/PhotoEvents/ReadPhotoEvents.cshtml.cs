@@ -10,6 +10,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     {
         private IPhotoEventService PEService;
         [BindProperty]
+        public PhotoEvent PhotoEvent { get; set; }
+        [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; }
         public ReadPhotoEventsModel(IPhotoEventService pEService)
         {
@@ -26,10 +28,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 ViewData["ErrorMessage"] = ex.Message;
             }
         }
-        public IActionResult OnPostDeletePhotoEvents(PhotoEvent photoEvent)
+        public async Task<IActionResult> OnPostDeletePhotoEvents()
         {
-            PEService.DeletePhotoEvent(photoEvent);
-
+            await PEService.DeletePhotoEvent(PhotoEvent);
             return RedirectToPage();
         }
         private List<PhotoEvent> PhotoEventSort(List<PhotoEvent> photoEvents)
