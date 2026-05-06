@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Helpers.Filter;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
@@ -12,6 +14,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public Teacher TheTeacher { get; set; }
         public int? UserID { get; set; }
         public bool IsUser { get; set; }
+        [BindProperty]
+        public IEnumerable<Teacher> TeacherFList { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string FilterCriteria { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string FilterBy { get; set; }
 
         public IndexModel(ITeacherService repo)
         {
@@ -22,6 +30,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public async Task OnGet()
         {
             TeacherList = await _repo.GetAll();
+            TeacherFList = Filter(TeacherList);
 
             UserID = HttpContext.Session.GetInt32("ID");
             if (UserID != null)
@@ -34,7 +43,26 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                     TheTeacher = t;
                 }
             }
-            
+        }
+
+        private IEnumerable<Teacher> Filter(IEnumerable<Teacher> tLst)
+        {
+            List<Predicate<Teacher>> predicates = new List<Predicate<Teacher>>();
+            if (!string.IsNullOrWhiteSpace(FilterCriteria))
+            {
+                switch (FilterBy)
+                {
+                    case "t.TheSchool.Name":
+                        predicates.Add(t => !string.IsNullOrEmpty(t.TheSchool.Name) && t.TheSchool.Name.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                        break;
+                    case "t.Email":
+                        predicates.Add(t => !string.IsNullOrEmpty(t.Email) && t.Email.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return FilterFunctions<Teacher>.Filter(tLst, predicates);
         }
     }
 }
