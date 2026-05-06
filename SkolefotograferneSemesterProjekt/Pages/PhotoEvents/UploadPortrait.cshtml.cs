@@ -70,7 +70,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 
                 await _photoService.Add(portrait);
             }
-            return RedirectToPage("/PhotoEvents/Details", new { id = ThePhotoEvent.ID });
+            return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = ThePhotoEvent.ID });
         }
 
         private string ProcessUploadedFile()
