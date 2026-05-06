@@ -29,6 +29,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _classBookingService = classBookingService;
             _schoolClassService = schoolClassService;
             _studentService = studentService;
+
+            SchoolClasses = new List<SchoolClass>();
             Students = new List<Student>();
         }
 
