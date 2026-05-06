@@ -46,18 +46,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             ModelState.Remove("NewTeacher.Password"); 
             ModelState.CustomizedMessages("Feltet mangler");
 
-            if (!String.IsNullOrEmpty(Password))
+            if (!string.IsNullOrEmpty(Password))
             {
-                if (Password != Pass2)
-                {
-                    ModelState.AddModelError("Password", "Koderne er ikke ens");
-                }
                 if (Password.Length < 6)
                 {
                     ModelState.AddModelError("Password", "Dit kodeord er for kort");
                 }
+                if (Password != Pass2)
+                {
+                    ModelState.AddModelError("Password", "Koderne er ikke ens");
+                }
             }
-            if(!String.IsNullOrEmpty(NewTeacher.Email))
+            if(!string.IsNullOrEmpty(NewTeacher.Email))
             {
                 if (await _userService.IsEmailTaken(NewTeacher))
                 {

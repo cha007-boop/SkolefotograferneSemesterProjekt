@@ -15,6 +15,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public int? UserID { get; set; }
         public bool IsUser { get; set; }
         [BindProperty]
+        public int? Role { get; set; }
+        [BindProperty]
         public IEnumerable<Teacher> TeacherFList { get; set; }
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
@@ -24,7 +26,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public IndexModel(ITeacherService repo)
         {
             _repo = repo;
-            
         }
 
         public async Task OnGet()
@@ -36,13 +37,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             if (UserID != null)
             {
                 Teacher t = new Teacher { ID = (int)UserID };
-                t = TeacherList.Find((t) => t.ID == UserID)!;
+                t = TeacherList.Find((t) => t.ID == UserID);
                 if (t != null)
                 {
                     IsUser = true;
                     TheTeacher = t;
                 }
             }
+
+            Role = HttpContext.Session.GetInt32("Role") ?? -1;
         }
 
         private IEnumerable<Teacher> Filter(IEnumerable<Teacher> tLst)
