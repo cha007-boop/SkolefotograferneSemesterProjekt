@@ -1,4 +1,5 @@
 ﻿@page
+@using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Bookings.IndexModel
 @{
 	ViewData["Title"] = "Liste af Photo";
@@ -10,25 +11,27 @@
 	//add filter
 }
 
-@* @if (Model.Bookings.Count >= 1)
+@if (Model.PhotoEvents.Count >= 1)
 {
 	<table class="table">
 		<thead>
 			<tr>
 				<form method="get">
-				<th>Start Time</th>
-				<th>Class</th>
+				<th>Starter</th>
+				<th>Slutter</th>
+				<th>Lokation</th>
 				</form>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (ClassBooking classBooking in Model.Bookings)
+			@foreach (PhotoEvent pe in Model.PhotoEvents)
 			{
 				<tr>
-					<td>@classBooking.StartTime</td>
-					<td>@classBooking.TheSchoolClass.Grade @classBooking.TheSchoolClass.Letter</td>
+					<td>@pe.StartTime</td>
+					<td>@pe.EndTime</td>
+					<td>@pe.Location</td>
 					<td>
-						<a asp-page="/Bookings/ViewBooking" asp-route-id="@classBooking.ID" class="btn btn-primary">View more info</a>
+						<a asp-page="/Bookings/CreateBooking" asp-route-id="@pe.ID" class="btn btn-primary">Book</a>
 					</td>
 				</tr>
 			}
@@ -37,5 +40,5 @@
 }
 else
 {
-	<h1>Du har ingen bookinger...</h1>
-} *@
+	<h1>Der findes ingen PhotoEvents...</h1>
+}
