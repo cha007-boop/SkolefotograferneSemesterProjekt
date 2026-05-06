@@ -46,7 +46,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     ON Teacher.ID = Users.ID", connection);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     Teacher t = new Teacher();
                     t.ID = reader.GetInt32("ID");
@@ -118,7 +118,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                while (reader.Read())
+                if (await reader.ReadAsync())
                 {
                     Teacher t = new Teacher();
                     t.ID = reader.GetInt32("ID");

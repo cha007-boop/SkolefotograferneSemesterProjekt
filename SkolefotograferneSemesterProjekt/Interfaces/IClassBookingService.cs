@@ -6,7 +6,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
     {
         Task<int> Book(ClassBooking classBooking, SchoolClass schoolClass, int photoEventID);
         Task<List<ClassBooking>> GetAll();
-        Task<ClassBooking> GetByID(int id);
+        Task<ClassBooking?> GetByID(int id);
         Task Update(ClassBooking classBooking);
         Task Delete(ClassBooking classBooking);
         Task<List<ClassBooking>> GetBookingsByTeacher(Teacher teacher);
