@@ -7,6 +7,7 @@ using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Pages;
 using System.Data;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
 
 namespace SkolefotograferneSemesterProjekt.Services
@@ -20,6 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         private string _selectPhotoEventString = "select * from PhotoEvent";
         private string _selectPhotoEventStringBySpecificPhotographID = "select * from PhotoEvent where PhotographerID = @PhotographerID";
+        private string _deletePhotoEventString = "Delete * from PhotoEvent where PhotographerID = @PhotographerID";
 
         public PhotoEventService()
         {
@@ -163,6 +165,17 @@ namespace SkolefotograferneSemesterProjekt.Services
                 }
             }
             return null;
+        }
+
+        public async Task DeletePhotoEvent(PhotoEvent photoEvent)
+        {
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(_deletePhotoEventString, connection);
+                await sqlCommand.Connection.OpenAsync();
+                sqlCommand.Parameters.AddWithValue("@ID", photoEvent.ID);
+                await sqlCommand.ExecuteNonQueryAsync();
+            }
         }
     }
 }
