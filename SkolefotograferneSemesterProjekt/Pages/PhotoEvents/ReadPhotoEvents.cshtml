@@ -35,7 +35,7 @@
                 <td>@photoEventItem.ThePhotographer.ID</td>
                 <td>@photoEventItem.TheSchoolAdmin.ID</td>
                 <td>@photoEventItem.Location</td>
-                <td><a asp-page="PhotoEventDetail" asp-route-ID="@photoEventItem.ID">Click to see further information</a></td>
+                <td><a asp-page="/Photoevents/PhotoEventDetails" asp-route-id="@photoEventItem.ID">Click to see further information</a></td>
                 <td><button type="button" class="btn btn-primary" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
             </tr>
         }   
