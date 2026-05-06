@@ -102,36 +102,6 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await cmd.ExecuteNonQueryAsync();
             }
         }
-        public async Task<bool> IsEmailTaken(Teacher t)
-        {
-            int id = 0;
-            string email = "";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-
-                SqlCommand cmd = new SqlCommand(@"
-                    SELECT ID, Email
-                    FROM Users
-                    WHERE Email = @Email", connection);
-                cmd.Parameters.AddWithValue("@Email", t.Email);
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                int i = 0;
-                while (reader.Read())
-                {
-                    id = reader.GetInt32("ID");
-                    email = reader.GetString("Email");
-                    i++;
-                }
-                if (i > 1)
-                {
-                    return true;
-                }
-            }
-            return id != t.ID && email == t.Email;
-        }
-
         public async Task<Teacher?> GetByID(int id)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

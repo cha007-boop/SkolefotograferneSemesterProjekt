@@ -13,6 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class CreateTeacherModel : PageModel
     {
+        private IUserService _userService;
         private ITeacherService _repo;
         private ISchoolService _schoolService;
 
@@ -24,10 +25,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public string Pass2 { get; set; }
         public IEnumerable<SelectListItem> Schools { get; set; }
 
-        public CreateTeacherModel(ITeacherService repo, ISchoolService schoolService)
+        public CreateTeacherModel(ITeacherService repo, ISchoolService schoolService, IUserService userService)
         {
             _repo = repo;
             _schoolService = schoolService;
+            _userService  = userService;
         }
         public async Task OnGet()
         {
@@ -57,7 +59,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             }
             if(!String.IsNullOrEmpty(NewTeacher.Email))
             {
-                if (await _repo.IsEmailTaken(NewTeacher))
+                if (await _userService.IsEmailTaken(NewTeacher))
                 {
                     ModelState.AddModelError("NewTeacher.Email", "Mailen er optaget");
                 }

@@ -9,8 +9,19 @@
     <h1 class="display-4">Index page (Teacher)</h1>
 </div>
 
+<h1>List af lærer</h1>
+
 @if (HttpContext.Session.GetInt32("Role") == 4)
 {
+    <form method="get">
+        <input type="text" asp-for="@Model.FilterCriteria" />
+        <select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+            <option value="t.TheSchool.Name">Skole</option>
+            <option value="t.Email">Mail</option>
+        </select>
+
+        <input type="submit" value="Søg" />
+    </form>
     <p1>
         <a asp-page="CreateTeacher">Opret en bruger</a>
     </p1>
@@ -27,7 +38,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Teacher t in Model.TeacherList)
+            @foreach (Teacher t in Model.TeacherFList)
             {
                 <tr>
                     <td>@t.FirstName</td>

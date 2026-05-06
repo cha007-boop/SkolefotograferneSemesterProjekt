@@ -9,13 +9,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
     public class EditTeacherModel : PageModel
     {
         private ITeacherService _repo;
+        private IUserService _userService;
 
         [BindProperty]
         public Teacher? TeacherToEdit { get; set; }
 
-        public EditTeacherModel(ITeacherService repo)
+        public EditTeacherModel(ITeacherService repo, IUserService userService)
         {
             _repo = repo;
+            _userService = userService;
         }
         public async Task OnGet(int id)
         {
@@ -27,7 +29,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             ModelState.Remove("TeacherToEdit.Password");
             ModelState.CustomizedMessages("Feltet mangler");
 
-            if (await _repo.IsEmailTaken(TeacherToEdit!))
+            if (await _userService.IsEmailTaken(TeacherToEdit!))
             {
                 ModelState.AddModelError("TeacherToEdit.Email", "Mailen er optaget");
                 return Page();
