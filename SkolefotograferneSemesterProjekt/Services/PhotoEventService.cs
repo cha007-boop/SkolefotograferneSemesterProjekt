@@ -21,7 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         private string _selectPhotoEventString = "select * from PhotoEvent";
         private string _selectPhotoEventStringBySpecificPhotographID = "select * from PhotoEvent where PhotographerID = @PhotographerID";
-        private string _deletePhotoEventString = "Delete * from PhotoEvent where PhotographerID = @PhotographerID";
+        private string _deletePhotoEventString = "Delete from PhotoEvent where ID = @ID";
 
         public PhotoEventService()
         {

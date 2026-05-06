@@ -1,0 +1,198 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Users.ProfileModel
+@{
+	ViewData["Title"] = "Profile";
+}
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus');
+            });
+        });
+    </script>
+} *@
+<h1>Viewing Profile</h1>
+
+<form method="postupdate">
+@if(HttpContext.Session.GetInt32("Role") == 0)
+{
+        <input type="hidden" asp-for="@Model.ThisParent.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisParent.FirstName" class="control-label"></label>
+            <input asp-for="@Model.ThisParent.FirstName" class="form-control" />
+            <span asp-validation-for="@Model.ThisParent.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisParent.Surname" class="control-label"></label>
+            <input asp-for="@Model.ThisParent.Surname" class="form-control" />
+            <span asp-validation-for="@Model.ThisParent.Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisParent.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" />
+            <span asp-validation-for="@Model.ThisParent.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisParent.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisParent.Email" class="form-control" />
+            <span asp-validation-for="@Model.ThisParent.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
+            <input asp-for="@Model.ThisParent.Password" class="form-control" />
+        </div>
+//FirstName
+//Surname
+//PhoneNumber
+//email
+//password
+}
+@if (HttpContext.Session.GetInt32("Role") == 1)
+{
+        <input type="hidden" asp-for="@Model.ThisPhotographer.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.FirstName" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.FirstName" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Surname" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Surname" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.PhoneNumber" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Website" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Website" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.Website" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.CVR" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.CVR" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.CVR" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Facebook" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Facebook" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.Facebook" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Instagram" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Instagram" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.Instagram" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Email" class="form-control" />
+            <span asp-validation-for="@Model.ThisPhotographer.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Password" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Password" class="form-control" />
+        </div>
+	//FirstName
+	//Surname
+	//PhoneNumber
+	//Website
+	//CVR
+	//Facebook
+	//Instagram
+	//email
+	//password
+}
+@if (HttpContext.Session.GetInt32("Role") == 2)
+{
+         <input type="hidden" asp-for="@Model.ThisTeacher.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.FirstName" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.FirstName" class="form-control" />
+            <span asp-validation-for="@Model.ThisTeacher.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.Surname" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.Surname" class="form-control" />
+            <span asp-validation-for="@Model.ThisTeacher.Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.PhoneNumber" class="form-control" />
+            <span asp-validation-for="@Model.ThisTeacher.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.Email" class="form-control" />
+            <span asp-validation-for="@Model.ThisTeacher.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.Password" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.Password" class="form-control" />
+        </div>
+	//FirstName
+	//Surname
+	//PhoneNumber
+	//email
+	//password
+}
+@if (HttpContext.Session.GetInt32("Role") == 3)
+{
+        <input type="hidden" asp-for="@Model.ThisSchoolAdmin.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.PhoneNumber" class="form-control" />
+            <span asp-validation-for="@Model.ThisSchoolAdmin.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.ContactPerson" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.ContactPerson" class="form-control" />
+            <span asp-validation-for="@Model.ThisSchoolAdmin.ContactPerson" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.Email" class="form-control" />
+            <span asp-validation-for="@Model.ThisSchoolAdmin.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.Password" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.Password" class="form-control" />
+        </div>
+	//PhoneNumber
+	//ContactPerson
+	//email
+	//password
+}
+@if (HttpContext.Session.GetInt32("Role") == 4)
+{
+        <input type="hidden" asp-for="@Model.ThisSysAdmin.ID" />
+
+        
+        <div class="form-group">
+            <label asp-for="@Model.ThisSysAdmin.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisSysAdmin.Email" class="form-control" />
+            <span asp-validation-for="@Model.ThisSysAdmin.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSysAdmin.Password" class="control-label"></label>
+            <input asp-for="@Model.ThisSysAdmin.Password" class="form-control" />
+        </div>
+	//email
+	//password
+}
+    @*update button*@
+    <div class="form-group">
+        <input type="submit" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" value="Update User" class="btn btn-primary" />
+    </div>
+</form>
+@*delete button*@
+<form method="postdelete">
+    <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" class="btn btn-danger"@*  data-toggle="modal" data-target="#exampleModalCenter" *@ value="Slet" />
+<input type="submit" class="btn btn-warning" value="Fortryd" />
+</form>
