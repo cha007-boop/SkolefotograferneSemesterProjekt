@@ -4,24 +4,12 @@
 @{
     ViewData["Title"] = "Index (Teacher)";
 }
-@* @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#myModal').on('shown.bs.modal', function () {
-                $('#myInput').trigger('focus');
-            });
-        });
-    </script>
-} *@
-
 
 <div class="text-center">
-    <h1 class="display-4">Index page (Teacher)</h1>
+    <h1 class="display-4">Index page (Teachers)</h1>
 </div>
 
-<h1>List af lærer</h1>
-
-@if (HttpContext.Session.GetInt32("Role") == 4)
+@if (Model.Role == 4)
 {
     <form method="get">
         <input type="text" asp-for="@Model.FilterCriteria" />

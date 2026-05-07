@@ -41,7 +41,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
@@ -54,29 +54,28 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return cbList;
         }
-        public async Task<ClassBooking> GetByID(int id)
+        public async Task<ClassBooking?> GetByID(int id)
         {
-            List<ClassBooking> cbList = [];
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
             {
                 await connection.OpenAsync();
 
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
-                        cs.ID, cs.StartTime, 
+                        cb.ID, cb.StartTime, 
                         p.ID AS PhotoEventID, p.StartTime AS PeStartTime, p.EndTime AS PeEndTime,
                         t.ID AS TeacherID, t.FirstName, t.Surname, t.PhoneNumber,
                         sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear
-                    FROM ClassBooking cs
-                    INNER JOIN PhotoEvent p ON cs.PhotoEventID = p.ID
-                    INNER JOIN Teacher t ON cs.TeacherID = t.ID
-                    INNER JOIN SchoolClass sc ON cs.ClassID = sc.ID
-                    WHERE cs.ID = @ID", connection);
+                    FROM ClassBooking cb
+                    INNER JOIN PhotoEvent p ON cb.PhotoEventID = p.ID
+                    INNER JOIN Teacher t ON cb.TeacherID = t.ID
+                    INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
+                    WHERE cb.ID = @ID", connection);
                 cmd.Parameters.AddWithValue("@ID", id);
 
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                while (reader.Read())
+                if (await reader.ReadAsync())
                 {
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
@@ -127,19 +126,22 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await connection.OpenAsync();
 
                 SqlCommand cmd = new SqlCommand(@"
-                    SELECT ID, StartTime, PhotoEventID, TeacherID, ClassID
-                    FROM ClassBooking
-                    WHERE TeacherID = @ID", connection);
+                    SELECT 
+                        cb.ID, cb.StartTime, cb.PhotoEventID, cb.TeacherID,
+                        sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear
+                    FROM ClassBooking cb
+                    INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
+                    WHERE cb.TeacherID = @ID", connection);
                     cmd.Parameters.AddWithValue("@ID", teacher.ID);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");
                     cb.StartTime = reader.GetDateTime("StartTime");
                     cb.ThePhotoEvent = new PhotoEvent { ID = reader.GetInt32("PhotoEventID") };
                     cb.TheTeacher = new Teacher { ID = reader.GetInt32("TeacherID") };
-                    cb.TheSchoolClass = new SchoolClass { ID = reader.GetInt32("ClassID") };
+                    cb.TheSchoolClass = new SchoolClass { ID = reader.GetInt32("ClassID"), Grade = reader.GetInt32("Grade"), Letter = reader.GetString("Letter"), SchoolYear = reader.GetString("SchoolYear") };
                     cbList.Add(cb);
                 }
             }
@@ -160,7 +162,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 cmd.Parameters.AddWithValue("@ID", photoEvent.ID);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     ClassBooking cb = new ClassBooking();
                     cb.ID = reader.GetInt32("ID");

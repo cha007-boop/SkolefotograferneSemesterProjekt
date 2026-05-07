@@ -6,19 +6,20 @@
 
 <form method="post">
     <div class="form-group">
-        <label asp-for="@Model.NewBooking.TheSchoolClass.Grade" class="control-label"></label>
-        <input asp-for="@Model.NewBooking.TheSchoolClass.Grade" class="form-control" />
-        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Grade" class="text-danger"></span>
+        <label asp-for="@Model.NewBooking.TheSchoolClass.ID" class="control-label">Klasse</label>
+        <select asp-for="@Model.NewBooking.TheSchoolClass.ID"
+                asp-items="@Model.Classes"
+                id="schoolClassSelect"
+                class="form-select">
+            <option value="">-- Vælg Klasse --</option>
+        </select>
+        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.ID" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="control-label"></label>
-        <input asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="form-control" />
-        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Letter" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="control-label"></label>
-        <input asp-for="@Model.NewBooking.TheSchoolClass.Letter" class="form-control" />
-        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.Letter" class="text-danger"></span>
+        <label asp-for="@Model.NewBooking.StartTime" class="control-label">Starttidspunkt</label>
+        <input asp-for="@Model.NewBooking.StartTime" class="form-control" />
+        <span asp-validation-for="@Model.NewBooking.StartTime" class="text-danger"></span>
     </div>
 
     <div class="form-group">
