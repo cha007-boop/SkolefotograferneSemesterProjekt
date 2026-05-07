@@ -17,10 +17,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         private ISchoolClassService _schoolClassService;
 
         [BindProperty]
-        public ClassBooking NewBooking { get; set; }
-        public PhotoEvent? ThePhotoEvent { get; set; }
-        public Teacher? TheTeacher { get; set; }
+        public ClassBooking NewBooking { get; set; } = new ClassBooking();
+        [BindProperty]
+        public SchoolClass SchoolClass { get; set; }
+        [BindProperty]
+        public PhotoEvent? ThePhotoEvent { get; set; } = new PhotoEvent();
+        [BindProperty]
+        public Teacher? TheTeacher { get; set; } = new Teacher();
         public IEnumerable<SelectListItem> Classes { get; set; }
+        [BindProperty]
         public int? UserID { get; set; }
         public int? Role { get; set; }
 
@@ -32,20 +37,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             _schoolClassService = schoolClassService;
         }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet()
         {
-            ThePhotoEvent = await _photoEventService.GetByID(id);
-
             UserID = HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
-
             if(UserID == null || Role != 2)
             {
                 return RedirectToPage("Index");
             }
-            TheTeacher = await _teacherService.GetByID((int)UserID);
-            
-            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
+
+            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher((int)UserID);
             Classes = classes.Select(c => new SelectListItem
             {
                 Value = Convert.ToString(c.ID),
@@ -54,18 +55,39 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 
             return Page();
         }
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(int id)
         {
+            TheTeacher = await _teacherService.GetByID((int)UserID);
+            if (TheTeacher == null)
+            {
+                return RedirectToPage("Index");
+            }
+            NewBooking.TheTeacher = TheTeacher;
+
+            ThePhotoEvent = await _photoEventService.GetByID(id);
+            if (ThePhotoEvent == null)
+            {
+                return RedirectToPage("Index");
+            }
+            NewBooking.ThePhotoEvent = ThePhotoEvent;
+
+            SchoolClass = await _schoolClassService.GetByID(NewBooking.TheSchoolClass.ID);
+            if (SchoolClass == null)
+            {
+                return RedirectToPage("Index");
+            }
+            NewBooking.TheSchoolClass = SchoolClass;
+
             try
             {
-                //await _repo.Book(d);
+                await _repo.Book(NewBooking);
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("ListBookings");
         }
     }
 }
