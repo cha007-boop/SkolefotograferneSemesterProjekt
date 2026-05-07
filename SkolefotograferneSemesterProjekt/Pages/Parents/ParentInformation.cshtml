@@ -9,24 +9,45 @@
 <h1>Welcome @Model.Parent.FirstName</h1>
 
 <p style="text-align:right">
-    <a asp-page="/Parents/EditParent">Edit Parent Information</a>
+    <a asp-page="/Parents/EditParents" asp-route-ID="@Model.Parent.ID">Edit Parent Information</a>
 </p>
 
 
-<form class="d-inline-block">
-    <label for="First Name">First Name: </label>
-    <input type="text" id="First Name" name="First Name" value="@Model.Parent.FirstName" readonly style="padding:15px" />
-    <label for="Surname">Surname: </label>
-    <input type="text" id="Surname" name="Surname" value="@Model.Parent.Surname" readonly />
-    <br/>
-    <br />
-    <label for="PhoneNumber">PhoneNumber: </label>
-    <input type="text" id="PhoneNumber" name="PhoneNumber" value="@Model.Parent.PhoneNumber" readonly style="padding:15px" />
-    <label for="Email">Email: </label>
-    <input type="text" id="Email" name="Email" value="@Model.Parent.Email" readonly />
-    <br/>
-    You have registered @Model.Students.Count() child/children to you. <br/>
-</form>
+
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.FirstName" class="control-label"></label>
+            <input asp-for="@Model.Parent.FirstName" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.Surname" class="control-label"></label>
+            <input asp-for="@Model.Parent.Surname" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.Parent.PhoneNumber" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.Email" class="control-label"></label>
+            <input asp-for="@Model.Parent.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+</div>
+<br />
+    You have registered @Model.Students.Count() child/children to you.
+<br />
 <br />
 <p>
     <a asp-page="/Students/CreateStudent">Add Child</a>
@@ -58,11 +79,11 @@
 <p>
     @foreach (Student s in @Model.Students)
     {
-        <p>
-        Here you can see the pictures of your child @s.FirstName 
+    <p>
+        Here you can see the pictures of your child @s.FirstName
         <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
-        <br/>
-        </p>
+        <br />
+    </p>
     }
 </p>
 
