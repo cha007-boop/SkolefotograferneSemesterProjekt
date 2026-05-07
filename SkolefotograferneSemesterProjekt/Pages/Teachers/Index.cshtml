@@ -5,9 +5,9 @@
     ViewData["Title"] = "Index (Teacher)";
 }
 
-<div class="text-center">
+@* <div class="text-center">
     <h1 class="display-4">Index page (Teachers)</h1>
-</div>
+</div> *@
 
 @if (Model.Role == 4)
 {
@@ -48,6 +48,9 @@
                         <a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
                         <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a>
                     </td>
+                    <td>
+                        <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@Model.TheTeacher.ID" class="btn btn-primary">Se klasser</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -77,6 +80,9 @@ else if (Model.IsUser)
                 <td>
                     <a asp-page="EditTeacher" asp-route-id="@Model.TheTeacher.ID">Opdater</a> |
                     <a asp-page="DeleteTeacher" asp-route-id="@Model.TheTeacher.ID">Slet</a>
+                </td>
+                <td>
+                    <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@Model.TheTeacher.ID" class="btn btn-primary">Se klasser</a>
                 </td>
             </tr>
         </tbody>
