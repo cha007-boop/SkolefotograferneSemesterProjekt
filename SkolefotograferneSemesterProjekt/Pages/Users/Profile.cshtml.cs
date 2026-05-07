@@ -93,7 +93,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     }
                     try
                     {
-                        //await _parentServices.Update(ThisParent); //to be added in future
+                        await _parentServices.Update(ThisParent); //not implemented
                     }
                     catch
                     {
@@ -112,7 +112,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     }
                     try
                     {
-                        await _photographerService.Update(ThisPhotographer);
+                        await _photographerService.Update(ThisPhotographer); //not implemented
                     }
                     catch
                     {
@@ -131,7 +131,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     }
                     try
                     {
-                        await _teacherService.Update(ThisTeacher);
+                        await _teacherService.Update(ThisTeacher); 
                     }
                     catch
                     {
@@ -150,7 +150,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     }
                     try
                     {
-                        await _schoolAdminService.Update(ThisSchoolAdmin);
+                        await _schoolAdminService.Update(ThisSchoolAdmin); //not implemented
                     }
                     catch
                     {
@@ -169,7 +169,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     }
                     try
                     {
-                        await _sysAdminService.Update(ThisSysAdmin);
+                        await _sysAdminService.Update(ThisSysAdmin); //not implemented
                     }
                     catch
                     {

@@ -131,5 +131,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await command.ExecuteReaderAsync();
             }
         }
+
+        public Task Update(Parent newParent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
