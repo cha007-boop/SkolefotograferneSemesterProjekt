@@ -47,7 +47,7 @@
 {
     @foreach (Photo cp in Model.ClassPhoto)
     {
-        <img style="width:auto; max-height:300px" src="~/images/ClassPhotos/@cp.Filename" alt="Class Photo" />
+        <img style="width:auto; max-height:500px" src="~/images/ClassPhotos/@cp.Filename" alt="Class Photo" />
 
     }
 }
@@ -64,7 +64,7 @@ else
         <div class="column" style="flex:50%">
             @foreach (Photo p in Model.Photos)
             {
-                <img style="width:auto; max-height:500px; " src="~/images/Portraits/@p.Filename" alt="Student Photo" />
+                <img style="width:auto; max-height:300px; " src="~/images/Portraits/@p.Filename" alt="Student Photo" />
             }
         </div>
     </div>
