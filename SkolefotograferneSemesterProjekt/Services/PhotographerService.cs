@@ -100,16 +100,16 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             throw new NotImplementedException();
         }
-        public async Task Delete(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand("delete from Photographer where ID = @ID", connection);
-                await command.Connection.OpenAsync();
-                command.Parameters.AddWithValue("@ID", id);
-                await command.ExecuteNonQueryAsync();
-            }
-        }
+        //public async Task Delete(int id)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        SqlCommand command = new SqlCommand("delete from Photographer where ID = @ID", connection);
+        //        await command.Connection.OpenAsync();
+        //        command.Parameters.AddWithValue("@ID", id);
+        //        await command.ExecuteNonQueryAsync();
+        //    }
+        //}
         #endregion
     }
 }

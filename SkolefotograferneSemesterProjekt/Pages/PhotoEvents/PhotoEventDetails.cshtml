@@ -22,6 +22,8 @@
                 <p><strong>School name:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</p>
                 <p><strong>School address:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Street @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.ZipCode</p>
                 <p><strong>Photo Event Date:</strong> @Model.ThePhotoEvent.StartTime.ToShortDateString()</p>
+                <p><strong>No of school classes:</strong> @Model.SchoolClasses.Count()</p>
+                <p><strong>No of teachers:</strong> @Model.SchoolClasses.Select(c => c.TheTeacher).Distinct().Count()</p>
             </div>
         </div>
     </div>

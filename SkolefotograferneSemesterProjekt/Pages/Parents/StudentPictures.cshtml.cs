@@ -24,6 +24,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             _studentService = studentService;
             _photoservice = photoService;
             Photos = new List<Photo>();
+            ClassPhoto = new List<Photo>();
         }
 
         public async Task<IActionResult> OnGet(int id)
@@ -51,10 +52,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         Child = TheStudent
                     };
                 }
-                if(ClassPhoto != null)
-                {
-                    ClassPhoto = await _photoservice.GetClassPhotosByClassId(TheStudent.TheSchoolClass.ID);
-                }
+
+                ClassPhoto = await _photoservice.GetClassPhotosByClassId(TheStudent.TheSchoolClass.ID);
             }
             catch (UnauthorizedAccessException uex)
             {
