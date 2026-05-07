@@ -103,7 +103,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photo WHERE ClassId = @SchoolClassId";
+                    string query = "SELECT * FROM Photo WHERE ClassId = @SchoolClassId AND ChildID IS NULL";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
                     conn.Open();
