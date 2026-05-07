@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Read PhotoEvent";
 }
+@inject IHttpContextAccessor HttpContextAccessor
 
 <h1>List of your Active Photo Events</h1>
 
@@ -36,7 +37,10 @@
                 <td>@photoEventItem.TheSchoolAdmin.ID</td>
                 <td>@photoEventItem.Location</td>
                 <td><a asp-page="/Photoevents/PhotoEventDetails" asp-route-id="@photoEventItem.ID">Click to see further information</a></td>
-                <td><button type="button" class="btn btn-primary" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1)
+                {
+                    <td><button type="button" class="btn btn-primary" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                }
             </tr>
         }   
     </tbody>
