@@ -8,26 +8,54 @@
 
 <h1>Welcome @Model.Parent.FirstName</h1>
 
+<p style="text-align:right">
+    <a asp-page="/Parents/EditParents" asp-route-ID="@Model.Parent.ID">Edit Parent Information</a>
+</p>
+
+
+
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.FirstName" class="control-label"></label>
+            <input asp-for="@Model.Parent.FirstName" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.Surname" class="control-label"></label>
+            <input asp-for="@Model.Parent.Surname" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.Parent.PhoneNumber" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
+            <label asp-for="@Model.Parent.Email" class="control-label"></label>
+            <input asp-for="@Model.Parent.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    </div>
+</div>
+<br />
+    You have registered @Model.Students.Count() child/children to you.
+<br />
+<br />
 <p>
     <a asp-page="/Students/CreateStudent">Add Child</a>
-</p>
-<p>
-    <a style="text-align:right" asp-page="/Parents/EditParent">Edit Parent Information</a>
-</p>
-
-
-<p>
-    First Name: @Model.Parent.FirstName <br />
-    Surname: @Model.Parent.Surname <br />
-    PhoneNumber: @Model.Parent.PhoneNumber <br />
-    Email: @Model.Parent.Email <br />
-    You have registered @Model.Students.Count() child/children to you. <br/>
 </p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Parent Name</th>
             <th>Child ID</th>
             <th>Child First Name</th>
             <th>Child Surname</th>
@@ -39,13 +67,11 @@
         @foreach (Student student in @Model.Students)
         {
             <tr>
-                <td>@Model.Parent.FirstName @Model.Parent.Surname</td>
                 <td>@student.ID</td>
                 <td>@student.FirstName</td>
                 <td>@student.Surname</td>
                 <td>@student.TheSchool.Name</td>
                 <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
-
             </tr>
         }
     </tbody>
@@ -53,10 +79,11 @@
 <p>
     @foreach (Student s in @Model.Students)
     {
-        <p>
-        Here you can see the pictures of your child @s.FirstName 
-        </p>
+    <p>
+        Here you can see the pictures of your child @s.FirstName
         <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
+        <br />
+    </p>
     }
 </p>
 

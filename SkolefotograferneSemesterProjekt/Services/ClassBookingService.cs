@@ -7,23 +7,20 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class ClassBookingService : Connection, IClassBookingService
     {
-        private IPhotoEventService _photoES = new PhotoEventService();
-        public async Task<int> Book(ClassBooking cs, SchoolClass sc, int photoEventID)
+        public async Task<int> Book(ClassBooking cs)
         {
-            PhotoEvent? photoEvent = await _photoES.GetByID(photoEventID);
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
 
                 SqlCommand cmd = new SqlCommand(@"
                 INSERT INTO ClassBooking 
-                VALUES (@ID, @StartTime, @PhotoEventID, @TeacherID, @ClassID)", connection);
+                VALUES (@StartTime, @PhotoEventID, @TeacherID, @ClassID)", connection);
 
-                cmd.Parameters.AddWithValue("@ID", cs.ID);
                 cmd.Parameters.AddWithValue("@StartTime", cs.StartTime);
                 cmd.Parameters.AddWithValue("@PhotoEventID", cs.ThePhotoEvent.ID);
                 cmd.Parameters.AddWithValue("@TeacherID", cs.TheTeacher.ID);
-                cmd.Parameters.AddWithValue("@ClassID", sc.ID);
+                cmd.Parameters.AddWithValue("@ClassID", cs.TheSchoolClass.ID);
 
                 return await cmd.ExecuteNonQueryAsync();
             }

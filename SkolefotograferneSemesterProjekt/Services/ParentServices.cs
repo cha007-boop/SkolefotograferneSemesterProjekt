@@ -132,9 +132,20 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task Update(Parent newParent)
+        public async Task Update(Parent newParent)
         {
-            throw new NotImplementedException();
+            using SqlConnection conn = new SqlConnection(connectionString);
+            {
+                SqlCommand command = new SqlCommand(@"UPDATE Parent SET FirstName = @FirstName, Surname = @Surname, PhoneNumber = @PhoneNumber, Email = @Email WHERE ID = @ID", conn);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", newParent.ID);
+                command.Parameters.AddWithValue("@FirstName", newParent.FirstName);
+                command.Parameters.AddWithValue("@Surname", newParent.Surname);
+                command.Parameters.AddWithValue("@PhoneNumber", newParent.PhoneNumber);
+                command.Parameters.AddWithValue("@Email", newParent.Email);
+                await command.ExecuteNonQueryAsync();
+
+            }
         }
     }
 }

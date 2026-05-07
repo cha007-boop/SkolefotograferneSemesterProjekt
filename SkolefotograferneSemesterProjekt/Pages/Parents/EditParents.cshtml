@@ -1,0 +1,66 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Parents.EditParentsModel
+@{
+    ViewData["Title"] = "Parent Edit";
+}
+
+
+<h1>Welcome @Model.NewParent.FirstName</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row" style="padding:5px">
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.NewParent.FirstName" class="control-label"></label>
+                <input asp-for="@Model.NewParent.FirstName" class="form-control" />
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.NewParent.Surname" class="control-label"></label>
+                <input asp-for="@Model.NewParent.Surname" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding:5px">
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.NewParent.PhoneNumber" class="control-label"></label>
+                <input asp-for="@Model.NewParent.PhoneNumber" class="form-control" />
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.NewParent.Email" class="control-label"></label>
+                <input asp-for="@Model.NewParent.Email" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding:5px">
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.NewParent.Password" class="control-label"></label>
+                <input asp-for="@Model.NewParent.Password" class="form-control" />
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+            <div class="form.group">
+                <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+                <input asp-for="@Model.VerifyPassword" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save Changes" class="btn btn-primary"/>
+    </div>
+</form>
+
+
+<br />
+<p>
+    <a asp-page="/Students/CreateStudent">Add Child</a>
+</p>
