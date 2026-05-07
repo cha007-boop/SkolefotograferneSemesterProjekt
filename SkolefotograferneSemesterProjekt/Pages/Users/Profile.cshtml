@@ -35,11 +35,6 @@
             <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
             <input asp-for="@Model.ThisParent.Password" class="form-control" />
         </div>
-//FirstName
-//Surname
-//PhoneNumber
-//email
-//password
 }
 @if (HttpContext.Session.GetInt32("Role") == 1)
 {
@@ -89,15 +84,6 @@
             <label asp-for="@Model.ThisPhotographer.Password" class="control-label"></label>
             <input asp-for="@Model.ThisPhotographer.Password" class="form-control" />
         </div>
-	//FirstName
-	//Surname
-	//PhoneNumber
-	//Website
-	//CVR
-	//Facebook
-	//Instagram
-	//email
-	//password
 }
 @if (HttpContext.Session.GetInt32("Role") == 2)
 {
@@ -127,11 +113,6 @@
             <label asp-for="@Model.ThisTeacher.Password" class="control-label"></label>
             <input asp-for="@Model.ThisTeacher.Password" class="form-control" />
         </div>
-	//FirstName
-	//Surname
-	//PhoneNumber
-	//email
-	//password
 }
 @if (HttpContext.Session.GetInt32("Role") == 3)
 {
@@ -156,10 +137,6 @@
             <label asp-for="@Model.ThisSchoolAdmin.Password" class="control-label"></label>
             <input asp-for="@Model.ThisSchoolAdmin.Password" class="form-control" />
         </div>
-	//PhoneNumber
-	//ContactPerson
-	//email
-	//password
 }
 @if (HttpContext.Session.GetInt32("Role") == 4)
 {
@@ -175,8 +152,6 @@
             <label asp-for="@Model.ThisSysAdmin.Password" class="control-label"></label>
             <input asp-for="@Model.ThisSysAdmin.Password" class="form-control" />
         </div>
-	//email
-	//password
 }
     @*update button*@
     <div class="form-group">
@@ -185,9 +160,7 @@
 </form>
 @*delete button*@
 <form method="post">
-    @* <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" class="btn btn-danger" value="Slet" /> *@
     <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
-@* <input type="submit" class="btn btn-warning" value="Fortryd" /> *@
 </form>
 
 <form method="post" asp-page-handler="Delete" id="deleteForm">
