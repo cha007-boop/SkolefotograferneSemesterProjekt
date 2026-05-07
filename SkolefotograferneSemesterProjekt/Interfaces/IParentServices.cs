@@ -14,5 +14,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 
         Task deleteParent(Parent parent);
 
+        Task Update(Parent newParent);
+
     }
 }

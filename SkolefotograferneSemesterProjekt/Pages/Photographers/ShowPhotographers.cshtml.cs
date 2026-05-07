@@ -28,9 +28,25 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
         }
         #endregion
         #region Methods
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            Photographers = Filter(await photographerService.GetAll());
+            try
+            {
+                if(HttpContext.Session.GetInt32("Role") == 4 || HttpContext.Session.GetInt32("Role") == 3)
+                {
+                    Photographers = Filter(await photographerService.GetAll());
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
 
         private IEnumerable<Photographer> Filter(IEnumerable<Photographer> photographers)

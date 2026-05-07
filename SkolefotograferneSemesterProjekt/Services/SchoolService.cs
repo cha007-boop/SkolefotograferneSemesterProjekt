@@ -47,9 +47,28 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand("delete from Users where ID in (SELECT ID FROM Teacher WHERE SchoolID = @ID) OR ID in (SELECT ID FROM SchoolAdmin WHERE SchoolID = @ID)", connection);
+                    command.Parameters.AddWithValue("@ID", id);
+                    
+                    connection.Open();
+                    await command.ExecuteNonQueryAsync();
+
+                    command = new SqlCommand("delete from School where ID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", id);
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
         }
 
         public async Task<List<School>> GetAll()
@@ -166,9 +185,31 @@ namespace SkolefotograferneSemesterProjekt.Services
             return schools;
         }
 
-        public Task Update(School school)
+        public async Task Update(School school)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(@"
+                    UPDATE School 
+                    SET Name = @Name, StudentCount = @StudentCount, Street = @Street, ZipCode = @ZipCode, Country = @Country
+                    WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", school.ID);
+                    command.Parameters.AddWithValue("@Name", school.Name);
+                    command.Parameters.AddWithValue("@StudentCount", school.StudentCount);
+                    command.Parameters.AddWithValue("@Street", school.Street);
+                    command.Parameters.AddWithValue("@ZipCode", school.ZipCode);
+                    command.Parameters.AddWithValue("@Country", school.Country);
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
         }
 
         private School SchoolReader(SqlDataReader reader)

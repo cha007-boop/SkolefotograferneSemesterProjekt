@@ -5,6 +5,10 @@
 }
 
 <form method="post">
+    <input type="hidden" asp-for="@Model.TheTeacher" />
+    <input type="hidden" asp-for="@Model.ThePhotoEvent" />
+    <input type="hidden" asp-for="@Model.SchoolClass" />
+    <input type="hidden" asp-for="@Model.UserID" />
     <div class="form-group">
         <label asp-for="@Model.NewBooking.TheSchoolClass.ID" class="control-label">Klasse</label>
         <select asp-for="@Model.NewBooking.TheSchoolClass.ID"
@@ -23,6 +27,6 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" asp-route-id="@Model.NewBooking" value="Opret booking" class="btn btn-primary" />
+        <input type="submit" value="Opret booking" class="btn btn-primary" />
     </div>
 </form>

@@ -10,44 +10,51 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
     {
         #region Instance fields
         private IPhotographerService _photographerService;
+        private IUserService _userService;
         #endregion
         #region Properties
         [BindProperty]
         public Photographer Photographer { get; set; }
         #endregion
         #region Constructor
-        public ViewPhotographerModel(IPhotographerService service)
+        public ViewPhotographerModel(IPhotographerService service, IUserService userService)
         {
             _photographerService = service;
+            _userService = userService;
         }
         #endregion
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
             try
             {
-                //check Role
-                Photographer = await _photographerService.SearchByID(id);
+                if(HttpContext.Session.GetInt32("Role") == 4 || HttpContext.Session.GetInt32("Role") == 3)
+                {
+
+                    Photographer = await _photographerService.SearchByID(id);
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return RedirectToPage("/Index");
             }
+            return Page();
         }
         public async Task<IActionResult> OnPostDelete()
         {
             try
             {
-                await _photographerService.Delete(Photographer.ID);
+                await _userService.Delete(Photographer.ID);
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
             }
-            if(HttpContext.Session.GetInt32("ID") == Photographer.ID)
-            {
-                return RedirectToPage("/Index");
-            }
-            return RedirectToPage("Photographers/ShowPhotographers");
+            return RedirectToPage("/Photographers/ShowPhotographers");
         }
     }
 }

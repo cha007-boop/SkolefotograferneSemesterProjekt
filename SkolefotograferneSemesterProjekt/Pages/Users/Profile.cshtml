@@ -194,7 +194,7 @@
     <input type="hidden" name="id" id="deleteId" />
 </form>
 
-<div class="modal fade" id="deleteModal" tabindex="-1">
+<div class="modal fade" id="deleteModalProfile" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -225,7 +225,7 @@
             function DisplayConfirmDeleteModal(id) {
                 document.getElementById("deleteId").value = id;
 
-                var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                var modal = new bootstrap.Modal(document.getElementById('deleteModalProfile'));
                 modal.show();
             }
 
