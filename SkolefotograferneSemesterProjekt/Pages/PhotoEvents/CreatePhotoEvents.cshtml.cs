@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Services;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
@@ -20,10 +21,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public int VerifyPhotographerID { get; set; }
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
+        [BindProperty]
+        private ISchoolAdminService _schoolAdminService { get; set; }
 
-        public CreatePhotoEventsModel(IPhotoEventService photoEventService)
+        public CreatePhotoEventsModel(IPhotoEventService photoEventService, ISchoolAdminService schoolAdminService)
         {
             _photoEventService = photoEventService;
+            _schoolAdminService = schoolAdminService;
         }
         public void OnGet()
         {
@@ -45,6 +49,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 //    ModelState.AddModelError("PhotoEvent.SchoolAdminID", "pls input an existing School admin's id");
                 //    return Page();
                 //}
+                var id = HttpContext.Session.GetInt32("ID");
+                if (!id.HasValue)
+                {
+                    ModelState.AddModelError("", "Session ID missing.");
+                    return Page();
+                }
+                PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime) // this works
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
