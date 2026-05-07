@@ -76,6 +76,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             }
             return FilterFunctions<Student>.Filter(students, predicates);
         }
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            try
+            {
+                await _studentService.Delete(id);
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+            }
+            return RedirectToPage("/Students/ListStudents");
+        }
         #endregion
     }
 }
