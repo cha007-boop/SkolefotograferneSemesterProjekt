@@ -1,0 +1,30 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Photos.ViewPhotosModel
+@{
+    ViewData["Title"] = "ViewPhotos";
+}
+
+<div class="display-3">
+    <h1>Photos</h1>
+</div>
+
+@* <div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <form method="get">
+                <input type="hidden" asp-for=SortColumn />
+                <input type="hidden" asp-for=SortOrder />
+                search: <input type="text" asp-for="FilterValue" />
+                <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+                    <option value="All">-- Select Column --</option>
+                    @foreach(var column in Model.FilterableColumns)
+                    {
+                        <option value="@column.Key">@column.Value</option>
+                    }
+                </select>
+                <input type="submit" value="Search" />
+        </div>
+
+    </div>
+
+</div> *@
