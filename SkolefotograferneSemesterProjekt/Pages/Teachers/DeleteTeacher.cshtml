@@ -8,7 +8,6 @@
 <form method="post">
     <label>Navn</label>: @Model.TeacherToDelete!.FirstName<br/>
     <label>Efternavn</label>: @Model.TeacherToDelete.Surname<br/>
-    @* onlick="return confirm('Er du sikker?')" *@
     <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.TeacherToDelete.ID" class="btn btn-danger" value="Slet" />
     <input type="submit" class="btn btn-warning" value="Fortryd" />
 </form>

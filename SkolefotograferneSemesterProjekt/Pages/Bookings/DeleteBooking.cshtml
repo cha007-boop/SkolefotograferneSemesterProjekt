@@ -1,0 +1,13 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Bookings.DeleteBookingModel
+@{
+    ViewData["Title"] = "Slet Booking";
+}
+
+<h1>Slet denne booking</h1>
+<form method="post">
+    <label>Starttidspunkt</label>: @Model.TheClassBooking.StartTime<br />
+    <label>Klasse</label>: @(Model.TheClassBooking.TheSchoolClass.Grade + "." + Model.TheClassBooking.TheSchoolClass.Letter)<br />
+    <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.TheClassBooking.ID" class="btn btn-danger" value="Slet" />
+    <input type="submit" class="btn btn-warning" value="Fortryd" />
+</form>

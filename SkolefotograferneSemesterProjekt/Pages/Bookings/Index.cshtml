@@ -24,7 +24,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (PhotoEvent pe in Model.PhotoEvents)
+			@foreach (PhotoEvent pe in Model.FilteredList)
 			{
 				<tr>
 					<td>@pe.StartTime</td>
