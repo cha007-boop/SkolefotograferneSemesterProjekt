@@ -63,12 +63,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             if (Portrait != null)
             {
-                Photo portrait = new Photo 
-                { 
-                    Filename = ProcessUploadedFile(), 
-                    ThePhotoEvent = this.ThePhotoEvent, 
-                    Child = this.TheStudent, 
-                    TheSchoolClass = this.TheStudent.TheSchoolClass 
+                Photo portrait = new Photo
+                {
+                    Filename = ProcessUploadedFile(),
+                    ThePhotoEvent = this.ThePhotoEvent,
+                    Child = this.TheStudent,
+                    TheSchoolClass = this.TheStudent.TheSchoolClass,
+                    UploadedAt = DateTime.Now
                 };
 
 

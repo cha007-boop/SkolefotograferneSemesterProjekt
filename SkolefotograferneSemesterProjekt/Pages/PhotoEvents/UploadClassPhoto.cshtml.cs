@@ -69,7 +69,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     Filename = ProcessUploadedFile(),
                     ThePhotoEvent = this.ThePhotoEvent,
                    
-                    TheSchoolClass = this.TheSchoolClass
+                    TheSchoolClass = this.TheSchoolClass,
+                    UploadedAt = DateTime.Now
                 };
 
 
