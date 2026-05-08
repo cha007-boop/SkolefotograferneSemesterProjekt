@@ -17,7 +17,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; } = [];
         [BindProperty]
-        public List<ClassBooking> Bookings { get; set; } = new(); // Instansieres, så den ikke er null
+        public List<ClassBooking> Bookings { get; set; } = new();
         [BindProperty]
         public List<ClassBooking> BookingsAvailable { get; set; } = new(); 
         public Teacher ThisTeacher { get; set; }

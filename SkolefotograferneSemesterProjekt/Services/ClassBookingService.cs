@@ -15,11 +15,10 @@ namespace SkolefotograferneSemesterProjekt.Services
 
                 SqlCommand cmd = new SqlCommand(@"
                 INSERT INTO ClassBooking 
-                VALUES (@StartTime, @PhotoEventID, @TeacherID, @ClassID)", connection);
+                VALUES (@StartTime, @PhotoEventID, @ClassID)", connection);
 
                 cmd.Parameters.AddWithValue("@StartTime", cs.StartTime);
                 cmd.Parameters.AddWithValue("@PhotoEventID", cs.ThePhotoEvent.ID);
-                cmd.Parameters.AddWithValue("@TeacherID", cs.TheTeacher.ID);
                 cmd.Parameters.AddWithValue("@ClassID", cs.TheSchoolClass.ID);
 
                 return await cmd.ExecuteNonQueryAsync();
@@ -33,8 +32,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await connection.OpenAsync();
 
                 SqlCommand cmd = new SqlCommand(@"
-                    SELECT ID, StartTime, PhotoEventID, TeacherID, ClassID
-                    FROM ClassBooking", connection);
+                    SELECT 
+                        cb.ID, cb.StartTime, cb.PhotoEventID,
+                        sc.ID AS ClassID, sc.TeacherID
+                    FROM ClassBooking cb
+                    INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID ", connection);
 
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -61,12 +63,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                     SELECT 
                         cb.ID, cb.StartTime, 
                         p.ID AS PhotoEventID, p.StartTime AS PeStartTime, p.EndTime AS PeEndTime,
-                        t.ID AS TeacherID, t.FirstName, t.Surname, t.PhoneNumber,
-                        sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear
+                        sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear,
+                        t.ID AS TeacherID, t.FirstName, t.Surname, t.PhoneNumber
                     FROM ClassBooking cb
                     INNER JOIN PhotoEvent p ON cb.PhotoEventID = p.ID
-                    INNER JOIN Teacher t ON cb.TeacherID = t.ID
                     INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
+                    INNER JOIN Teacher t ON sc.TeacherID = t.ID
                     WHERE cb.ID = @ID", connection);
                 cmd.Parameters.AddWithValue("@ID", id);
 
@@ -124,11 +126,11 @@ namespace SkolefotograferneSemesterProjekt.Services
 
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
-                        cb.ID, cb.StartTime, cb.PhotoEventID, cb.TeacherID,
-                        sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear
+                        cb.ID, cb.StartTime, cb.PhotoEventID, 
+                        sc.ID AS ClassID, sc.Grade, sc.Letter, sc.SchoolYear, sc.TeacherID
                     FROM ClassBooking cb
                     INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
-                    WHERE cb.TeacherID = @ID", connection);
+                    WHERE sc.TeacherID = @ID", connection);
                     cmd.Parameters.AddWithValue("@ID", teacher.ID);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
@@ -153,8 +155,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await connection.OpenAsync();
 
                 SqlCommand cmd = new SqlCommand(@"
-                    SELECT ID, StartTime, PhotoEventID, TeacherID, ClassID
-                    FROM ClassBooking
+                    SELECT 
+                        cb.ID, StartTime, PhotoEventID,
+                        sc.ID AS ClassID, sc.TeacherID
+                    FROM ClassBooking cb
+                    INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
                     WHERE PhotoEventID = @ID", connection);
                 cmd.Parameters.AddWithValue("@ID", photoEvent.ID);
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
