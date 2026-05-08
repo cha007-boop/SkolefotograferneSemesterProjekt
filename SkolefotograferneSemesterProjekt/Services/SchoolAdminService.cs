@@ -175,8 +175,9 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM SchoolAdmin WHERE ID = @ID", conn);
+                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM SchoolAdmin sa join Users u on u.ID = sa.ID WHERE u.ID = @ID", conn);
                     await cmd.Connection.OpenAsync();
+                    cmd.Parameters.AddWithValue("@ID", id);
 
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     if (await reader.ReadAsync())
