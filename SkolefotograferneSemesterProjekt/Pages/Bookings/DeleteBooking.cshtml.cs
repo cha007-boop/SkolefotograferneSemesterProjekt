@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
-using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 {
-    public class UpdateBookingModel : PageModel
+    public class DeleteBookingModel : PageModel
     {
         IClassBookingService _classBookingService;
 
         [BindProperty]
         public ClassBooking TheClassBooking { get; set; }
 
-        public UpdateBookingModel(IClassBookingService classBookingService)
+        public DeleteBookingModel(IClassBookingService classBookingService)
         {
             _classBookingService = classBookingService;
         }
+
         public async Task OnGet(int id)
         {
             TheClassBooking = await _classBookingService.GetByID(id);
@@ -25,11 +25,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 
         public async Task<IActionResult> OnPost()
         {
-            ModelState.CustomizedMessages("Feltet mangler");
-
             try
             {
-                await _classBookingService.Update(TheClassBooking);
+                await _classBookingService.Delete(TheClassBooking);
             }
             catch (Exception ex)
             {

@@ -5,8 +5,6 @@
 	ViewData["Title"] = "List of bookings";
 }
 
-<h1>Dine fotograferings bookinger</h1>
-
 @* @if(HttpContext.Session.GetInt32("Role") == 4)
 {
 	//add filter
@@ -14,6 +12,7 @@
 
 @if (Model.Bookings.Count >= 1)
 {
+	<h1>Dine fotograferings bookinger</h1>
 	<table class="table">
 		<thead>
 			<tr>
@@ -30,6 +29,10 @@
 					<td>
 						<a asp-page="/Bookings/ViewBooking" asp-route-id="@classBooking.ID" class="btn btn-primary">View more info</a>
 					</td>
+					<td>
+						<a asp-page="UpdateBooking" asp-route-id="@classBooking.ID">Opdater</a> |
+						<a asp-page="DeleteBooking" asp-route-id="@classBooking.ID">Slet</a>
+					</td>
 				</tr>
 			}
 		</tbody>
@@ -37,6 +40,7 @@
 }
 else
 {
+	<a asp-page="Index">Tilbage</a>
 	<h1>Du har ingen bookinger...</h1>
 }
 @* OG *@

@@ -33,6 +33,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         public List<Student> Students { get; set; }
         [BindProperty]
         public string VerifyPassword { get; set; }
+        [BindProperty]
+        public bool Check { get; set; }
         #endregion
         #region Constructor
         public ProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService, IStudentService studentService)
@@ -84,6 +86,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         {
             try
             {
+                Check = false;
                 //if (!ModelState.IsValid)
                 //{
                 //    return Page();
@@ -93,6 +96,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     if(await UpdateCheckerAsync(ThisParent, "ThisParent"))
                     {
                         await _parentServices.Update(ThisParent);
+                        Check = true;
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 1)
@@ -100,6 +104,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                    if(await UpdateCheckerAsync(ThisPhotographer, "ThisPhotographer"))
                     {
                         await _photographerService.Update(ThisPhotographer);
+                        Check = true;
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 2)
@@ -107,6 +112,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     if(await UpdateCheckerAsync(ThisTeacher, "ThisTeacher"))
                     {
                         await _teacherService.Update(ThisTeacher);
+                        Check = true;
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 3)
@@ -114,6 +120,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     if(await UpdateCheckerAsync(ThisSchoolAdmin, "ThisSchoolAdmin"))
                     {
                         await _schoolAdminService.Update(ThisSchoolAdmin);
+                        Check = true;
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 4)
@@ -121,6 +128,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     if (await UpdateCheckerAsync(ThisSysAdmin, "ThisSysAdmin"))
                     {
                         await _sysAdminService.Update(ThisSysAdmin);
+                        Check = true;
                     }
                 }
             }
