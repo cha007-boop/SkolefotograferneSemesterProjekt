@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -27,10 +28,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     }
                     await connection.OpenAsync();
 
-                    SqlCommand sqlCommand = new SqlCommand(@"insert into SchoolClass (ID, SchoolID, TeacherID, Grade, Letter, SchoolYear) values (@ID, @SchoolID, @TeacherID, @Grade, @Letter, @SchoolYear)", connection);
+                    SqlCommand sqlCommand = new SqlCommand(@"insert into SchoolClass (TeacherID, Grade, Letter, SchoolYear) values (@TeacherID, @Grade, @Letter, @SchoolYear)", connection);
 
-                    sqlCommand.Parameters.AddWithValue("@ID", @class.ID);
-                    sqlCommand.Parameters.AddWithValue("@SchoolID", @class.TheSchool.ID);
                     sqlCommand.Parameters.AddWithValue("@TeacherID", @class.TheTeacher.ID);
                     sqlCommand.Parameters.AddWithValue("@Grade", @class.Grade);
                     sqlCommand.Parameters.AddWithValue("@Letter", @class.Letter);
@@ -68,14 +67,14 @@ namespace SkolefotograferneSemesterProjekt.Services
                 while (await reader.ReadAsync())
                 {
                     int id = reader.GetInt32("ID");
-                    int schoolID = reader.GetInt32("SchoolID");
                     int teacherID = reader.GetInt32("TeacherID");
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
 
-                    School school = await _schoolService.GetById(schoolID);
+
                     Teacher teacher = await _teacherService.GetByID(teacherID);
+                    School school = teacher.TheSchool;
 
                     SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     classes.Add(schoolClass);
@@ -99,13 +98,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                 while (await reader.ReadAsync())
                 {
                     int id = reader.GetInt32("ID");
-                    int schoolID = reader.GetInt32("SchoolID");
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
 
-                    School school = await _schoolService.GetById(schoolID);
                     Teacher teacher = await _teacherService.GetByID(teacherid);
+                    School school = teacher.TheSchool;
 
                     SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     classes.Add(schoolClass);
@@ -126,7 +124,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
-                    SchoolClass schoolClass = SchoolClassReader(reader);
+                    SchoolClass schoolClass = await SchoolClassReader(reader);
                     classes.Add(schoolClass);
                 }
                 await reader.CloseAsync();
@@ -146,14 +144,13 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 if(await reader.ReadAsync())
                 {
-                    int schoolID = reader.GetInt32("SchoolID");
                     int teacherID = reader.GetInt32("TeacherID");
                     int grade = reader.GetInt32("Grade");
                     string letter = reader.GetString("Letter");
                     string year = reader.GetString("SchoolYear");
 
-                    School school = await _schoolService.GetById(schoolID);
                     Teacher teacher = await _teacherService.GetByID(teacherID);
+                    School school = teacher.TheSchool;
 
                     SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     await reader.CloseAsync();
@@ -168,13 +165,13 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<SchoolClass> classes = new List<SchoolClass>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("select * from SchoolClass where SchoolID = @SchoolID", connection);
+                SqlCommand command = new SqlCommand("select sc.* from SchoolClass sc join Teacher sc.TeacherID = t.ID where SchoolID = @SchoolID", connection);
                 await command.Connection.OpenAsync();
                 command.Parameters.AddWithValue("@SchoolID", schoolID);
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    SchoolClass schoolClass = SchoolClassReader(reader);
+                    SchoolClass schoolClass = await SchoolClassReader(reader);
                     classes.Add(schoolClass);
                 }
                 await reader.CloseAsync();
@@ -186,7 +183,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("select * from SchoolClass where SchoolID = @SchoolID and Grade = @Grade and Letter = @Letter and SchoolYear = @SchoolYear", connection);
+                SqlCommand command = new SqlCommand("select sc.* from SchoolClass sc join Teacher t on sc.TeacherID = t.ID where t.SchoolID = @SchoolID and sc.Grade = @Grade and sc.Letter = @Letter and sc.SchoolYear = @SchoolYear", connection);
                 await command.Connection.OpenAsync();
 
                 command.Parameters.AddWithValue("@SchoolID", schoolID);
@@ -200,8 +197,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     int id = reader.GetInt32("ID");
                     int teacherID = reader.GetInt32("TeacherID");
 
-                    School school = await _schoolService.GetById(schoolID);
                     Teacher teacher = await _teacherService.GetByID(teacherID);
+                    School school = teacher.TheSchool;
 
                     SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
                     await reader.CloseAsync();
@@ -239,16 +236,15 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        private SchoolClass SchoolClassReader(SqlDataReader reader)
+        private async Task<SchoolClass> SchoolClassReader(SqlDataReader reader)
         {
             int id = reader.GetInt32("ID");
-            int schoolID = reader.GetInt32("SchoolID");
             int teacherID = reader.GetInt32("TeacherID");
             int grade = reader.GetInt32("Grade");
             string letter = reader.GetString("Letter");
             string year = reader.GetString("SchoolYear");
-            School school = _schoolService.GetById(schoolID).Result;
-            Teacher teacher = _teacherService.GetByID(teacherID).Result;
+            Teacher teacher = await _teacherService.GetByID(teacherID);
+            School school = teacher.TheSchool;
             SchoolClass schoolClass = new SchoolClass { ID = id, TheSchool = school, TheTeacher = teacher, Grade = grade, Letter = letter, SchoolYear = year };
             return schoolClass;
         }

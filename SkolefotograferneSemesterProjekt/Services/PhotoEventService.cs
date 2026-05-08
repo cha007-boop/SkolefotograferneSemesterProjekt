@@ -21,6 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         private string _insertPhotoEventString = "insert into PhotoEvent Values(@StartTime,@EndTime,@PhotographerID,@SchoolAdminID, @Location)";
         private string _selectPhotoEventString = "select * from PhotoEvent";
         private string _selectPhotoEventStringBySpecificPhotographID = "select * from PhotoEvent where PhotographerID = @PhotographerID";
+        private string _selectPhotoEventStringBySpecificSchoolAdminID = "select * from PhotoEvent where SchoolAdminID = @SchoolAdminID";
         private string _deletePhotoEventString = "Delete from PhotoEvent where ID = @ID";
 
         public PhotoEventService()
@@ -101,6 +102,35 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return eventGetter;
         }
+        public async Task<List<PhotoEvent>> SearchEventBySchoolAdminID(int ID)
+        {
+            List<PhotoEvent> eventGetter = new List<PhotoEvent>();
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                SqlCommand sql = new SqlCommand(_selectPhotoEventStringBySpecificSchoolAdminID, connection);
+                await sql.Connection.OpenAsync();
+                sql.Parameters.AddWithValue("@SchoolAdminID", ID);
+                SqlDataReader sqlDataReader = await sql.ExecuteReaderAsync();
+                while (sqlDataReader.Read())
+                {
+                    int photoEventID = sqlDataReader.GetInt32("ID");
+                    DateTime startTime = sqlDataReader.GetDateTime("StartTime");
+                    DateTime endTime = sqlDataReader.GetDateTime("EndTime");
+                    int PhotographerID = sqlDataReader.GetInt32("PhotographerID");
+                    string location = sqlDataReader.GetString("Location");
+
+                    Photographer photographer = await _photographerService.SearchByID(PhotographerID);
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(ID);
+
+                    PhotoEvent photoEvent = new PhotoEvent(photoEventID, startTime, endTime, photographer, schoolAdmin,
+                    location);
+                    eventGetter.Add(photoEvent);
+                }
+                sqlDataReader.Close();
+            }
+            return eventGetter;
+        }
+
         public async Task<List<PhotoEvent>> GetAll()
         {
             List<PhotoEvent> photoEventList = [];

@@ -29,10 +29,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             ModelState.Remove("TeacherToEdit.Password");
             ModelState.CustomizedMessages("Feltet mangler");
 
-            if (await _userService.IsEmailTaken(TeacherToEdit!))
+
+            if (!string.IsNullOrEmpty(TeacherToEdit.Email))
             {
-                ModelState.AddModelError("TeacherToEdit.Email", "Mailen er optaget");
-                return Page();
+                if (await _userService.IsEmailTaken(TeacherToEdit!))
+                {
+                    ModelState.AddModelError("TeacherToEdit.Email", "Mailen er optaget");
+                    return Page();
+                }
+            
             }
             if (!ModelState.IsValid)
             {
