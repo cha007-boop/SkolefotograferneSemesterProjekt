@@ -177,5 +177,35 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return cbList;
         }
+
+        public async Task<bool> IsTimeAvailable(ClassBooking cb)
+        {
+            int id = 0;
+            DateTime time = DateTime.MinValue;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT ID, StartTime
+                    FROM ClassBooking
+                    WHERE ID = @ID", connection);
+                cmd.Parameters.AddWithValue("@ID", cb.StartTime);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                int i = 0;
+                while (reader.Read())
+                {
+                    id = reader.GetInt32("ID");
+                    time = reader.GetDateTime("StartTime");
+                    i++;
+                }
+                if (i > 1)
+                {
+                    return true;
+                }
+            }
+            return id != cb.ID && time == cb.StartTime;
+        }
     }
 }
