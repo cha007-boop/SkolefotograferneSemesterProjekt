@@ -6,7 +6,7 @@
 
 <h1>Viewing Profile</h1>
 
-<form method="postupdate">
+<form method="post">
 @if(HttpContext.Session.GetInt32("Role") == 0)
 {
         <input type="hidden" asp-for="@Model.ThisParent.ID" />
@@ -33,7 +33,13 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
-            <input asp-for="@Model.ThisParent.Password" class="form-control" />
+            <input type="password" asp-for="@Model.ThisParent.Password" class="form-control" />
+            <span asp-validation-for="ThisParent.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
+            <span asp-validation-for="ThisParent.Password" class="text-danger"></span>
         </div>
 }
 @if (HttpContext.Session.GetInt32("Role") == 1)
@@ -82,7 +88,13 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.ThisPhotographer.Password" class="control-label"></label>
-            <input asp-for="@Model.ThisPhotographer.Password" class="form-control" />
+            <input type="password" asp-for="@Model.ThisPhotographer.Password" class="form-control" />
+            <span asp-validation-for="ThisPhotographer.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
+            <span asp-validation-for="ThisPhotographer.Password" class="text-danger"></span>
         </div>
 }
 @if (HttpContext.Session.GetInt32("Role") == 2)
@@ -111,7 +123,13 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.ThisTeacher.Password" class="control-label"></label>
-            <input asp-for="@Model.ThisTeacher.Password" class="form-control" />
+            <input type="password" asp-for="@Model.ThisTeacher.Password" class="form-control" />
+            <span asp-validation-for="ThisTeacher.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
+            <span asp-validation-for="ThisTeacher.Password" class="text-danger"></span>
         </div>
 }
 @if (HttpContext.Session.GetInt32("Role") == 3)
@@ -135,7 +153,13 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.ThisSchoolAdmin.Password" class="control-label"></label>
-            <input asp-for="@Model.ThisSchoolAdmin.Password" class="form-control" />
+            <input type="password" asp-for="@Model.ThisSchoolAdmin.Password" class="form-control" />
+            <span asp-validation-for="ThisSchoolAdmin.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
+            <span asp-validation-for="ThisSchoolAdmin.Password" class="text-danger"></span>
         </div>
 }
 @if (HttpContext.Session.GetInt32("Role") == 4)
@@ -150,12 +174,18 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.ThisSysAdmin.Password" class="control-label"></label>
-            <input asp-for="@Model.ThisSysAdmin.Password" class="form-control" />
+            <input type="password" asp-for="@Model.ThisSysAdmin.Password" class="form-control" />
+            <span asp-validation-for="ThisSysAdmin.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
+            <span asp-validation-for="ThisSysAdmin.Password" class="text-danger"></span>
         </div>
 }
     @*update button*@
     <div class="form-group">
-        <input type="submit" asp-route-id="@Model.HttpContext.Session.GetInt32("ID")" value="Update User" class="btn btn-primary" />
+        <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
     </div>
 </form>
 @*delete button*@
