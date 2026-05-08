@@ -22,8 +22,12 @@
 
     <div class="form-group">
         <h6>PhotographerID</h6>
-        <input asp-for="@Model.PhotoEvent.ThePhotographer.ID" class="form-control" />
-        <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
+        <select asp-for="@Model.PhotoEvent.ThePhotographer.ID"
+                asp-items="@Model.Photographers"
+                id="photographerSelect"
+                class="form-select">
+            <option value="">-- Select Photographer --</option>
+        </select>
     </div>
     @inject IHttpContextAccessor HttpContextAccessor
     <div class="form-group">
@@ -34,9 +38,13 @@
         }
         else
         {
-            <input asp-for="@Model.PhotoEvent.TheSchoolAdmin.ID" class="form-control" />
+            <select asp-for="@Model.PhotoEvent.TheSchoolAdmin.ID"
+                    asp-items="@Model.SchoolAdmins"
+                    id="schoolAdminSelect"
+                    class="form-select">
+                <option value="">-- Select SchoolAdmin --</option>
+            </select>
         }
-        <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
 
     <div class="form-group">
