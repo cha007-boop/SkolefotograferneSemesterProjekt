@@ -9,7 +9,7 @@
 <h1>Welcome @Model.Parent.FirstName</h1>
 
 <p style="text-align:right">
-    <a asp-page="/Parents/EditParents" asp-route-ID="@Model.Parent.ID">Edit Parent Information</a>
+    <a asp-page="/Parents/EditParents" asp-route-id="@Model.Parent.ID">Edit Parent Information</a>
 </p>
 
 
@@ -70,7 +70,7 @@
                 <td>@student.ID</td>
                 <td>@student.FirstName</td>
                 <td>@student.Surname</td>
-                <td>@student.TheSchool.Name</td>
+                <td>@student.TheSchoolClass.TheSchool.Name</td>
                 <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
             </tr>
         }

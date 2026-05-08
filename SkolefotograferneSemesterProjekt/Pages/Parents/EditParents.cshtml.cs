@@ -38,7 +38,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             }
             return Page();
         }
-        public async Task<IActionResult> onPost()
+        public async Task<IActionResult> OnPost(int id)
         {
             if (NewParent.Password == VerifyPassword)
             {
@@ -51,7 +51,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             {
                 throw new Exceptions.PasswordNotTheSameException("Passwords are not the same");
             }
-            return Page();
+
+            return RedirectToPage("/Parents/ParentInformation", new { Id = id });
         }
     }
 }
