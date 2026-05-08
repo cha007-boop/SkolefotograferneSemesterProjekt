@@ -17,6 +17,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; } = [];
         [BindProperty]
+        public List<PhotoEvent> FilteredList { get; set; } = [];
+        [BindProperty]
         public List<ClassBooking> Bookings { get; set; } = new();
         [BindProperty]
         public List<ClassBooking> BookingsAvailable { get; set; } = new(); 
@@ -47,14 +49,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             }
 
             PhotoEvents = await _photoEventService.GetAll();
-            // Udkommenteret for debugging
-            //foreach (PhotoEvent pe in await _photoEventService.GetAll())
-            //{
-            //    if (pe.StartTime > DateTime.Now)
-            //    {
-            //        PhotoEvents.Add(pe);
-            //    }
-            //}
+            FilteredList = PhotoEvents.FindAll((pe) => pe.TheSchoolAdmin.TheSchool.ID == ThisTeacher.TheSchool.ID);
+            foreach (PhotoEvent pe in FilteredList)
+                {
+                    if (pe.StartTime > DateTime.Now)
+                    {
+                        PhotoEvents.Add(pe);
+                    }
+                }
         }
         #endregion
     }
