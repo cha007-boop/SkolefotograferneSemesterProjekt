@@ -11,6 +11,28 @@ namespace SkolefotograferneSemesterProjekt.Services
         private IStudentService _studentService = new StudentService();
         private ISchoolClassService _schoolClassService = new SchoolClassService();
 
+        public Dictionary<string, string> SortableColumns { get; } = new Dictionary<string, string>
+        {
+            { "Photo.Filename", "Filename" },
+            { "Photo.PhotoEventID", "Photo Event ID" },
+            { "Photo.ClassID", "Class ID" },
+            { "Photo.ChildID", "Child ID" },
+            { "Photo.UploadedAt", "Uploaded At" }
+        };
+
+        public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
+        {
+            { "Photo.Filename", "Filename" },
+            { "School.Name", "School name" },
+            { "Photo.SchoolID", "School ID" },
+            { "Child.FirstName", "Child First name" },
+            { "Child.Surname", "Child Surname" },
+            { "Photo.PhotoEventID", "Photo Event ID" },
+            { "Photo.ClassID", "Class ID" },
+            { "Photo.ChildID", "Child ID" },
+            { "Student.ParentID", "Parent ID" }
+        };
+
         public async Task Add(Photo photo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -167,7 +189,20 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        //public async Task<List<Photo>> Search(int? photoEventId, int? schoolClassId, int? studentId, int? parentId, int? schoolId, string? filename)
+        //public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        //{
+        //    string query = @"SELECT * FROM Photo
+        //                     JOIN PhotoEvent ON Photo.PhotoEventID = PhotoEvent.ID
+        //                     JOIN Photographer on PhotoEvent.PhotographerID = Photographer.ID
+        //                     LEFT OUTER JOIN Student ON Photo.ChildID = Student.ID
+        //                     LEFT OUTER JOIN Parent ON Student.ParentID = Parent.ID
+        //                     JOIN SchoolClass ON Photo.ClassID = SchoolClass.ID
+        //                     JOIN Teacher ON SchoolClass.TeacherID = Teacher.ID
+        //                     JOIN School ON Teacher.SchoolID = School.ID";
+
+        //    List<string> conditions = new List<string>();
+
+        //}
 
         public Task RemovePhoto(Photo photo)
         {
@@ -178,11 +213,11 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             return new Photo
             {
-                Filename = reader.GetString("Filename"),
-                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
-                TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
-                Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null,
-                UploadedAt = reader.GetDateTime("UploadedAt")
+                Filename = reader.GetString("Photo.Filename"),
+                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("Photo.PhotoEventID")),
+                TheSchoolClass = reader["Photo.ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("Photo.ClassID")) : null,
+                Child = reader["Photo.ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("Photo.ChildID")) : null,
+                UploadedAt = reader.GetDateTime("Photo.UploadedAt")
             };
         }
     }
