@@ -21,7 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 4)
+                if (/*HttpContext.Session.GetInt32("Role") != 0 && */HttpContext.Session.GetInt32("Role") != 4)
                 {
                     throw new UnauthorizedAccessException("You do not have permission to access this page.");
                 }

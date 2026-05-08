@@ -16,6 +16,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         private ISchoolAdminService _schoolAdminService;
         private ISysAdminService _sysAdminService;
         private IUserService _userService;
+        private IStudentService _studentService;
         #endregion
         #region Properties
         [BindProperty]
@@ -29,10 +30,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         [BindProperty]
         public SysAdmin ThisSysAdmin { get; set; }
         [BindProperty]
+        public List<Student> Students { get; set; }
+        [BindProperty]
         public string VerifyPassword { get; set; }
         #endregion
         #region Constructor
-        public ProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService)
+        public ProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService, IStudentService studentService)
         {
             _photographerService = photographerService;
             _parentServices = parentServices;
@@ -40,6 +43,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
             _schoolAdminService = schoolAdminService;
             _sysAdminService = sysAdminService;
             _userService = userService;
+            _studentService = studentService;
         }
         #endregion
         #region Methods
@@ -50,6 +54,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 if (HttpContext.Session.GetInt32("Role") == 0)
                 {
                     ThisParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
+                    Students = await _studentService.GetAllByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
                 if (HttpContext.Session.GetInt32("Role") == 1)
                 {
