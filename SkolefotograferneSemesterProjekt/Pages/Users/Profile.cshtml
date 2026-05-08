@@ -1,4 +1,5 @@
 ﻿@page
+@using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Users.ProfileModel
 @{
 	ViewData["Title"] = "Profile";
@@ -11,36 +12,93 @@
 {
         <input type="hidden" asp-for="@Model.ThisParent.ID" />
 
-        <div class="form-group">
+        <h1>Welcome @Model.ThisParent.FirstName</h1>
+
+@* <p style="text-align:right">
+    <a asp-page="/Parents/EditParents" asp-route-id="@Model.ThisParent.ID">Edit Parent Information</a>
+</p> *@
+
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
             <label asp-for="@Model.ThisParent.FirstName" class="control-label"></label>
-            <input asp-for="@Model.ThisParent.FirstName" class="form-control" />
-            <span asp-validation-for="@Model.ThisParent.FirstName" class="text-danger"></span>
+            <input asp-for="@Model.ThisParent.FirstName" class="form-control" style="padding:15px" />
+                    <span asp-validation-for="@Model.ThisParent.FirstName" class="text-danger"></span>
         </div>
-        <div class="form-group">
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
             <label asp-for="@Model.ThisParent.Surname" class="control-label"></label>
-            <input asp-for="@Model.ThisParent.Surname" class="form-control" />
-            <span asp-validation-for="@Model.ThisParent.Surname" class="text-danger"></span>
+            <input asp-for="@Model.ThisParent.Surname" class="form-control" style="padding:15px" />
+                    <span asp-validation-for="@Model.ThisParent.Surname" class="text-danger"></span>
         </div>
-        <div class="form-group">
+    </div>
+</div>
+<div class="row" style="padding:5px">
+    <div class="col-5">
+        <div class="form.group">
             <label asp-for="@Model.ThisParent.PhoneNumber" class="control-label"></label>
-            <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" />
-            <span asp-validation-for="@Model.ThisParent.PhoneNumber" class="text-danger"></span>
+            <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" style="padding:15px" />
+                    <span asp-validation-for="@Model.ThisParent.PhoneNumber" class="text-danger"></span>
         </div>
-        <div class="form-group">
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <div class="form.group">
             <label asp-for="@Model.ThisParent.Email" class="control-label"></label>
-            <input asp-for="@Model.ThisParent.Email" class="form-control" />
-            <span asp-validation-for="@Model.ThisParent.Email" class="text-danger"></span>
+            <input asp-for="@Model.ThisParent.Email" class="form-control" style="padding:15px" />
+                    <span asp-validation-for="@Model.ThisParent.Email" class="text-danger"></span>
         </div>
+    </div>
+</div>
         <div class="form-group">
-            <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
-            <input type="password" asp-for="@Model.ThisParent.Password" class="form-control" />
-            <span asp-validation-for="ThisParent.Password" class="text-danger"></span>
+            <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
         </div>
-        <div class="form-group">
-            <label asp-for="@Model.VerifyPassword" class="control-label"></label>
-            <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
-            <span asp-validation-for="ThisParent.Password" class="text-danger"></span>
-        </div>
+        <form method="post">
+            <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
+        </form>
+<br />
+    <p>You have registered @Model.Students.Count() child/children to you.</p>
+<br />
+<br />
+<p>
+    <a asp-page="/Students/CreateStudent">Add Child</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Child ID</th>
+            <th>Child First Name</th>
+            <th>Child Surname</th>
+            <th>Child School</th>
+            <th>Child Class</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Student student in @Model.Students)
+        {
+            <tr>
+                <td>@student.ID</td>
+                <td>@student.FirstName</td>
+                <td>@student.Surname</td>
+                <td>@student.TheSchoolClass.TheSchool.Name</td>
+                <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    @foreach (Student s in @Model.Students)
+    {
+    <p>
+        Here you can see the pictures of your child @s.FirstName
+        <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
+        <br />
+    </p>
+    }
+</p>
 }
 @if (HttpContext.Session.GetInt32("Role") == 1)
 {
@@ -182,16 +240,22 @@
             <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
             <span asp-validation-for="ThisSysAdmin.Password" class="text-danger"></span>
         </div>
-}
+    }
     @*update button*@
-    <div class="form-group">
-        <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
+    @if (HttpContext.Session.GetInt32("Role") != 0)
+    {
+        <div class="form-group">
+            <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
     </div>
+    }
 </form>
 @*delete button*@
+@if(HttpContext.Session.GetInt32("Role") != 0)
+{
 <form method="post">
     <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
 </form>
+}
 
 <form method="post" asp-page-handler="Delete" id="deleteForm">
     <input type="hidden" name="id" id="deleteId" />
