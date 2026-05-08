@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -28,6 +28,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         public SchoolAdmin ThisSchoolAdmin { get; set; }
         [BindProperty]
         public SysAdmin ThisSysAdmin { get; set; }
+        [BindProperty]
+        public string VerifyPassword { get; set; }
         #endregion
         #region Constructor
         public ProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService)
@@ -45,23 +47,23 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         {
             try
             {
-                if(HttpContext.Session.GetInt32("Role") == 0)
+                if (HttpContext.Session.GetInt32("Role") == 0)
                 {
                     ThisParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if(HttpContext.Session.GetInt32("Role") == 1)
+                if (HttpContext.Session.GetInt32("Role") == 1)
                 {
                     ThisPhotographer = await _photographerService.SearchByID((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if(HttpContext.Session.GetInt32("Role") == 2)
+                if (HttpContext.Session.GetInt32("Role") == 2)
                 {
                     ThisTeacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if(HttpContext.Session.GetInt32("Role") == 3)
+                if (HttpContext.Session.GetInt32("Role") == 3)
                 {
                     ThisSchoolAdmin = await _schoolAdminService.GetById((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if(HttpContext.Session.GetInt32("Role") == 4)
+                if (HttpContext.Session.GetInt32("Role") == 4)
                 {
                     ThisSysAdmin = await _sysAdminService.SearchByID((int)HttpContext.Session.GetInt32("ID"));
                 }
@@ -77,112 +79,57 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return Page();
-                }
+                //if (!ModelState.IsValid)
+                //{
+                //    return Page();
+                //}
                 if (HttpContext.Session.GetInt32("Role") == 0)
                 {
-                    ModelState.Remove("ThisParent.Password");
-                    ModelState.CustomizedMessages("Feltet mangler");
-
-                    if (await _userService.IsEmailTaken(ThisParent))
+                    if(await UpdateCheckerAsync(ThisParent, "ThisParent"))
                     {
-                        ModelState.AddModelError("ThisParent.Email", "Mailen er optaget");
-                        return Page();
-                    }
-                    try
-                    {
-                        await _parentServices.Update(ThisParent); //not implemented
-                    }
-                    catch
-                    {
-                        throw;
+                        await _parentServices.Update(ThisParent);
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 1)
                 {
-                    ModelState.Remove("ThisPhotographer.Password");
-                    ModelState.CustomizedMessages("Feltet mangler");
-
-                    if (await _userService.IsEmailTaken(ThisPhotographer))
+                   if(await UpdateCheckerAsync(ThisPhotographer, "ThisPhotographer"))
                     {
-                        ModelState.AddModelError("ThisPhotographer.Email", "Mailen er optaget");
-                        return Page();
-                    }
-                    try
-                    {
-                        await _photographerService.Update(ThisPhotographer); //not implemented
-                    }
-                    catch
-                    {
-                        throw;
+                        await _photographerService.Update(ThisPhotographer);
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 2)
                 {
-                    ModelState.Remove("ThisTeacher.Password");
-                    ModelState.CustomizedMessages("Feltet mangler");
-
-                    if (await _userService.IsEmailTaken(ThisTeacher))
+                    if(await UpdateCheckerAsync(ThisTeacher, "ThisTeacher"))
                     {
-                        ModelState.AddModelError("ThisTeacher.Email", "Mailen er optaget");
-                        return Page();
-                    }
-                    try
-                    {
-                        await _teacherService.Update(ThisTeacher); 
-                    }
-                    catch
-                    {
-                        throw;
+                        await _teacherService.Update(ThisTeacher);
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 3)
                 {
-                    ModelState.Remove("ThisSchoolAdmin.Password");
-                    ModelState.CustomizedMessages("Feltet mangler");
-
-                    if (await _userService.IsEmailTaken(ThisSchoolAdmin))
+                    if(await UpdateCheckerAsync(ThisSchoolAdmin, "ThisSchoolAdmin"))
                     {
-                        ModelState.AddModelError("ThisSchoolAdmin.Email", "Mailen er optaget");
-                        return Page();
-                    }
-                    try
-                    {
-                        await _schoolAdminService.Update(ThisSchoolAdmin); //not implemented
-                    }
-                    catch
-                    {
-                        throw;
+                        await _schoolAdminService.Update(ThisSchoolAdmin);
                     }
                 }
                 if (HttpContext.Session.GetInt32("Role") == 4)
                 {
-                    ModelState.Remove("ThisSysAdmin.Password");
-                    ModelState.CustomizedMessages("Feltet mangler");
-
-                    if (await _userService.IsEmailTaken(ThisSysAdmin))
+                    if (await UpdateCheckerAsync(ThisSysAdmin, "ThisSysAdmin"))
                     {
-                        ModelState.AddModelError("ThisSysAdmin.Email", "Mailen er optaget");
-                        return Page();
-                    }
-                    try
-                    {
-                        await _sysAdminService.Update(ThisSysAdmin); //not implemented
-                    }
-                    catch
-                    {
-                        throw;
+                        await _sysAdminService.Update(ThisSysAdmin);
                     }
                 }
+            }
+            catch (InvalidMailException iexc)
+            {
+                ViewData["ErrorMessage"] = iexc;
+                return Page();
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
                 return Page();
             }
-            return RedirectToPage("/Index");
+            return Page();
         }
         public async Task<IActionResult> OnPostDelete(int id)
         {
@@ -199,6 +146,23 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 return Page();
             }
             return RedirectToPage("/Index");
+        }
+        private async Task<bool> UpdateCheckerAsync(User user, string thisuser)
+        {
+            if (user.Password == VerifyPassword && !await _userService.IsEmailTaken(user))
+                return true;
+            else
+            {
+                if (await _userService.IsEmailTaken(user))
+                {
+                    ModelState.AddModelError($"{thisuser}.Email", "Mailen er optaget");
+                }
+                if (user.Password != VerifyPassword)
+                {
+                    ModelState.AddModelError($"{thisuser}.Password", "Password not the same");
+                }
+                return false;
+            }
         }
         #endregion
     }

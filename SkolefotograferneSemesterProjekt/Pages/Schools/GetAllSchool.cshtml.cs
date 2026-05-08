@@ -54,5 +54,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
             }
             return "ASC";
         }
+
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            try
+            {
+                await _schoolService.Delete(id);
+            }
+            catch(Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+            }
+            await OnGet();
+            return Page();
+        }
     }
 }
