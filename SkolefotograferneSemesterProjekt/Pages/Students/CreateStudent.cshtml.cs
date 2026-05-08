@@ -72,17 +72,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     return Page();
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
-                NewStudent.TheSchoolClass = await _schoolClassService.SearchSchoolClass(Convert.ToInt32(SchoolID), ClassGrade, ClassLetter, year);
+                NewStudent.TheSchoolClass = await _schoolClassService.SearchSchoolClass(Convert.ToInt32(SchoolID), ClassGrade, ClassLetter, year) ?? throw new ArgumentException();
                 NewStudent.TheSchool = await _schoolService.GetById(Convert.ToInt32(SchoolID));
                 NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Add(NewStudent);
             }
-
+            catch (ArgumentException)
+            {
+                ModelState.AddModelError("ClassGrade", "Class doesn't exist");
+                await OnGetAsync();
+                return Page();
+            }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc;
             }
-            return RedirectToPage("Parents/index");
+            return RedirectToPage("Users/Profile");
         }
         #endregion
     }

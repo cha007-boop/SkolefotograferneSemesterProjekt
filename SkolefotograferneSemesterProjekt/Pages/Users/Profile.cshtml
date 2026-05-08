@@ -17,12 +17,21 @@
         @* <p style="text-align:right">
     <a asp-page="/Parents/EditParents" asp-route-id="@Model.ThisParent.ID">Edit Parent Information</a>
 </p> *@
+        <div class=" d-flex justify-content-end gap-2">
+            <div class="form-group">
+                <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
+            </div>
+
+        </div>
 
         <div class="row" style="padding:5px">
             <div class="col-5">
                 <div class="form.group">
                     <label asp-for="@Model.ThisParent.FirstName" class="control-label"></label>
-                    <input asp-for="@Model.ThisParent.FirstName" class="form-control" style="padding:15px" />
+                    <input asp-for="@Model.ThisParent.FirstName" class="form-control" />
                     <span asp-validation-for="@Model.ThisParent.FirstName" class="text-danger"></span>
                 </div>
             </div>
@@ -30,7 +39,7 @@
             <div class="col-5">
                 <div class="form.group">
                     <label asp-for="@Model.ThisParent.Surname" class="control-label"></label>
-                    <input asp-for="@Model.ThisParent.Surname" class="form-control" style="padding:15px" />
+                    <input asp-for="@Model.ThisParent.Surname" class="form-control" />
                     <span asp-validation-for="@Model.ThisParent.Surname" class="text-danger"></span>
                 </div>
             </div>
@@ -39,7 +48,7 @@
             <div class="col-5">
                 <div class="form.group">
                     <label asp-for="@Model.ThisParent.PhoneNumber" class="control-label"></label>
-                    <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" style="padding:15px" />
+                    <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" />
                     <span asp-validation-for="@Model.ThisParent.PhoneNumber" class="text-danger"></span>
                 </div>
             </div>
@@ -47,35 +56,30 @@
             <div class="col-5">
                 <div class="form.group">
                     <label asp-for="@Model.ThisParent.Email" class="control-label"></label>
-                    <input asp-for="@Model.ThisParent.Email" class="form-control" style="padding:15px" />
+                    <input asp-for="@Model.ThisParent.Email" class="form-control" />
                     <span asp-validation-for="@Model.ThisParent.Email" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row" style="padding:5px">
-                <div class="col-5">
-                    <div class="form.group">
-                        <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
-                        <input asp-for="@Model.ThisParent.Password" class="form-control" />
-                    </div>
+        </div>
+        <div class="row" style="padding:5px">
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.ThisParent.Password" class="control-label"></label>
+                    <input asp-for="@Model.ThisParent.Password" class="form-control" />
+                    <span asp-validation-for="@Model.ThisParent.Password" class="text-danger"></span>
                 </div>
-                <div class="col-1"></div>
-                <div class="col-5">
-                    <div class="form.group">
-                        <label asp-for="@Model.VerifyPassword" class="control-label"></label>
-                        <input asp-for="@Model.VerifyPassword" class="form-control" />
-                    </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.VerifyPassword" class="control-label"></label>
+                    <input asp-for="@Model.VerifyPassword" class="form-control" />
+                    <span asp-validation-for="@Model.VerifyPassword" class="text-danger"></span>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
-        </div>
-        <form method="post">
-            <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@HttpContext.Session.GetInt32("ID")')">Delete</button></td>
-        </form>
         <br />
         <p>You have registered @Model.Students.Count() child/children to you.</p>
-        <br />
         <br />
         <p>
             <a asp-page="/Students/CreateStudent">Add Child</a>
