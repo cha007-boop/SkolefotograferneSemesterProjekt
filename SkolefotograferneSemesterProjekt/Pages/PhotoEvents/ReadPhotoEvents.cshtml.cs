@@ -9,19 +9,33 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     public class ReadPhotoEventsModel : PageModel
     {
         private IPhotoEventService PEService;
+        private IHttpContextAccessor HttpContextAccessor;
+
         [BindProperty]
         public PhotoEvent PhotoEvent { get; set; }
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; }
-        public ReadPhotoEventsModel(IPhotoEventService pEService)
+        public ReadPhotoEventsModel(IPhotoEventService pEService, IHttpContextAccessor httpContextAccessor)
         {
+            HttpContextAccessor = httpContextAccessor;
             PEService = pEService;
         }
         public async Task OnGet()
         {
             try
             {
-                PhotoEvents = PhotoEventSort(await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
+                if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
+                {
+                    PhotoEvents = PhotoEventSort(await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
+                } else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3)
+                {
+                    PhotoEvents = PhotoEventSort(await PEService.SearchEventBySchoolAdminID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
+                }
+                else if(HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 4)
+                {
+                    PhotoEvents = PhotoEventSort(await PEService.ShowActivePhotoEvent()).OrderBy(n => n.StartTime).ToList();
+                }
+               
             }
             catch (Exception ex)
             {
