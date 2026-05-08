@@ -17,12 +17,13 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID)";
+                    string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID, UploadedAt) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID, @UploadedAt)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Filename", photo.Filename);
                     command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent.ID);
                     command.Parameters.AddWithValue("@ClassID", photo.TheSchoolClass?.ID ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@ChildID", photo.Child?.ID ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@UploadedAt", photo.UploadedAt);
                     connection.Open();
                     await command.ExecuteNonQueryAsync();
                 }
@@ -47,13 +48,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     List<Photo> photos = new List<Photo>();
                     while (reader.Read())
                     {
-                        Photo photo = new Photo
-                        {
-                            Filename = reader.GetString("Filename"),
-                            ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
-                            TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
-                            Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null
-                        };
+                        Photo photo = await PhotoReader(reader);
                         photos.Add(photo);
                     }
                     return photos;
@@ -79,13 +74,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        return new Photo
-                        {
-                            Filename = reader.GetString("Filename"),
-                            ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
-                            TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
-                            Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null
-                        };
+                        return await PhotoReader(reader);
                     }
                     return null;
                 }
@@ -111,13 +100,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     List<Photo> photos = new List<Photo>();
                     while (reader.Read())
                     {
-                        Photo photo = new Photo
-                        {
-                            Filename = reader.GetString("Filename"),
-                            ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
-                            TheSchoolClass = await _schoolClassService.GetByID(reader.GetInt32("ClassID")),
-                            Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null
-                        };
+                        Photo photo = await PhotoReader(reader);
                         photos.Add(photo);
                     }
                     return photos;
@@ -144,13 +127,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     List<Photo> photos = new List<Photo>();
                     while (await reader.ReadAsync())
                     {
-                        Photo photo = new Photo
-                        {
-                            Filename = reader.GetString("Filename"),
-                            ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
-                            TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
-                            Child = await _studentService.GetById(reader.GetInt32("ChildID"))
-                        };
+                        Photo photo = await PhotoReader(reader);
                         photos.Add(photo);
                     }
                     return photos;
@@ -163,14 +140,50 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task<List<Photo>> GetByPhotoEventId(int photoEventId)
+        public async Task<List<Photo>> GetByPhotoEventId(int photoEventId)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT * FROM Photo WHERE PhotoEventID = @PhotoEventId";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@PhotoEventId", photoEventId);
+                    conn.Open();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    List<Photo> photos = new List<Photo>();
+                    while (await reader.ReadAsync())
+                    {
+                        Photo photo = await PhotoReader(reader);
+                        photos.Add(photo);
+                    }
+                    return photos;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    throw;
+                }
+            }
         }
+
+        //public async Task<List<Photo>> Search(int? photoEventId, int? schoolClassId, int? studentId, int? parentId, int? schoolId, string? filename)
 
         public Task RemovePhoto(Photo photo)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<Photo> PhotoReader(SqlDataReader reader)
+        {
+            return new Photo
+            {
+                Filename = reader.GetString("Filename"),
+                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
+                TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
+                Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null,
+                UploadedAt = reader.GetDateTime("UploadedAt")
+            };
         }
     }
 }
