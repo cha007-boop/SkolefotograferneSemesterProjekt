@@ -59,9 +59,26 @@ namespace SkolefotograferneSemesterProjekt.Services
             throw new NotImplementedException();
         }
 
-        public Task Update(SysAdmin newSysAdmin)
+        public async Task Update(SysAdmin newSysAdmin)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await userService.ValidateUpdate(newSysAdmin);
+                using SqlConnection conn = new SqlConnection(connectionString);
+                {
+                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", newSysAdmin.ID);
+                    command.Parameters.AddWithValue("@Email", newSysAdmin.Email);
+                    command.Parameters.AddWithValue("@Password", newSysAdmin.Password);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
+            }
         }
         #endregion
     }

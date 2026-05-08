@@ -96,20 +96,39 @@ namespace SkolefotograferneSemesterProjekt.Services
                 return null;
             }
         }
-        public Task Update(Photographer newPhotographer)
+        public async Task Update(Photographer newPhotographer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await userService.ValidateUpdate(newPhotographer);
+                using SqlConnection conn = new SqlConnection(connectionString);
+                {
+                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", newPhotographer.ID);
+                    command.Parameters.AddWithValue("@Email", newPhotographer.Email);
+                    command.Parameters.AddWithValue("@Password", newPhotographer.Password);
+                    await command.ExecuteNonQueryAsync();
+
+                    command.CommandText = @"UPDATE Photographer SET FirstName = @FirstName, Surname = @Surname, PhoneNumber = @PhoneNumber, Website = @Website, CVR = @CVR, Facebook = @Facebook, Instagram = @Instagram WHERE ID = @ID";
+
+                    command.Parameters.AddWithValue("@FirstName", newPhotographer.FirstName);
+                    command.Parameters.AddWithValue("@Surname", newPhotographer.Surname);
+                    command.Parameters.AddWithValue("@PhoneNumber", newPhotographer.PhoneNumber);
+                    command.Parameters.AddWithValue("@Website", newPhotographer.Website);
+                    command.Parameters.AddWithValue("@CVR", newPhotographer.CVR);
+                    command.Parameters.AddWithValue("@Facebook", newPhotographer.Facebook);
+                    command.Parameters.AddWithValue("@Instagram", newPhotographer.Instagram);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
+            }
         }
-        //public async Task Delete(int id)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand command = new SqlCommand("delete from Photographer where ID = @ID", connection);
-        //        await command.Connection.OpenAsync();
-        //        command.Parameters.AddWithValue("@ID", id);
-        //        await command.ExecuteNonQueryAsync();
-        //    }
-        //}
         #endregion
     }
 }
