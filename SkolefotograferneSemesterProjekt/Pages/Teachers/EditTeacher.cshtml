@@ -7,10 +7,6 @@
 <form method="post">
     <input type="hidden" asp-for="@Model.TeacherToEdit.ID" />
     <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.ID" />
-    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Name" />
-    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Street" />
-    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.Country" />
-    <input type="hidden" asp-for="@Model.TeacherToEdit.TheSchool.ZipCode" />
 
     <div class="form-group">
         <label asp-for="@Model.TeacherToEdit.FirstName" class="control-label"></label>
@@ -33,7 +29,8 @@
         <span asp-validation-for="@Model.TeacherToEdit.Email" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <input type="submit" asp-route-id="@Model.TeacherToEdit.ID" value="Opdater bruger" class="btn btn-primary" />
+    <div class="form-group d-flex gap-2 mt-3">
+        <input type="submit" asp-page-handler="Update" asp-route-id="@Model.TeacherToEdit.ID" value="Opdater bruger" class="btn btn-primary" />
+        <input type="submit" asp-page-handler="" value="Fortryd" class="btn btn-secondary" />
     </div>
 </form>

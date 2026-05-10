@@ -7,38 +7,38 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class DeleteTeacherModel : PageModel
     {
-        private ITeacherService _repo;
+        private ITeacherService _teacherService;
 
         public Teacher? TeacherToDelete { get; set; }
 
-        public DeleteTeacherModel(ITeacherService repo)
+        public DeleteTeacherModel(ITeacherService teacherService)
         {
-            _repo = repo;
+            _teacherService = teacherService;
         }
         public async Task OnGet(int id)
         {
-            TeacherToDelete = await _repo.GetByID(id);
+            TeacherToDelete = await _teacherService.GetByID(id);
+        }
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("Index");
         }
         public async Task<IActionResult> OnPostDelete(int id)
         {
-            TeacherToDelete = await _repo.GetByID(id);
+            TeacherToDelete = await _teacherService.GetByID(id);
             if (TeacherToDelete == null)
             {
                 return Page();
             }
             try
             {
-                await _repo.Delete(TeacherToDelete);
+                await _teacherService.Delete(TeacherToDelete);
             }
             catch(Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("Index");
-        }
-        public IActionResult OnPost()
-        {
             return RedirectToPage("Index");
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using System.Data;
@@ -7,19 +8,25 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class ClassBookingService : Connection, IClassBookingService
     {
-        public async Task<int> Book(ClassBooking cs)
+        public async Task<int> Book(ClassBooking classBooking)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
 
+                bool isAvailable = await IsTimeAvailable(classBooking);
+                if (!isAvailable)
+                {
+                    throw new BookingTimeNotAvailableException("Tiden er allerede booket");
+                }
+
                 SqlCommand cmd = new SqlCommand(@"
                 INSERT INTO ClassBooking 
                 VALUES (@StartTime, @PhotoEventID, @ClassID)", connection);
 
-                cmd.Parameters.AddWithValue("@StartTime", cs.StartTime);
-                cmd.Parameters.AddWithValue("@PhotoEventID", cs.ThePhotoEvent.ID);
-                cmd.Parameters.AddWithValue("@ClassID", cs.TheSchoolClass.ID);
+                cmd.Parameters.AddWithValue("@StartTime", classBooking.StartTime);
+                cmd.Parameters.AddWithValue("@PhotoEventID", classBooking.ThePhotoEvent.ID);
+                cmd.Parameters.AddWithValue("@ClassID", classBooking.TheSchoolClass.ID);
 
                 return await cmd.ExecuteNonQueryAsync();
             }
@@ -131,8 +138,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                     FROM ClassBooking cb
                     INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
                     WHERE sc.TeacherID = @ID", connection);
-                    cmd.Parameters.AddWithValue("@ID", teacher.ID);
+                cmd.Parameters.AddWithValue("@ID", teacher.ID);
+
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                
                 while (await reader.ReadAsync())
                 {
                     ClassBooking cb = new ClassBooking();
@@ -146,7 +155,6 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return cbList;
         }
-
         public async Task<List<ClassBooking>> GetBookingsByPhotoEvent(PhotoEvent photoEvent)
         {
             List<ClassBooking> cbList = [];
@@ -162,6 +170,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     INNER JOIN SchoolClass sc ON cb.ClassID = sc.ID
                     WHERE PhotoEventID = @ID", connection);
                 cmd.Parameters.AddWithValue("@ID", photoEvent.ID);
+
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
                 while (await reader.ReadAsync())
@@ -177,11 +186,8 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return cbList;
         }
-
         public async Task<bool> IsTimeAvailable(ClassBooking cb)
         {
-            int id = 0;
-            DateTime time = DateTime.MinValue;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
@@ -189,23 +195,29 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT ID, StartTime
                     FROM ClassBooking
-                    WHERE ID = @ID", connection);
-                cmd.Parameters.AddWithValue("@ID", cb.StartTime);
+                    WHERE CAST (StartTime AS DATE) = CAST (@StartTime AS DATE)", connection);
+                cmd.Parameters.AddWithValue("@StartTime", cb.StartTime);
+
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                int i = 0;
-                while (reader.Read())
+                DateTime cbEndTime = cb.StartTime.AddMinutes(20); 
+
+                while (await reader.ReadAsync())
                 {
-                    id = reader.GetInt32("ID");
-                    time = reader.GetDateTime("StartTime");
-                    i++;
-                }
-                if (i > 1)
-                {
-                    return true;
+                    int elmID = reader.GetInt32("ID");
+                    if(elmID != cb.ID)
+                    {
+                        DateTime timeStart = reader.GetDateTime("StartTime");
+                        DateTime timeEnd = timeStart.AddMinutes(20);
+
+                        if (cb.StartTime < timeEnd && cbEndTime > timeStart)
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
-            return id != cb.ID && time == cb.StartTime;
+            return true;
         }
     }
 }

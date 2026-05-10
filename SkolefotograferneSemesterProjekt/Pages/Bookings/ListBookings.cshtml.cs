@@ -12,9 +12,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         private ITeacherService _teacherService;
         #endregion
         #region Properties
-        [BindProperty]
-        public List<ClassBooking> Bookings { get; set; } = new(); // Instansieres, så den ikke er null
-        public Teacher ThisTeacher { get; set; }
+        public List<ClassBooking> Bookings { get; set; } = [];
         #endregion
         #region Constructor
         public ListBookingsModel(IClassBookingService classBookingService, ITeacherService teacherService)
@@ -26,28 +24,31 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         #region Methods
         public async Task<IActionResult> OnGetAsync()
         {
+            int? userID = HttpContext.Session.GetInt32("ID");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (userID == null || role == null)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            if (role != 2)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+
+            Teacher? t = await _teacherService.GetByID((int)userID);
+            if (t == null)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
             try
             {
-                if (HttpContext.Session.GetInt32("Role") == 2)
+                foreach (ClassBooking booking in await _classBookingService.GetBookingsByTeacher(t))
                 {
-                    foreach(ClassBooking booking in await _classBookingService.GetBookingsByTeacher(await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"))))
+                    if (booking.StartTime.Date >= DateTime.Today)
                     {
-                        // Udkommenteret til debugging 
-                        //if(booking.StartTime > DateTime.Now)
-                        //{
-                        //    Bookings.Add(booking);
-                        //}
                         Bookings.Add(booking);
                     }
                 }
-                //if (HttpContext.Session.GetInt32("Role") == 3)
-                //{
-                //    throw new NotImplementedException();
-                //}
-                //if (HttpContext.Session.GetInt32("Role") == 4)
-                //{
-                //    Bookings = await _classBookingService.GetAll();
-                //}
             }
             catch (Exception exc)
             {

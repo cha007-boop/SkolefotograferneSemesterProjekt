@@ -4,10 +4,23 @@
     ViewData["Title"] = "Slet Booking";
 }
 
-<h1>Slet denne booking</h1>
-<form method="post">
-    <label>Starttidspunkt</label>: @Model.TheClassBooking.StartTime<br />
-    <label>Klasse</label>: @(Model.TheClassBooking.TheSchoolClass.Grade + "." + Model.TheClassBooking.TheSchoolClass.Letter)<br />
-    <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.TheClassBooking.ID" class="btn btn-danger" value="Slet" />
-    <input type="submit" class="btn btn-warning" value="Fortryd" />
-</form>
+@if(Model.TheClassBooking == null)
+{
+    <h1>Ingen booking valgt</h1>
+
+    <a asp-page="/Bookings/ListBookings">Bookinger</a>
+}
+else
+{
+    <h1>Slet denne booking</h1>
+
+    <form method="post">
+        <label>Starttidspunkt</label>: @Model.TheClassBooking.StartTime<br />
+        <label>Klasse</label>: @(Model.TheClassBooking.TheSchoolClass.Grade + "." + Model.TheClassBooking.TheSchoolClass.Letter)<br />
+
+        <div class="form-group d-flex gap-2 mt-3">
+            <input type="submit" asp-route-id="@Model.TheClassBooking.ID" class="btn btn-danger" value="Slet" />
+            <a asp-page="/Bookings/ListBookings" class="btn btn-secondary">Fortryd</a>
+        </div>
+    </form>
+}

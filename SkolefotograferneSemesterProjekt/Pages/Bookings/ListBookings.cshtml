@@ -2,16 +2,13 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Bookings.ListBookingsModel
 @{
-	ViewData["Title"] = "List of bookings";
+	ViewData["Title"] = "Aktive bookinger";
 }
-
-@* @if(HttpContext.Session.GetInt32("Role") == 4)
-{
-	//add filter
-} *@
 
 @if (Model.Bookings.Count >= 1)
 {
+	<a asp-page="Index">Tilbage</a>
+
 	<h1>Dine fotograferings bookinger</h1>
 	<table class="table">
 		<thead>
@@ -36,36 +33,10 @@
 				</tr>
 			}
 		</tbody>
-	</table>	
+	</table>
 }
 else
 {
 	<a asp-page="Index">Tilbage</a>
 	<h1>Du har ingen bookinger...</h1>
 }
-@* OG *@
-@* <table class="table">
-	<thead>
-		<tr>
-			<form method="get">
-			<th>Start Time</th>
-			<th>Class</th>
-			</form>
-		</tr>
-	</thead>
-	<tbody>
-		@if(Model.Bookings != null)
-		{
-		@foreach (ClassBooking classBooking in Model.Bookings)
-		{
-			<tr>
-				<td>@classBooking.StartTime</td>
-				<td>@classBooking.TheSchoolClass.Grade @classBooking.TheSchoolClass.Letter</td>
-				<td>
-					<a asp-page="/Bookings/ViewBooking" asp-route-id="@classBooking.ID" class="btn btn-primary">View more info</a>
-				</td>
-			</tr>
-		}
-		}
-	</tbody>
-</table> *@

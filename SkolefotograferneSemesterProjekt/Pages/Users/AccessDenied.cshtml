@@ -1,0 +1,18 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Users.AccessDeniedModel
+@{
+    ViewData["Title"] = "Ingen Adgang";
+}
+<h1 style="text-align: center;">Access denied...</h1>
+@if (Model.IsLoggedIn)
+{
+    <h2 style="text-align: center">
+        <a asp-page="/Index">Home Page</a>
+    </h2>
+}
+else
+{
+    <h2 style="text-align: center">
+        <a asp-page="/Users/Login">Login</a>
+    </h2>
+}
