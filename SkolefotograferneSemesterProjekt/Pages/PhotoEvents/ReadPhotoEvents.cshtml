@@ -36,13 +36,22 @@
                 <td>@photoEventItem.ThePhotographer.ID</td>
                 <td>@photoEventItem.TheSchoolAdmin.ID</td>
                 <td>@photoEventItem.Location</td>
+                <td>
+
+                        <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                            <button class="btn btn-primary">
+                                Click to see further information
+                            </button>
+                            </a>
+               
+                </td>
                 <td><a asp-page="/Photoevents/PhotoEventDetails" asp-route-id="@photoEventItem.ID">Click to see further information</a></td>
                 @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1)
                 {
-                    <td><button type="button" class="btn btn-primary" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                    <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
                 }
             </tr>
-        }   
+        }
     </tbody>
 </table>
 <form method="post" asp-page-handler="DeletePhotoEvents" id="deleteForm">
@@ -84,7 +93,7 @@
 
 </form>
 
-@section Scripts{
+@section Scripts {
     <script>
         function DisplayConfirmDeleteModal(id) {
             document.getElementById("deleteId").value = id;

@@ -2,25 +2,22 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Bookings.IndexModel
 @{
-	ViewData["Title"] = "Liste af Photo Events";
-}
-<h1>Bookings</h1>
-
-@if (HttpContext.Session.GetInt32("Role") == 4)
-{
-	//add filter
+	ViewData["Title"] = "Liste af PhotoEvents";
 }
 
-@if (Model.PhotoEvents.Count >= 1)
+@if(Model.FilteredList.Count < 1)
 {
+	<h1>Der Findes ingen PhotoEvents...</h1>
+}
+else if (Model.Role == 2)
+{
+	<a asp-page="/Bookings/ListBookings">Se dine aktive bookinger</a>
 	<table class="table">
 		<thead>
 			<tr>
-				<form method="get">
 				<th>Starttidspunkt</th>
 				<th>Sluttidspunkt</th>
 				<th>Lokation</th>
-				</form>
 			</tr>
 		</thead>
 		<tbody>
@@ -33,6 +30,62 @@
 					<td>
 						<a asp-page="/Bookings/CreateBooking" asp-route-id="@pe.ID" class="btn btn-primary">Book</a>
 					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else if (Model.Role == 3)
+{
+	<h1>Aktive PhotoEvents for @Model.ThisSchoolAdmin.TheSchool.Name</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Starttidspunkt</th>
+				<th>Sluttidspunkt</th>
+				<th>Lokation</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (PhotoEvent pe in Model.FilteredList)
+			{
+				<tr>
+					<td>@pe.ID</td>
+					<td>@pe.StartTime</td>
+					<td>@pe.EndTime</td>
+					<td>@pe.Location</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else if (Model.Role == 4 )
+{
+	<h1>Aktive PhotoEvents for alle Skoler</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Starttidspunkt</th>
+				<th>Sluttidspunkt</th>
+				<th>Lokation</th>
+				<th>Skole ID</th>
+				<th>Skole</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (PhotoEvent pe in Model.FilteredList)
+			{
+				<tr>
+					<td>@pe.ID</td>
+					<td>@pe.StartTime</td>
+					<td>@pe.EndTime</td>
+					<td>@pe.Location</td>
+					<td>@pe.TheSchoolAdmin.TheSchool.ID</td>
+					<td>@pe.TheSchoolAdmin.TheSchool.Name</td>
 				</tr>
 			}
 		</tbody>

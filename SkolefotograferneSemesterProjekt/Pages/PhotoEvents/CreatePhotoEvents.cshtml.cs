@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
@@ -23,14 +25,38 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public int VerifySchoolAdminID { get; set; }
         [BindProperty]
         private ISchoolAdminService _schoolAdminService { get; set; }
-
-        public CreatePhotoEventsModel(IPhotoEventService photoEventService, ISchoolAdminService schoolAdminService)
+        [BindProperty]
+        private IPhotographerService _photographerService { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> Photographers { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> SchoolAdmins { get; set; }
+        public CreatePhotoEventsModel(IPhotoEventService photoEventService, IPhotographerService photographerService, ISchoolAdminService schoolAdminService)
         {
             _photoEventService = photoEventService;
             _schoolAdminService = schoolAdminService;
+            _photographerService = photographerService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
+            //List<School> schools = await _schoolService.GetAll();
+            //Schools = schools.Select(s => new SelectListItem
+            //{
+            //    Value = Convert.ToString(s.ID),
+            //    Text = $"{s.Name} - {s.Street} {s.ZipCode}"
+            //});
+            List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
+            List<Photographer> photographers = await _photographerService.GetAll();
+            SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
+            {
+                Value = Convert.ToString(s.ID),
+                Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
+            });
+            Photographers = photographers.Select(s => new SelectListItem
+            {
+                Value = Convert.ToString(s.ID),
+                Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
+            });
         }
         public async Task<IActionResult> OnPost() /*possibly validation checker or exception check could be used here*/
         {
@@ -49,13 +75,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 //    ModelState.AddModelError("PhotoEvent.SchoolAdminID", "pls input an existing School admin's id");
                 //    return Page();
                 //}
-                var id = HttpContext.Session.GetInt32("ID");
-                if (!id.HasValue)
+                if(HttpContext.Session.GetInt32("Role") == 3)
                 {
-                    ModelState.AddModelError("", "Session ID missing.");
-                    return Page();
+                    var id = HttpContext.Session.GetInt32("ID");
+                    if (!id.HasValue)
+                    {
+                        ModelState.AddModelError("", "Session ID missing.");
+                        return Page();
+                    }
+                    PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
                 }
-                PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime) // this works
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");

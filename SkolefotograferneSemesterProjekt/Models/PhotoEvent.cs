@@ -12,13 +12,9 @@ namespace SkolefotograferneSemesterProjekt.Models
     public class PhotoEvent
     {
         public int ID { get; set; }
-        [Required(ErrorMessage = "StartTime is required")]
         public DateTime StartTime { get; set; }
-        [Required(ErrorMessage = "EndTime is required")]
         public DateTime EndTime { get; set; }
-        [Required(ErrorMessage = "PhotographerID is required")]
         public Photographer ThePhotographer { get; set; }
-        [Required(ErrorMessage = "SchoolAdminID is required")]
         public SchoolAdmin TheSchoolAdmin { get; set; }
         public SchoolClass TheSchoolClass { get; set; }
         

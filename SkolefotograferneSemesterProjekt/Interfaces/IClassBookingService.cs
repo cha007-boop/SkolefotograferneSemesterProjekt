@@ -11,5 +11,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task Delete(ClassBooking classBooking);
         Task<List<ClassBooking>> GetBookingsByTeacher(Teacher teacher);
         Task<List<ClassBooking>> GetBookingsByPhotoEvent(PhotoEvent photoEvent);
+        Task<bool> IsTimeAvailable(ClassBooking classBooking);
     }
 }

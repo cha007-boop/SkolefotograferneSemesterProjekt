@@ -135,7 +135,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
                 int i = 0;
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     id = reader.GetInt32("ID");
                     email = reader.GetString("Email");
