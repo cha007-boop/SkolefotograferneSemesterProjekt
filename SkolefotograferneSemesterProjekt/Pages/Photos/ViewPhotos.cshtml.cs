@@ -9,6 +9,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
     {
         private IPhotoService _photoService;
 
+        public Dictionary<string, string> FilterableColumns
+        {
+            get { return _photoService.FilterableColumns; }
+        }
+        public Dictionary<string, string> SortableColumns
+        {
+            get { return _photoService.SortableColumns; }
+        }
+
+        [BindProperty(SupportsGet =true)]
+        public string Type { get; set; }
         [BindProperty(SupportsGet =true)]
         public string FilterColumn { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -24,11 +35,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
         {
             _photoService = photoService;
             SortOrder = "ASC";
+            Type = "All";
         }
 
-        public async void OnGet()
+        public async Task OnGet()
         {
-
+            Photos = await _photoService.Search(FilterColumn, FilterValue, SortColumn, SortOrder, Type);
         }
 
         public string Toggle(string column)
