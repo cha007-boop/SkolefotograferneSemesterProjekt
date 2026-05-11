@@ -39,7 +39,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 }
                 if (Role == (int)UserRole.Teacher)
                 {
-                    Teacher t = TheTeacher;
+                    TheTeacher = await _teacherService.GetByID((int)userID);
+                    Teacher? t = TheTeacher;
                     if (t != null && t.ID == id)
                     {
                         IsUser = true;
@@ -54,10 +55,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                         RedirectToPage("/Users/AccessDenied");
                     }
                 }
-                else
-                {
-                    return RedirectToPage("/Users/AccessDenied");
-                }
             }
             else
             {
@@ -66,68 +63,4 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             return Page();
         }
     }
-    // OLD
-    //public async Task<IActionResult> OnGet(int id)
-    //    {
-    //        int? userID = HttpContext.Session.GetInt32("ID");
-    //        Role = HttpContext.Session.GetInt32("Role");
-    //        if (userID.HasValue && userID == id || Role.HasValue && (Role == (int)UserRole.SysAdmin || Role == (int)UserRole.SchoolAdmin))
-    //        {
-    //            TheTeacher = await _teacherService.GetByID(id);
-    //            if (TheTeacher != null)
-    //            {
-    //                ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
-    //            }
-
-    //            if (userID != null)
-    //            {
-    //                Teacher t = TheTeacher;
-    //                if (t != null && t.ID == id)
-    //                {
-    //                    IsUser = true;
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-    //            return RedirectToPage("/Users/AccessDenied");
-    //        }
-    //        return Page();
-
-    //        if (userID.HasValue && Role.HasValue)
-    //        {
-    //            TheTeacher = await _teacherService.GetByID(id);
-    //            if (TheTeacher != null)
-    //            {
-    //                ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
-    //            }
-    //            if (Role == (int)UserRole.Teacher)
-    //            {
-    //                Teacher t = TheTeacher;
-    //                if (t != null && t.ID == id)
-    //                {
-    //                    IsUser = true;
-    //                }
-    //            }
-    //            else if (Role == (int)UserRole.SchoolAdmin)
-    //            {
-    //                SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)userID);
-    //                int schoolID = schoolAdmin.TheSchool.ID;
-    //                if (schoolID != TheTeacher.TheSchool.ID)
-    //                {
-    //                    RedirectToPage("/Users/AccessDenied");
-    //                }
-    //            }
-    //            else
-    //            {
-    //                return RedirectToPage("/Users/AccessDenied");
-    //            }
-    //        }
-    //        else
-    //        {
-    //            return RedirectToPage("/Users/AccessDenied");
-    //        }
-    //        return Page();
-    //    }
-    //}
 }

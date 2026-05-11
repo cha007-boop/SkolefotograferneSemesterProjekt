@@ -2,7 +2,7 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Teachers.IndexModel
 @{
-    ViewData["Title"] = "Index (Teacher)";
+    ViewData["Title"] = "Index (Lærer)";
 }
 
 @if (Model.Role == (int)UserRole.SysAdmin)
@@ -24,7 +24,6 @@
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>ID</th>
                 <th>Navn</th>
                 <th>Efternavn</th>
@@ -32,7 +31,6 @@
                 <th>Telefon</th>
                 <th>Skole ID</th>
                 <th>Skole</th>
-                </form>
             </tr>
         </thead>
         <tbody>
@@ -77,12 +75,10 @@ else if (Model.Role == (int)UserRole.SchoolAdmin)
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
-                </form>
             </tr>
         </thead>
         <tbody>
@@ -106,13 +102,11 @@ else if (Model.IsUser)
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
                 <th>Skole</th>
-                </form>
             </tr>
         </thead>
         <tbody>

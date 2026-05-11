@@ -2,7 +2,7 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Teachers.ViewSchoolClassesModel
 @{
-    ViewData["Title"] = "Se Skole klasser";
+    ViewData["Title"] = "Se skoleklasser";
 }
 
 @if(Model.ClassList.Count < 1 && Model.IsUser)
@@ -19,7 +19,7 @@ else if(Model.ClassList.Count < 1)
         <a asp-page="Index">Tilbage</a>
     </div>
 
-    <h1>Denne lære har ingen klasser...</h1>
+    <h1>Denne lærer har ingen klasser...</h1>
 }
 else
 {
