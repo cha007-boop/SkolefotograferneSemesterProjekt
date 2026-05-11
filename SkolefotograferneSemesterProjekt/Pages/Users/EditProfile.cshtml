@@ -1,11 +1,11 @@
 ﻿@page
 @using SkolefotograferneSemesterProjekt.Models
-@model SkolefotograferneSemesterProjekt.Pages.Users.ProfileModel
+@model SkolefotograferneSemesterProjekt.Pages.Users.EditProfileModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Edit Profile";
 }
 
-<h1>Viewing Profile</h1>
+<h1>Editing Profile</h1>
 
 <form method="post">
     @if (HttpContext.Session.GetInt32("Role") == 0)
@@ -108,16 +108,6 @@
                 }
             </tbody>
         </table>
-        <p>
-            @foreach (Student s in @Model.Students)
-            {
-            <p>
-                Here you can see the pictures of your child @s.FirstName
-                <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
-                <br />
-            </p>
-        }
-        </p>
     }
     @if (HttpContext.Session.GetInt32("Role") == 1)
     {
