@@ -23,7 +23,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public string Password { get; set; } = "";
         [BindProperty]
         public string Pass2 { get; set; } = "";
-        public int? Role { get; set; }
         public IEnumerable<SelectListItem> Schools { get; set; } = [];
 
         public CreateTeacherModel(ITeacherService repo, ISchoolService schoolService, IUserService userService)
@@ -101,8 +100,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 return Page();
             }
 
-            Role = HttpContext.Session.GetInt32("Role");
-            if (Role  == (int)UserRole.SysAdmin)
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (role  == (int)UserRole.SysAdmin)
             {
                 return RedirectToPage("Index");
             }

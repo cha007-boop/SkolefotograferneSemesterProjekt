@@ -6,8 +6,10 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
     {
         Task<int> Add(Teacher teacher);
         Task<Teacher?> GetByID(int id);
-        Task<List<Teacher>> GetAll();
         Task Update(Teacher teacher);
         Task Delete(Teacher teacher);
+        Task<List<Teacher>> GetAll();
+        Task<List<Teacher>> GetBySchoolID(int id);
+        
     }
 }

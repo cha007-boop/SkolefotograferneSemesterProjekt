@@ -9,7 +9,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class IndexModel : PageModel
     {
-        public ITeacherService _repo;
+        public ITeacherService _teacherService;
+        public ISchoolAdminService _schoolAdminService;
         public List<Teacher> TeacherList { get; set; }
         public Teacher TheTeacher { get; set; }
         public int? UserID { get; set; }
@@ -23,46 +24,88 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         [BindProperty(SupportsGet = true)]
         public string FilterBy { get; set; }
 
-        public IndexModel(ITeacherService repo)
+        public IndexModel(ITeacherService teacherService, ISchoolAdminService schoolAdminService)
         {
-            _repo = repo;
+            _teacherService = teacherService;
+            _schoolAdminService = schoolAdminService;
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            TeacherList = await _repo.GetAll();
-            TeacherFList = Filter(TeacherList);
-
             UserID = HttpContext.Session.GetInt32("ID");
-            if (UserID != null)
+            Role = HttpContext.Session.GetInt32("Role");
+
+            if (UserID.HasValue && Role.HasValue)
             {
-                Teacher t = new Teacher { ID = (int)UserID };
-                t = TeacherList.Find((t) => t.ID == UserID);
-                if (t != null)
+                if (Role == (int)UserRole.Teacher)
                 {
-                    IsUser = true;
-                    TheTeacher = t;
+                    TeacherList = await _teacherService.GetAll();
+
+                    Teacher t = new Teacher { ID = (int)UserID };
+                    t = TeacherList.Find(t => t.ID == UserID);
+                    if (t != null)
+                    {
+                        IsUser = true;
+                        TheTeacher = t;
+                    }
                 }
+                else if(Role == (int)UserRole.SchoolAdmin)
+                {
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)UserID);
+                    int schoolID = schoolAdmin.TheSchool.ID;
+                    TeacherList = await _teacherService.GetBySchoolID(schoolID);
+                }
+                else if(Role == (int)UserRole.SysAdmin)
+                {
+                    TeacherList = await _teacherService.GetAll();
+                }
+                else
+                {
+                    return RedirectToPage("/Users/AccessDenied");
+                }
+                TeacherFList = Filter(TeacherList);
             }
-
-            Role = HttpContext.Session.GetInt32("Role") ?? -1;
+            else
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            return Page();
         }
-
         private IEnumerable<Teacher> Filter(IEnumerable<Teacher> tLst)
         {
             List<Predicate<Teacher>> predicates = new List<Predicate<Teacher>>();
-            if (!string.IsNullOrWhiteSpace(FilterCriteria))
+            if(Role == (int)UserRole.SysAdmin)
             {
-                switch (FilterBy)
+                if (!string.IsNullOrWhiteSpace(FilterCriteria))
                 {
-                    case "t.TheSchool.Name":
-                        predicates.Add(t => !string.IsNullOrEmpty(t.TheSchool.Name) && t.TheSchool.Name.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
-                        break;
-                    case "t.Email":
-                        predicates.Add(t => !string.IsNullOrEmpty(t.Email) && t.Email.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
-                        break;
-                    default:
-                        break;
+                    switch (FilterBy)
+                    {
+                        case "t.TheSchool.Name":
+                            predicates.Add(t => !string.IsNullOrEmpty(t.TheSchool.Name) && t.TheSchool.Name.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                            break;
+                        case "t.Email":
+                            predicates.Add(t => !string.IsNullOrEmpty(t.Email) && t.Email.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            if(Role == (int)UserRole.SchoolAdmin)
+            {
+                if (!string.IsNullOrWhiteSpace(FilterCriteria))
+                {
+                    switch (FilterBy)
+                    {
+                        case "t.FirstName":
+                            predicates.Add(t => !string.IsNullOrEmpty(t.FirstName) && t.FirstName.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                            break;
+                        case "t.Email":
+                            predicates.Add(t => !string.IsNullOrEmpty(t.Email) && t.Email.Contains(FilterCriteria, StringComparison.OrdinalIgnoreCase));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             return FilterFunctions<Teacher>.Filter(tLst, predicates);
