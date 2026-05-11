@@ -133,5 +133,39 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return null;
         }
+        public async Task<List<Teacher>> GetBySchoolID(int id)
+        {
+            List<Teacher> teacherLst = [];
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT 
+                        t.ID, t.FirstName, t.Surname, t.PhoneNumber,
+                        u.Email,
+                        s.ID AS SchoolID, s.Name, s.Street, s.ZipCode, s.Country
+                    FROM Teacher t
+                    INNER JOIN Users u ON t.ID = u.ID
+                    INNER JOIN School s ON t.SchoolID = s.ID
+                    WHERE @SchoolID = s.ID", connection);
+                cmd.Parameters.AddWithValue("@SchoolID", id);
+
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    Teacher t = new Teacher();
+                    t.ID = reader.GetInt32("ID");
+                    t.FirstName = reader.GetString("FirstName");
+                    t.Surname = reader.GetString("Surname");
+                    t.Email = reader.GetString("Email");
+                    t.PhoneNumber = reader.GetString("PhoneNumber");
+                    t.TheSchool = new School() { ID = reader.GetInt32("SchoolID"), Name = reader.GetString("Name"), Street = reader.GetString("Street"), ZipCode = reader.GetString("ZipCode"), Country = reader.GetString("Country") };
+                    teacherLst.Add(t);
+                }
+            }
+            return teacherLst;
+        }
     }
 }
