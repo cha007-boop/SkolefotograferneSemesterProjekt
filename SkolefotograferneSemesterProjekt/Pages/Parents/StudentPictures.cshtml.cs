@@ -37,11 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                 }
                 TheStudent = await _studentService.GetById(id);
                 TheParent = TheStudent.TheParent;
-                foreach (Photo ph in await _photoservice.GetPortraitsByStudentId(id))
-                {
-                    if (ph != null)
-                        Photos.Add(ph);
-                }
+                Photos = await _photoservice.GetPortraitsByStudentId(id);
                 if (Photos.Count == 0)
                 {
                     Photo photo = new Photo

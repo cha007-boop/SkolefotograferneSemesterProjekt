@@ -23,6 +23,9 @@ namespace SkolefotograferneSemesterProjekt.Services
         private string _selectPhotoEventStringBySpecificPhotographID = "select * from PhotoEvent where PhotographerID = @PhotographerID";
         private string _selectPhotoEventStringBySpecificSchoolAdminID = "select * from PhotoEvent where SchoolAdminID = @SchoolAdminID";
         private string _deletePhotoEventString = "Delete from PhotoEvent where ID = @ID";
+        private string _updatePhotoEventString = "Update PhotoEvent " +
+                                                 "set StartTime =  @StartTime, EndTime = @EndTime, PhotographerID = @PhotographerID, SchoolAdminID = @SchoolAdminID, Location = @Location" +
+                                                 "where ID = @ID";
 
         public PhotoEventService()
         {
@@ -197,6 +200,21 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return null;
         }
+        public async Task UpdatePhotoEvent(PhotoEvent photoEvent)
+        {
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(_updatePhotoEventString, connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", photoEvent.ID);
+                command.Parameters.AddWithValue("@StartTime", photoEvent.StartTime);
+                command.Parameters.AddWithValue("@EndTime", photoEvent.EndTime);
+                command.Parameters.AddWithValue("@TheSchoolAdminID", photoEvent.TheSchoolAdmin.ID);
+                command.Parameters.AddWithValue("@ThePhotographerID", photoEvent.ThePhotographer.ID);
+                command.Parameters.AddWithValue("@Location", photoEvent.Location);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
 
         public async Task DeletePhotoEvent(PhotoEvent photoEvent)
         {
@@ -208,5 +226,6 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await sqlCommand.ExecuteNonQueryAsync();
             }
         }
+
     }
 }
