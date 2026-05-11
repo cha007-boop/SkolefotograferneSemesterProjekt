@@ -15,9 +15,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         {
             _teacherService = teacherService;
         }
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int? id)
         {
-            TeacherToDelete = await _teacherService.GetByID(id);
+            if(id != null)
+            {
+                TeacherToDelete = await _teacherService.GetByID((int)id);
+                return Page();
+            }
+            return RedirectToPage("/Users/AccessDenied");
         }
         public IActionResult OnPost()
         {
@@ -25,21 +30,30 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         }
         public async Task<IActionResult> OnPostDelete(int id)
         {
-            TeacherToDelete = await _teacherService.GetByID(id);
-            if (TeacherToDelete == null)
+            int? userID = HttpContext.Session.GetInt32("ID");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (userID.HasValue && userID == id || role.HasValue && role == (int)UserRole.SysAdmin)
             {
-                return Page();
+                TeacherToDelete = await _teacherService.GetByID(id);
+                if (TeacherToDelete == null)
+                {
+                    return RedirectToPage("Index");
+                }
+                try
+                {
+                    await _teacherService.Delete(TeacherToDelete);
+                }
+                catch (Exception ex)
+                {
+                    ViewData["ErrorMessage"] = ex.Message;
+                    return Page();
+                }
+                return RedirectToPage("Index");
             }
-            try
+            else
             {
-                await _teacherService.Delete(TeacherToDelete);
+                return RedirectToPage("/Users/AccessDenied");
             }
-            catch(Exception ex)
-            {
-                ViewData["ErrorMessage"] = ex.Message;
-                return Page();
-            }
-            return RedirectToPage("Index");
         }
     }
 }
