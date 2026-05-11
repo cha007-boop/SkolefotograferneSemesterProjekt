@@ -260,6 +260,10 @@
             <span asp-validation-for="ThisSysAdmin.Password" class="text-danger"></span>
         </div>
     }
+    @if(Model.Check)
+    {
+        <p>Updated successfully</p>
+    }
     @*update button*@
     @if (HttpContext.Session.GetInt32("Role") != 0)
     {

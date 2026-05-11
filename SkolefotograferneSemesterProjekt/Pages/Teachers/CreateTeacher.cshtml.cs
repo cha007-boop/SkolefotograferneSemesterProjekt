@@ -18,13 +18,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         private ISchoolService _schoolService;
 
         [BindProperty]
-        public Teacher NewTeacher { get; set; }
+        public Teacher NewTeacher { get; set; } = new();
         [BindProperty]
-        public string Password { get; set; }
+        public string Password { get; set; } = "";
         [BindProperty]
-        public string Pass2 { get; set; }
-        public int Role { get; set; } = -1;
-        public IEnumerable<SelectListItem> Schools { get; set; }
+        public string Pass2 { get; set; } = "";
+        public int? Role { get; set; }
+        public IEnumerable<SelectListItem> Schools { get; set; } = [];
 
         public CreateTeacherModel(ITeacherService repo, ISchoolService schoolService, IUserService userService)
         {
@@ -65,11 +65,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                     ModelState.AddModelError("NewTeacher.Email", "Mailen er optaget");
                 }
             }
-            if(NewTeacher.TheSchool.ID <= 0)
+            if(NewTeacher.TheSchool == null || NewTeacher.TheSchool.ID <= 0)
             {
                 ModelState.AddModelError("NewTeacher.TheSchool.ID", "Du skal vælge en skole");
             }
-            if(NewTeacher.TheSchool != null)
+            else
             {
                 ModelState.Remove("NewTeacher.TheSchool.Name");
                 ModelState.Remove("NewTeacher.TheSchool.Street");
@@ -101,7 +101,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 return Page();
             }
 
-            Role = HttpContext.Session.GetInt32("Role").Value;
+            Role = HttpContext.Session.GetInt32("Role");
             if (Role  == (int)UserRole.SysAdmin)
             {
                 return RedirectToPage("Index");

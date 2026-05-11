@@ -63,9 +63,33 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public Task Update(User user)
+        public async Task ValidateUpdate(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (user.Password.Length < 6)
+                {
+                    throw new PasswordTooShortException("Password too short");
+                }
+                using SqlConnection connection = new SqlConnection(connectionString);
+                {
+                    string emailSearch = "Select Email from Users Where Email = @Email";
+                    SqlCommand command = new SqlCommand(emailSearch, connection);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    await command.Connection.OpenAsync();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        reader.Close();
+                        throw new TakenMailException("Email is already used");
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
+            }
         }
 
         public async Task<User> VerifyUser(string mail, string password)
@@ -111,7 +135,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
                 int i = 0;
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     id = reader.GetInt32("ID");
                     email = reader.GetString("Email");

@@ -8,27 +8,39 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
     public class EditTeacherModel : PageModel
     {
-        private ITeacherService _repo;
+        private ITeacherService _teacherService;
         private IUserService _userService;
 
         [BindProperty]
         public Teacher? TeacherToEdit { get; set; }
 
-        public EditTeacherModel(ITeacherService repo, IUserService userService)
+        public EditTeacherModel(ITeacherService teacherService, IUserService userService)
         {
-            _repo = repo;
+            _teacherService = teacherService;
             _userService = userService;
         }
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            TeacherToEdit = await _repo.GetByID(id);
-        }
+            TeacherToEdit = await _teacherService.GetByID(id);
+            if(TeacherToEdit == null)
+            {
+                return RedirectToPage("Index");
+            }
 
-        public async Task<IActionResult> OnPost()
+            return Page();
+        }
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("Index");
+        }
+        public async Task<IActionResult> OnPostUpdate()
         {
             ModelState.Remove("TeacherToEdit.Password");
+            ModelState.Remove("TeacherToEdit.TheSchool.Name");
+            ModelState.Remove("TeacherToEdit.TheSchool.Street");
+            ModelState.Remove("TeacherToEdit.TheSchool.Country");
+            ModelState.Remove("TeacherToEdit.TheSchool.ZipCode");
             ModelState.CustomizedMessages("Feltet mangler");
-
 
             if (!string.IsNullOrEmpty(TeacherToEdit.Email))
             {
@@ -45,7 +57,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             }
             try
             {
-                await _repo.Update(TeacherToEdit!);
+                await _teacherService.Update(TeacherToEdit!);
             }
             catch (Exception ex)
             {

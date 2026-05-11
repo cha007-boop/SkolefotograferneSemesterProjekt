@@ -134,21 +134,29 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task Update(Parent newParent)
         {
-            using SqlConnection conn = new SqlConnection(connectionString);
+            try
             {
-                SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email WHERE ID = @ID", conn);
-                await command.Connection.OpenAsync();
-                command.Parameters.AddWithValue("@ID", newParent.ID);
-                command.Parameters.AddWithValue("@Email", newParent.Email);
-                await command.ExecuteNonQueryAsync();
+                await userService.ValidateUpdate(newParent);
+                using SqlConnection conn = new SqlConnection(connectionString);
+                {
+                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", newParent.ID);
+                    command.Parameters.AddWithValue("@Email", newParent.Email);
+                    await command.ExecuteNonQueryAsync();
 
-                command.CommandText = @"UPDATE Parent SET FirstName = @FirstName, Surname = @Surname, PhoneNumber = @PhoneNumber WHERE ID = @ID";
+                    command.CommandText = @"UPDATE Parent SET FirstName = @FirstName, Surname = @Surname, PhoneNumber = @PhoneNumber WHERE ID = @ID";
 
-                command.Parameters.AddWithValue("@FirstName", newParent.FirstName);
-                command.Parameters.AddWithValue("@Surname", newParent.Surname);
-                command.Parameters.AddWithValue("@PhoneNumber", newParent.PhoneNumber);
-                await command.ExecuteNonQueryAsync();
-
+                    command.Parameters.AddWithValue("@FirstName", newParent.FirstName);
+                    command.Parameters.AddWithValue("@Surname", newParent.Surname);
+                    command.Parameters.AddWithValue("@PhoneNumber", newParent.PhoneNumber);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
             }
         }
     }

@@ -7,7 +7,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
     {
         Task<int> Add(SqlConnection conn, User user);
         Task Delete(int id);
-        Task Update(User user);
+        Task ValidateUpdate(User user);
 
         Task<User> VerifyUser(string mail, string password);
         Task<bool> IsEmailTaken(User user);

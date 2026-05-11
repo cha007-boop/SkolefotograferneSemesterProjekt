@@ -194,9 +194,33 @@ namespace SkolefotograferneSemesterProjekt.Services
             return schoolAdmin;
         }
 
-        public Task Update(SchoolAdmin schoolAdmin)
+        public async Task Update(SchoolAdmin schoolAdmin)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _userService.ValidateUpdate(schoolAdmin);
+                using SqlConnection conn = new SqlConnection(connectionString);
+                {
+                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", schoolAdmin.ID);
+                    command.Parameters.AddWithValue("@Email", schoolAdmin.Email);
+                    command.Parameters.AddWithValue("@Password", schoolAdmin.Password);
+                    await command.ExecuteNonQueryAsync();
+
+                    command.CommandText = @"UPDATE SchoolAdmin SET PhoneNumber = @PhoneNumber, ContactPerson = @ContactPerson WHERE ID = @ID";
+                   
+                    command.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
+                    command.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
+            }
         }
 
         private SchoolAdmin SchoolAdminReader(SqlDataReader reader)

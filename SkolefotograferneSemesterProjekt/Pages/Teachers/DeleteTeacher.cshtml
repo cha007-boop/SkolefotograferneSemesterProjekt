@@ -8,6 +8,9 @@
 <form method="post">
     <label>Navn</label>: @Model.TeacherToDelete!.FirstName<br/>
     <label>Efternavn</label>: @Model.TeacherToDelete.Surname<br/>
-    <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.TeacherToDelete.ID" class="btn btn-danger" value="Slet" />
-    <input type="submit" class="btn btn-warning" value="Fortryd" />
+    
+    <div class="form-group d-flex gap-2 mt-3">
+        <input type="submit" asp-page-handler="Delete" asp-route-id="@Model.TeacherToDelete.ID" class="btn btn-danger" value="Slet" />
+        <input type="submit" asp-page-handler="" class="btn btn-secondary" value="Fortryd" />
+    </div>
 </form>

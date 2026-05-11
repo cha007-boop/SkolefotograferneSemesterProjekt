@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
@@ -54,14 +55,45 @@ namespace SkolefotograferneSemesterProjekt.Services
             return sysAdmins;
         }
 
-        public Task<SysAdmin> SearchByID(int id)
+        public async Task<SysAdmin> SearchByID(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("select * from Users where ID = @ID", connection);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", id);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    string? email = reader["Email"] as string;
+                    SysAdmin sysAdmin = new SysAdmin { ID = id, Email = email };
+                    await reader.CloseAsync();
+                    return sysAdmin;
+                }
+                return null;
+            }
         }
 
-        public Task Update(SysAdmin newSysAdmin)
+        public async Task Update(SysAdmin newSysAdmin)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await userService.ValidateUpdate(newSysAdmin);
+                using SqlConnection conn = new SqlConnection(connectionString);
+                {
+                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
+                    await command.Connection.OpenAsync();
+                    command.Parameters.AddWithValue("@ID", newSysAdmin.ID);
+                    command.Parameters.AddWithValue("@Email", newSysAdmin.Email);
+                    command.Parameters.AddWithValue("@Password", newSysAdmin.Password);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                throw;
+            }
         }
         #endregion
     }
