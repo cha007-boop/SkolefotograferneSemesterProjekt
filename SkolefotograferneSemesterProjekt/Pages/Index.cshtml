@@ -4,6 +4,37 @@
     ViewData["Title"] = "Home page";
 }
 
+<div class="form-group">
+    @if (HttpContext.Session.GetInt32("ID") == null)
+    {
+        <h1>Welcome to SkoleFoto</h1>
+
+
+
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 0)
+    {
+        <h1>Welcome Parent</h1>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 1)
+    {
+        <h1>Welcome Photographer</h1>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 2)
+    {
+        <h1>Welcome Teacher</h1>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 3)
+    {
+        <h1>Welcome School Admin</h1>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 4)
+    {
+        <h1>Welcome System Admin</h1>
+    }
+</div>
+
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
