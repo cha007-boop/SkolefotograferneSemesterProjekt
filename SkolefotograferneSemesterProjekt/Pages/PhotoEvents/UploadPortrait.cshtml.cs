@@ -84,10 +84,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             if (Portrait != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/Portraits");
-                uniqueFileName = Guid.NewGuid().ToString()+ "_" + TheStudent.TheSchool.ID + "_" + TheStudent.TheSchoolClass.Grade + TheStudent.TheSchoolClass.Letter + "_" + TheStudent.ID + "_" + Portrait.FileName;
+                uniqueFileName =  TheStudent.TheSchool.ID + "_" 
+                    + TheStudent.TheSchoolClass.Grade + TheStudent.TheSchoolClass.Letter + "_" 
+                    + TheStudent.ID + "_" + Guid.NewGuid().ToString() + "_" + Portrait.FileName;
+
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
