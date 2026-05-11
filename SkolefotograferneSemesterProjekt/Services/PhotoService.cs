@@ -69,10 +69,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                 {
                     string query = "SELECT * FROM Photo";
                     SqlCommand cmd = new SqlCommand(query, conn);
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    await conn.OpenAsync();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     List<Photo> photos = new List<Photo>();
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         Photo photo = await PhotoReader(reader);
                         photos.Add(photo);
@@ -96,9 +96,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string query = "SELECT * FROM Photo WHERE Filename = @Filename";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Filename", filename);
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    await conn.OpenAsync();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    if (await reader.ReadAsync())
                     {
                         return await PhotoReader(reader);
                     }
@@ -121,10 +121,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string query = "SELECT * FROM Photo WHERE ClassId = @SchoolClassId AND ChildID IS NULL";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    await conn.OpenAsync();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     List<Photo> photos = new List<Photo>();
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         Photo photo = await PhotoReader(reader);
                         photos.Add(photo);
@@ -148,7 +148,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string query = "SELECT * FROM Photo WHERE ChildID = @StudentId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@StudentId", studentId);
-                    conn.Open();
+                    await conn.OpenAsync();
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     List<Photo> photos = new List<Photo>();
                     while (await reader.ReadAsync())
@@ -175,7 +175,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string query = "SELECT * FROM Photo WHERE PhotoEventID = @PhotoEventId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@PhotoEventId", photoEventId);
-                    conn.Open();
+                    await conn.OpenAsync();
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     List<Photo> photos = new List<Photo>();
                     while (await reader.ReadAsync())
