@@ -13,10 +13,11 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public Dictionary<string, string> SortableColumns { get; } = new Dictionary<string, string>
         {
-            { "Photo.Filename", "Filename" },
             { "Photo.PhotoEventID", "Photo Event ID" },
-            { "Photo.ClassID", "Class ID" },
-            { "Photo.ChildID", "Child ID" },
+            { "School.Name", "School Name" },
+            { "SchoolClass.Grade, SchoolClass.Letter", "Class" },
+            { "Student.FirstName", "Child first name" },
+            { "Student.Surname", "Child surname" },
             { "Photo.UploadedAt", "Uploaded At" }
         };
 
@@ -25,12 +26,15 @@ namespace SkolefotograferneSemesterProjekt.Services
             { "Photo.Filename", "Filename" },
             { "School.Name", "School name" },
             { "Photo.SchoolID", "School ID" },
-            { "Child.FirstName", "Child First name" },
-            { "Child.Surname", "Child Surname" },
+            { "Student.FirstName", "Child first name" },
+            { "Student.Surname", "Child surname" },
             { "Photo.PhotoEventID", "Photo Event ID" },
             { "Photo.ClassID", "Class ID" },
             { "Photo.ChildID", "Child ID" },
-            { "Student.ParentID", "Parent ID" }
+            { "Student.ParentID", "Parent ID" },
+            { "Parent.FirstName", "Parent first name" },
+            { "Parent.Surname", "Parent surname" }
+
         };
 
         public async Task Add(Photo photo)
@@ -189,20 +193,26 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        //public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder)
-        //{
-        //    string query = @"SELECT * FROM Photo
-        //                     JOIN PhotoEvent ON Photo.PhotoEventID = PhotoEvent.ID
-        //                     JOIN Photographer on PhotoEvent.PhotographerID = Photographer.ID
-        //                     LEFT OUTER JOIN Student ON Photo.ChildID = Student.ID
-        //                     LEFT OUTER JOIN Parent ON Student.ParentID = Parent.ID
-        //                     JOIN SchoolClass ON Photo.ClassID = SchoolClass.ID
-        //                     JOIN Teacher ON SchoolClass.TeacherID = Teacher.ID
-        //                     JOIN School ON Teacher.SchoolID = School.ID";
+        public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            List<Photo> photos = new List<Photo>();
+            string query = @"SELECT * FROM Photo
+                             JOIN PhotoEvent ON Photo.PhotoEventID = PhotoEvent.ID
+                             JOIN Photographer on PhotoEvent.PhotographerID = Photographer.ID
+                             LEFT OUTER JOIN Student ON Photo.ChildID = Student.ID
+                             LEFT OUTER JOIN Parent ON Student.ParentID = Parent.ID
+                             JOIN SchoolClass ON Photo.ClassID = SchoolClass.ID
+                             JOIN Teacher ON SchoolClass.TeacherID = Teacher.ID
+                             JOIN School ON Teacher.SchoolID = School.ID";
 
-        //    List<string> conditions = new List<string>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
 
-        //}
+            }
+
+
+            return photos;
+        }
 
         public Task RemovePhoto(Photo photo)
         {
@@ -213,7 +223,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             return new Photo
             {
-                Filename = reader.GetString("Photo.Filename"),
+                Filename = reader.GetString("Photo.[Filename]"),
                 ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("Photo.PhotoEventID")),
                 TheSchoolClass = reader["Photo.ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("Photo.ClassID")) : null,
                 Child = reader["Photo.ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("Photo.ChildID")) : null,
