@@ -223,11 +223,11 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             return new Photo
             {
-                Filename = reader.GetString("[Filename]"),
-                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("[PhotoEventID]")),
-                TheSchoolClass = reader["[ClassID]"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("[ClassID]")) : null,
-                Child = reader["[ChildID]"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("[ChildID]")) : null,
-                UploadedAt = reader.GetDateTime("[UploadedAt]")
+                Filename = reader.GetString("Filename"),
+                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
+                TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
+                Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null,
+                UploadedAt = reader.GetDateTime("UploadedAt")
             };
         }
     }
