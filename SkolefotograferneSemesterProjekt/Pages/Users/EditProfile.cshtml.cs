@@ -7,7 +7,7 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Users
 {
-    public class ProfileModel : PageModel
+    public class EditProfileModel : PageModel
     {
         #region Instance fields
         private IPhotographerService _photographerService;
@@ -37,7 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         public bool Check { get; set; }
         #endregion
         #region Constructor
-        public ProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService, IStudentService studentService)
+        public EditProfileModel(IPhotographerService photographerService, IParentServices parentServices, ITeacherService teacherService, ISchoolAdminService schoolAdminService, ISysAdminService sysAdminService, IUserService userService, IStudentService studentService)
         {
             _photographerService = photographerService;
             _parentServices = parentServices;

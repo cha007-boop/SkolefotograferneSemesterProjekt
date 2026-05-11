@@ -1,0 +1,181 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Users.ViewProfileModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<h1>Editing Profile</h1>
+
+<form method="post">
+    @if (HttpContext.Session.GetInt32("Role") == 0)
+    {
+        <input type="hidden" asp-for="@Model.ThisParent.ID" />
+
+        <h1>Welcome @Model.ThisParent.FirstName</h1>
+
+        <div class="row" style="padding:5px">
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.ThisParent.FirstName" class="control-label"></label>
+                    <input asp-for="@Model.ThisParent.FirstName" class="form-control" readonly style="padding:15px" />
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.ThisParent.Surname" class="control-label"></label>
+                    <input asp-for="@Model.ThisParent.Surname" class="form-control" readonly style="padding:15px" />
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding:5px">
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.ThisParent.PhoneNumber" class="control-label"></label>
+                    <input asp-for="@Model.ThisParent.PhoneNumber" class="form-control" readonly style="padding:15px" />
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <div class="form.group">
+                    <label asp-for="@Model.ThisParent.Email" class="control-label"></label>
+                    <input asp-for="@Model.ThisParent.Email" class="form-control" readonly style="padding:15px" />
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding:5px">
+            <div class="col-1"></div>
+        </div>
+        <br />
+        <p>You have registered @Model.Students.Count() child/children to you.</p>
+        <br />@* 
+        <p>
+            <a asp-page="/Students/CreateStudent">Add Child</a>
+        </p> *@
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Child ID</th>
+                    <th>Child First Name</th>
+                    <th>Child Surname</th>
+                    <th>Child School</th>
+                    <th>Child Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Student student in @Model.Students)
+                {
+                    <tr>
+                        <td>@student.ID</td>
+                        <td>@student.FirstName</td>
+                        <td>@student.Surname</td>
+                        <td>@student.TheSchoolClass.TheSchool.Name</td>
+                        <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>
+            @foreach (Student s in @Model.Students)
+            {
+            <p>
+                Here you can see the pictures of your child @s.FirstName
+                <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
+                <br />
+            </p>
+        }
+        </p>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 1)
+    {
+        <input type="hidden" asp-for="@Model.ThisPhotographer.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.FirstName" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.FirstName" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Surname" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Surname" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.PhoneNumber" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Website" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Website" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.CVR" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.CVR" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Facebook" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Facebook" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Instagram" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Instagram" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisPhotographer.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisPhotographer.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 2)
+    {
+        <input type="hidden" asp-for="@Model.ThisTeacher.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.FirstName" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.FirstName" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.Surname" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.Surname" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.PhoneNumber" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisTeacher.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisTeacher.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 3)
+    {
+        <input type="hidden" asp-for="@Model.ThisSchoolAdmin.ID" />
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.PhoneNumber" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.PhoneNumber" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.ContactPerson" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.ContactPerson" class="form-control" readonly style="padding:15px" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ThisSchoolAdmin.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisSchoolAdmin.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    }
+    @if (HttpContext.Session.GetInt32("Role") == 4)
+    {
+        <input type="hidden" asp-for="@Model.ThisSysAdmin.ID" />
+
+
+        <div class="form-group">
+            <label asp-for="@Model.ThisSysAdmin.Email" class="control-label"></label>
+            <input asp-for="@Model.ThisSysAdmin.Email" class="form-control" readonly style="padding:15px" />
+        </div>
+    }
+</form>
+@*update button*@
+<form>
+    <a asp-page="/Users/EditProfile" type="button" class="btn btn-primary">Edit Info</a>
+</form>
+
