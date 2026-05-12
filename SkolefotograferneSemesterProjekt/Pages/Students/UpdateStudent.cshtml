@@ -36,10 +36,14 @@
 	<div class="form-group">
 		<label asp-for="@Model.ClassLetter" class="control-label"></label>
 		<input asp-for="@Model.ClassLetter" class="form-control" />
+			<span asp-validation-for="ClassLetter" class="text-danger"></span>
 	</div>
+		<div class="form-group">
+			<input type="submit" asp-page-handler="Update" value="Update" class="btn btn-primary" />
+		</div>
 	</form>
-	<div class="form-group">
-		<input type="submit" asp-page-handler="Update" value="Update User" class="btn btn-primary" />
+	<div>
+		<a asp-page="/Users/EditProfile">Return</a>
 	</div>
 }
 else

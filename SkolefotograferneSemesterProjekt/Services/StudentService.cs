@@ -170,12 +170,11 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 await connection.OpenAsync();
 
-                SqlCommand command = new SqlCommand("update student set FirstName = @FirstName, Surname = @Surname, ParentID = @ParentID, ClassID = @ClassID where ID = @ID", connection);
+                SqlCommand command = new SqlCommand("update student set FirstName = @FirstName, Surname = @Surname, ClassID = @ClassID where ID = @ID", connection);
 
                 command.Parameters.AddWithValue("@ID", student.ID);
                 command.Parameters.AddWithValue("@FirstName", student.FirstName);
                 command.Parameters.AddWithValue("@Surname", student.Surname);
-                command.Parameters.AddWithValue("@ParentID", student.TheParent.ID);
                 command.Parameters.AddWithValue("@ClassID", student.TheSchoolClass.ID);
 
                 await command.ExecuteNonQueryAsync();

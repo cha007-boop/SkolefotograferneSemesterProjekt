@@ -39,12 +39,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         }
         public async Task OnGet()
         {
-            //List<School> schools = await _schoolService.GetAll();
-            //Schools = schools.Select(s => new SelectListItem
-            //{
-            //    Value = Convert.ToString(s.ID),
-            //    Text = $"{s.Name} - {s.Street} {s.ZipCode}"
-            //});
             List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
             List<Photographer> photographers = await _photographerService.GetAll();
             SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
