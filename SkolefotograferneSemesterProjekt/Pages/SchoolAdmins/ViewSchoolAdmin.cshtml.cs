@@ -17,26 +17,27 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
             _schoolAdminService = schoolAdminService;
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet(int id)
         {
-            int? userId = HttpContext.Session.GetInt32("ID");
-            int? userRole = HttpContext.Session.GetInt32("Role");
-            if (userId == null || userRole == null)
+            if (HttpContext.Session.GetInt32("Role") != 4)
             {
-                RedirectToPage("/Users/Login");
-            }
-            if ((UserRole)userRole != UserRole.SchoolAdmin && (UserRole)userRole != UserRole.SysAdmin)
-            {
-                RedirectToPage("/Index");
+                throw new UnauthorizedAccessException();
             }
             try
             {
-                TheSchoolAdmin = await _schoolAdminService.GetById((int)userId);
+                TheSchoolAdmin = await _schoolAdminService.GetById(id);
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return Page();
             }
+            return Page();
         }
     }
 }

@@ -9,7 +9,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     public class PhotoEventDetailsModel : PageModel
     {
         private IPhotoEventService _photoEventService;
-        private IClassBookingService _classBookingService;
         private ISchoolClassService _schoolClassService;
         private IStudentService _studentService;
 
@@ -26,10 +25,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public List<Student> Students { get; set; }
 
 
-        public PhotoEventDetailsModel(IPhotoEventService photoEventService, IClassBookingService classBookingService, ISchoolClassService schoolClassService, IStudentService studentService)
+        public PhotoEventDetailsModel(IPhotoEventService photoEventService, ISchoolClassService schoolClassService, IStudentService studentService)
         {
             _photoEventService = photoEventService;
-            _classBookingService = classBookingService;
             _schoolClassService = schoolClassService;
             _studentService = studentService;
 
