@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 {
@@ -13,9 +14,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         #endregion
         #region Properties
         public List<ClassBooking> Bookings { get; set; } = [];
+        public bool IsUser { get; set; }
         #endregion
         #region Constructor
-        public ListBookingsModel(IClassBookingService classBookingService, ITeacherService teacherService)
+        public ListBookingsModel(IClassBookingService classBookingService, ITeacherService teacherService, ISchoolAdminService schoolAdminService)
         {
             _classBookingService = classBookingService;
             _teacherService = teacherService;
@@ -26,19 +28,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         {
             int? userID = HttpContext.Session.GetInt32("ID");
             int? role = HttpContext.Session.GetInt32("Role");
-            if (userID == null || role == null)
-            {
-                return RedirectToPage("/Users/AccessDenied");
-            }
-            if (role != 2)
+            if (!userID.HasValue || !role.HasValue)
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
 
-            Teacher? t = await _teacherService.GetByID((int)userID);
+            Teacher? t = await _teacherService.GetByID(userID.Value);
             if (t == null)
             {
                 return RedirectToPage("/Users/AccessDenied");
+            }
+            if(role == (int)UserRole.Teacher && t.ID > 0)
+            {
+                IsUser = userID == t.ID;
             }
             try
             {

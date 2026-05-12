@@ -9,7 +9,7 @@
 {
 	<h1>Der Findes ingen PhotoEvents...</h1>
 }
-else if (Model.Role == 2)
+else if (Model.Role == (int)UserRole.Teacher)
 {
 	<a asp-page="/Bookings/ListBookings">Se dine aktive bookinger</a>
 	<table class="table">
@@ -35,7 +35,7 @@ else if (Model.Role == 2)
 		</tbody>
 	</table>
 }
-else if (Model.Role == 3)
+else if (Model.Role == (int)UserRole.SchoolAdmin)
 {
 	<h1>Aktive PhotoEvents for @Model.ThisSchoolAdmin.TheSchool.Name</h1>
 
@@ -61,7 +61,7 @@ else if (Model.Role == 3)
 		</tbody>
 	</table>
 }
-else if (Model.Role == 4 )
+else if (Model.Role == (int)UserRole.SysAdmin)
 {
 	<h1>Aktive PhotoEvents for alle Skoler</h1>
 
