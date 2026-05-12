@@ -42,12 +42,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
         {
             try
             {
+                if(HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException();
+                }
                 //SchoolAdmins = await _schoolAdminService.GetAll();
                 SchoolAdmins = await _schoolAdminService.GetAll(FilterColumn, FilterValue, SortColumn, SortOrder);
             }
-            catch
+            catch (UnauthorizedAccessException uax)
             {
-
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return Page();
             }
             return Page();
         }

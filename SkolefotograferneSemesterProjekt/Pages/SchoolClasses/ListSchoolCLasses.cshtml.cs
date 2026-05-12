@@ -23,20 +23,27 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
         }
         #endregion
         #region Methods
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
                 if (HttpContext.Session.GetInt32("Role") != 2)
                 {
-                    throw new Exception();
+                    throw new UnauthorizedAccessException();
                 }
                 SchoolClasses = await _schoolClassService.GetAllByTeacher((int)HttpContext.Session.GetInt32("ID"));
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
+                return Page();
             }
+            return Page();
         }
         public async Task<IActionResult> OnPostDelete(int id)
         {

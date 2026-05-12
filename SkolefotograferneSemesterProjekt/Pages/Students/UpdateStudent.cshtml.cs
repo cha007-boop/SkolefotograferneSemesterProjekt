@@ -40,16 +40,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") == null)
+                if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 4)
                 {
-                    throw new Exception();
+                    throw new UnauthorizedAccessException();
                 }
                 NewStudent = await _studentService.GetById(id);
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
-                return RedirectToPage("/Index");
+                return Page();
             }
             List<School> schools = await _schoolService.GetAll();
             Schools = schools.Select(s => new SelectListItem

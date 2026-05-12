@@ -31,17 +31,28 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
             SortOrder = "ASC";
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
+                if (HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException();
+                }
                 //Schools = (string.IsNullOrWhiteSpace(FilterValue)) ? await _schoolService.GetAll() : await _schoolService.GetAll(FilterColumn, FilterValue, SortColumn, SortOrder);
                 Schools = await _schoolService.GetAll(FilterColumn, FilterValue, SortColumn, SortOrder);
             }
-            catch
+            catch (UnauthorizedAccessException uax)
             {
-
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/User/AccessDenied");
             }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return Page();
+            }
+            return Page();
         }
 
         public string Toggle(string column)

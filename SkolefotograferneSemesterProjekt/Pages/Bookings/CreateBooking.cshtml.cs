@@ -37,12 +37,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 
         public async Task<IActionResult> OnGet(int id)
         {
-            UserID = HttpContext.Session.GetInt32("ID");
-            Role = HttpContext.Session.GetInt32("Role");
-            if(UserID == null || Role == null || Role != 2)
+            int? userID = HttpContext.Session.GetInt32("ID");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (!userID.HasValue || !Role.HasValue || role != (int)UserRole.Teacher)
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
+
+            //int? classTeacherID = TheClassBooking.TheTeacher.ID;
+            //if (userID != classTeacherID)
+            //{
+            //    return RedirectToPage("/Users/AccessDenied");
+            //}
 
             PhotoEventID = id;
             ThePhotoEvent = await _photoEventService.GetByID(id);
@@ -59,7 +65,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             ModelState.CustomizedMessages("Feltet Mangler");
 
             UserID = HttpContext.Session.GetInt32("ID");
-            TheTeacher = await _teacherService.GetByID((int)UserID);
+            if (!UserID.HasValue)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+
+            TheTeacher = await _teacherService.GetByID(UserID.Value);
             if (TheTeacher == null)
             {
                 return RedirectToPage("Index");
@@ -77,9 +88,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 return RedirectToPage("Index");
             }
             NewBooking.ThePhotoEvent = ThePhotoEvent;
-            
-            await LoadMenus();
 
+
+            await LoadMenus();
             SchoolClass? schoolClass = await _schoolClassService.GetByID(NewBooking.TheSchoolClass.ID);
             if (schoolClass == null)
             {
@@ -109,7 +120,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             {
                 return;
             }
-            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher((int)UserID);
+            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher(UserID.Value);
             Classes = classes.Select(c => new SelectListItem
             {
                 Value = Convert.ToString(c.ID),
@@ -128,7 +139,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 {
                     timeSlots.Add(new SelectListItem
                     {
-                        Value = peCurrent.ToString("yyyy-MM-dd THH:mm"),
+                        Value = peCurrent.ToString("dd/MM/yyyy HH:mm"),
                         Text = peCurrent.ToString("HH:mm")
                     });
                 }
