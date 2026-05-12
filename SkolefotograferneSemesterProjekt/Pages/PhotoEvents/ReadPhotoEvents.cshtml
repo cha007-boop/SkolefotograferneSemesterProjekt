@@ -56,7 +56,7 @@
                         </a>
                     }
                 </td>
-                @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1)
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
                 {
                     <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
                 }
@@ -96,11 +96,18 @@
 </div>
 
 <form method="post">
-
+    @if (HttpContext.Session.GetInt32("Role") != 0)
+    {
     <div>
         <a asp-page="index">Back to index of Photo Events</a> @* to index in the photoevents folder *@
     </div>
-
+    }
+    @if(HttpContext.Session.GetInt32("Role") == 0)
+    {
+        <div>
+            <a asp-page="/Index">Back to FrontPage</a>
+        </div>
+    }
 </form>
 
 @section Scripts {
