@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using MongoDB.Driver.Core.Configuration;
 using SkolefotograferneSemesterProjekt.Interfaces;
@@ -265,5 +266,19 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
+        public async Task<PhotoEvent?> searchPhotoEvent(int id)
+        {
+
+            Task<List<PhotoEvent>> listOfAllPhotoEvents = GetAll();
+            List<PhotoEvent> photoEvents = await listOfAllPhotoEvents;
+            foreach (PhotoEvent m in photoEvents)
+            {
+                if (m.ID == id)
+                {
+                    return m;
+                }
+            }
+            return null;
+        }
     }
 }

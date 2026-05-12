@@ -16,10 +16,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public int VerifyPhotographerID { get; set; }
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
-        [BindProperty]
-        private ISchoolAdminService _schoolAdminService { get; set; }
-        [BindProperty]
-        private IPhotographerService _photographerService { get; set; }
+        private ISchoolAdminService _schoolAdminService;
+        private IPhotographerService _photographerService;
         private IPhotoEventService _photoEventService;
         [BindProperty]
         public IEnumerable<SelectListItem> Photographers { get; set; }
@@ -71,27 +69,29 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    await OnGet(PhotoEvent.ID);
+
                     return Page();
                 }
                 else
                 {
-                    await _photoEventService.Add(PhotoEvent);
+                    await _photoEventService.UpdatePhotoEvent(PhotoEvent);
                 }
             }
             catch (SqlException ex)
             {
                 ViewData["ErrorMessage"] = ex;
                 ModelState.AddModelError("PhotoEvent", ex.Message);
+                await OnGet(PhotoEvent.ID);
                 return Page();
             }
             catch (SqlTypeException tex)
             {
                 ViewData["ErrorMessage"] = tex;
                 ModelState.AddModelError("PhotoEvent.StartTime", tex.Message);
+                await OnGet(PhotoEvent.ID);
                 return Page();
             }
-            await OnGet(PhotoEvent.ThePhotographer.ID);
-            await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             return RedirectToPage("/Index");
         }
     }
