@@ -12,6 +12,7 @@
     <div class="row">
         <div class="col">
             <form method="get">
+                @* <div asp-validation-summary="" class="text-danger"></div> *@
                 <input type="hidden" asp-for=SortColumn />
                 <input type="hidden" asp-for=SortOrder />
                 <div class="form-group">
@@ -68,10 +69,17 @@
                             </td>
                             <td>@photo.ThePhotoEvent.ID</td>
                             <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
-                            <td>@photo.TheSchoolClass.Grade  @(photo.TheSchoolClass.Letter ?? "")</td>
+                            <td>@photo.TheSchoolClass.Grade @(photo.TheSchoolClass.Letter ?? "")</td>
                             <td>@(photo.Child?.FirstName ?? "")</td>
                             <td>@(photo.Child?.Surname ?? "")</td>
                             <td>@photo.UploadedAt.ToString("G")</td>
+                            <form method="post">
+                                <input type="hidden" asp-for="SortColumn" />
+                                <input type="hidden" asp-for="SortOrder" />
+                                <input type="hidden" asp-for="FilterColumn" />
+                                <input type="hidden" asp-for="FilterValue" />
+                            <td><button type="button" class="btn btn-danger" asp-route-filename="@photo.Filename" onclick="DisplayConfirmDeleteModal('@photo.Filename')">Delete</button></td>
+                            </form>
                         </tr>
                     }
                 </tbody>

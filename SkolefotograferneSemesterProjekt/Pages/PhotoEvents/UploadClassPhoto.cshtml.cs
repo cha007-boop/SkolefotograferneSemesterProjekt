@@ -49,12 +49,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             catch (UnauthorizedAccessException)
             {
                 ViewData["ErrorMessage"] = "You do not have permission to access this page.";
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/AccessDenied");
             }
 
             return Page();
@@ -64,39 +64,31 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             if (Photo != null)
             {
-                Photo classPhoto = new Photo
+                try
                 {
-                    Filename = ProcessUploadedFile(),
-                    ThePhotoEvent = this.ThePhotoEvent,
-                   
-                    TheSchoolClass = this.TheSchoolClass,
-                    UploadedAt = DateTime.Now
-                };
+                    TheSchoolClass = await _schoolClassService.GetByID(SchoolClassId);
+                    ThePhotoEvent = await _photoEventService.GetByID(PhotoEventId);
+                    IUploadIFormFile uploader = new UploadClass(_webHostEnvironment, TheSchoolClass);
+                    Photo classPhoto = new Photo
+                    {
+                        Filename = uploader.UploadFile(Photo),
+                        ThePhotoEvent = this.ThePhotoEvent,
+
+                        TheSchoolClass = this.TheSchoolClass,
+                        UploadedAt = DateTime.Now
+                    };
 
 
-                await _photoService.Add(classPhoto);
+                    await _photoService.Add(classPhoto);
+                }
+                catch (Exception exc)
+                {
+                    ModelState.AddModelError(string.Empty, $"An error occurred while uploading the photo: {exc.Message}");
+                    return Page();
+                }
+
             }
             return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = ThePhotoEvent.ID });
-        }
-
-        private string ProcessUploadedFile()
-        {
-            string uniqueFileName = null;
-            if (Photo != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/ClassPhotos");
-                uniqueFileName = TheSchoolClass.TheSchool.ID + "_" 
-                    + TheSchoolClass.Grade + TheSchoolClass.Letter + "_" 
-                    + Guid.NewGuid().ToString() + "_" + Photo.FileName;
-
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    Photo.CopyTo(fileStream);
-                }
-            }
-            return uniqueFileName;
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿@page
+@using SkolefotograferneSemesterProjekt.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -88,16 +89,17 @@
 
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
-                <p>tilføj barn</p>
+                
                 <a asp-page="/Students/createStudent">Tilføj Barn</a>
             </div>
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
-                <p>tilføj noget tekst her</p>
+                
+                <a asp-page="/Parents/ListOfChildren" asp-route-id="@HttpContext.Session.GetInt32("ID")">Se alle Børn</a>
             </div>
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
-                <p>tilføj noget tekst her</p>
+                <a asp-page="/Users/EditProfile">Redigere Profil</a>
             </div>
         </div>
         <br />

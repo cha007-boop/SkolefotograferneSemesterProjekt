@@ -25,35 +25,43 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             _schoolAdminService = schoolAdminService;
         }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet(int? id)
         {
             int? userID = HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
 
-            if (userID.HasValue && Role.HasValue)
+            if (id.HasValue)
             {
-                TheTeacher = await _teacherService.GetByID(id);
+                if (!userID.HasValue && !Role.HasValue)
+                {
+                    return RedirectToPage("/Users/AccessDenied");
+                }
+                TheTeacher = await _teacherService.GetByID(id.Value);
                 if (TheTeacher != null)
                 {
+                    int teacherID = id.Value;
                     ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
-                }
-                if (Role == (int)UserRole.Teacher)
-                {
-                    TheTeacher = await _teacherService.GetByID((int)userID);
-                    Teacher? t = TheTeacher;
-                    if (t != null && t.ID == id)
+                    if (Role == (int)UserRole.Teacher)
                     {
-                        IsUser = true;
+                        if (userID == teacherID)
+                        {
+                            IsUser = true;
+                        }
+                    }
+                    else if (Role == (int)UserRole.SchoolAdmin)
+                    {
+                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)userID);
+                        int schoolID = schoolAdmin.TheSchool.ID;
+                        int? tSchoolID = TheTeacher.TheSchool.ID;
+                        if (tSchoolID.HasValue && schoolID != tSchoolID)
+                        {
+                            return RedirectToPage("/Users/AccessDenied");
+                        }
                     }
                 }
-                else if (Role == (int)UserRole.SchoolAdmin)
+                else
                 {
-                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)userID);
-                    int schoolID = schoolAdmin.TheSchool.ID;
-                    if(schoolID != TheTeacher.TheSchool.ID)
-                    {
-                        RedirectToPage("/Users/AccessDenied");
-                    }
+                    return RedirectToPage("/Users/AccessDenied");
                 }
             }
             else

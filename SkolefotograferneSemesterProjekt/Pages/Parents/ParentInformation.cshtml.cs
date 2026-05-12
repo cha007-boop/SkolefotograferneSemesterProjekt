@@ -37,7 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             catch (UnauthorizedAccessException ex)
             {
                 ViewData["Errormessage"] = ex.Message;
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {

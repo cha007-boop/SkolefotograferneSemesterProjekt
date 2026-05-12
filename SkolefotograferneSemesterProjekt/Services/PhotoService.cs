@@ -24,6 +24,9 @@ namespace SkolefotograferneSemesterProjekt.Services
         public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
         {
             { "Filename", "Filename" },
+            { "Photographer.FirstName", "Photographer first name" },
+            { "Photographer.Surname", "Photographer surname" },
+            { "Photographer.ID", "Photographer ID" },
             { "School.Name", "School name" },
             { "SchoolID", "School ID" },
             { "Student.FirstName", "Child first name" },
@@ -193,7 +196,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, string type)
+        public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, List<string> conditions = null)
         {
             List<Photo> photos = new List<Photo>();
             string query = @"SELECT * FROM Photo
@@ -235,43 +238,26 @@ namespace SkolefotograferneSemesterProjekt.Services
                         {
                             query += "(" + string.Join(" OR ", FilterableColumns.Keys.Select(col => $"{col} LIKE @FilterValue")) + ")";
                         }
-                        else if (filterColumn == "Class")
-                        {
-
-                        }
                         else
                         {
                             query += $" {filterColumn} LIKE @FilterValue";
                         }
-                        if (type != "All")
+                        if (conditions != null && conditions.Count > 0)
                         {
-                            query += " AND ";
-                            if (type == "ClassPhotos")
-                            {
-                                query += "ChildID IS NULL";
-                            }
-                            else if (type == "Portraits")
-                            {
-                                query += "ChildID IS NOT NULL";
-                            }
+                            query += " AND " + string.Join(" AND ", conditions);
                         }
                     }
-                    else if (type != "All")
+                    else if (conditions != null && conditions.Count > 0)
                     {
-                        query += " WHERE ";
-                        if (type == "ClassPhotos")
-                        {
-                            query += "ChildID IS NULL";
-                        }
-                        else if (type == "Portraits")
-                        {
-                            query += "ChildID IS NOT NULL";
-                        }
+                        query += " WHERE " + string.Join(" AND ", conditions);
+                        
                     }
+
                     query += $" ORDER BY {sortColumn} {sortOrder}";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+
                     await conn.OpenAsync();
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
                     while (await reader.ReadAsync())
@@ -289,9 +275,24 @@ namespace SkolefotograferneSemesterProjekt.Services
             return photos;
         }
 
-        public Task RemovePhoto(Photo photo)
+        public async Task RemovePhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "DELETE FROM Photo WHERE Filename = @Filename";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@Filename", photo.Filename);
+                    await connection.OpenAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    throw;
+                }
+            }
         }
 
         private async Task<Photo> PhotoReader(SqlDataReader reader)

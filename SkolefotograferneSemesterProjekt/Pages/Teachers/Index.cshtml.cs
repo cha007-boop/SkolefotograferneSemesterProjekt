@@ -13,9 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         public ISchoolAdminService _schoolAdminService;
         public List<Teacher> TeacherList { get; set; }
         public Teacher TheTeacher { get; set; }
-        public int? UserID { get; set; }
         public bool IsUser { get; set; }
-        [BindProperty]
         public int? Role { get; set; }
         [BindProperty]
         public IEnumerable<Teacher> TeacherFList { get; set; }
@@ -32,17 +30,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 
         public async Task<IActionResult> OnGet()
         {
-            UserID = HttpContext.Session.GetInt32("ID");
+            int? userID = HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
 
-            if (UserID.HasValue && Role.HasValue)
+            if (userID.HasValue && Role.HasValue)
             {
                 if (Role == (int)UserRole.Teacher)
                 {
                     TeacherList = await _teacherService.GetAll();
 
-                    Teacher t = new Teacher { ID = (int)UserID };
-                    t = TeacherList.Find(t => t.ID == UserID);
+                    Teacher t = new Teacher { ID = userID.Value };
+                    t = TeacherList.Find(t => t.ID == userID.Value);
                     if (t != null)
                     {
                         IsUser = true;
@@ -51,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 }
                 else if(Role == (int)UserRole.SchoolAdmin)
                 {
-                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)UserID);
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID.Value);
                     int schoolID = schoolAdmin.TheSchool.ID;
                     TeacherList = await _teacherService.GetBySchoolID(schoolID);
                 }
