@@ -15,7 +15,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         private IStudentService _studentService;
         private ISchoolService _schoolService;
         private ISchoolClassService _schoolClassService;
-        private IParentServices _parentServices;
         #endregion
         #region Properties
         [BindProperty]
@@ -29,12 +28,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         public IEnumerable<SelectListItem> Schools { get; set; }
         #endregion
         #region Constructor
-        public UpdateStudentModel(IStudentService studentService, ISchoolService schoolService, ISchoolClassService schoolClassService, IParentServices parentServices)
+        public UpdateStudentModel(IStudentService studentService, ISchoolService schoolService, ISchoolClassService schoolClassService)
         {
             _studentService = studentService;
             _schoolService = schoolService;
             _schoolClassService = schoolClassService;
-            _parentServices = parentServices;
         }
         #endregion
         #region Methods
@@ -65,6 +63,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         {
             ModelState.Clear();
             TryValidateModel(ClassGrade);
+            TryValidateModel(ClassLetter);
             try
             {
                 if (ClassGrade > 10 || ClassGrade < 0)
@@ -72,23 +71,27 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                     ModelState.AddModelError("ClassGrade", "Invalid Grade");
                     return Page();
                 }
+                if (ClassLetter.Length > 1)
+                {
+                    ModelState.AddModelError("ClassLetter", "Invalid Letter");
+                    return Page();
+                }
                 string year = SchoolYearCalc.GetSchoolYear();
                 NewStudent.TheSchoolClass = await _schoolClassService.SearchSchoolClass(Convert.ToInt32(SchoolID), ClassGrade, ClassLetter, year) ?? throw new ArgumentException();
                 NewStudent.TheSchool = await _schoolService.GetById(Convert.ToInt32(SchoolID));
-                NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Update(NewStudent);
             }
             catch (ArgumentException)
             {
                 ModelState.AddModelError("ClassGrade", "Class doesn't exist");
-                //await OnGet();
+                await OnGet(NewStudent.ID);
                 return Page();
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc;
             }
-            return RedirectToPage("Users/Profile");
+            return RedirectToPage("/Users/EditProfile");
         }
         #endregion
     }

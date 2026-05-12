@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages
 {
@@ -7,8 +8,12 @@ namespace SkolefotograferneSemesterProjekt.Pages
     {
 
         private readonly ILogger<IndexModel> _logger;
+
         [BindProperty]
         public IFormFile PhotoFrontPage { get; set; }
+        [BindProperty]
+        public User TheUser { get; set; }
+
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -17,6 +22,7 @@ namespace SkolefotograferneSemesterProjekt.Pages
 
         public void OnGet()
         {
+            
 
         }
     }

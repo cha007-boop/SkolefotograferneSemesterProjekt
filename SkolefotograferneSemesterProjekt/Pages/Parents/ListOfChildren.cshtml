@@ -1,0 +1,35 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.Parents.ListOfChildrenModel
+@{
+    ViewData["Title"] = "List of Children";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Child ID</th>
+            <th>Child First Name</th>
+            <th>Child Surname</th>
+            <th>Child School</th>
+            <th>Child Class</th>
+            <th>Child Pictures</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Student student in @Model.Students)
+        {
+            <tr>
+                <td>@student.ID</td>
+                <td>@student.FirstName</td>
+                <td>@student.Surname</td>
+                <td>@student.TheSchoolClass.TheSchool.Name</td>
+                <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                <td>
+                       <a asp-page="/Parents/StudentPictures" asp-route-id="@student.ID">See Pictures</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
