@@ -275,9 +275,24 @@ namespace SkolefotograferneSemesterProjekt.Services
             return photos;
         }
 
-        public Task RemovePhoto(Photo photo)
+        public async Task RemovePhoto(Photo photo)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "DELETE FROM Photo WHERE Filename = @Filename";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@Filename", photo.Filename);
+                    await connection.OpenAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    throw;
+                }
+            }
         }
 
         private async Task<Photo> PhotoReader(SqlDataReader reader)

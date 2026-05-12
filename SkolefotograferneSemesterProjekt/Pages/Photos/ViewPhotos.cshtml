@@ -73,6 +73,10 @@
                             <td>@(photo.Child?.FirstName ?? "")</td>
                             <td>@(photo.Child?.Surname ?? "")</td>
                             <td>@photo.UploadedAt.ToString("G")</td>
+                            <td>
+                                <a asp-page="./EditPhoto" asp-route-filename="@photo.Filename" class="btn btn-sm btn-primary">Edit</a>
+                                <a asp-page="./DeletePhoto" asp-route-filename="@photo.Filename" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
