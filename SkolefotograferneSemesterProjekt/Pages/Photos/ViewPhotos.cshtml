@@ -69,14 +69,17 @@
                             </td>
                             <td>@photo.ThePhotoEvent.ID</td>
                             <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
-                            <td>@photo.TheSchoolClass.Grade  @(photo.TheSchoolClass.Letter ?? "")</td>
+                            <td>@photo.TheSchoolClass.Grade @(photo.TheSchoolClass.Letter ?? "")</td>
                             <td>@(photo.Child?.FirstName ?? "")</td>
                             <td>@(photo.Child?.Surname ?? "")</td>
                             <td>@photo.UploadedAt.ToString("G")</td>
-                            <td>
-                                <a asp-page="./EditPhoto" asp-route-filename="@photo.Filename" class="btn btn-sm btn-primary">Edit</a>
-                                <a asp-page="./DeletePhoto" asp-route-filename="@photo.Filename" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
+                            <form method="post">
+                                <input type="hidden" asp-for="SortColumn" />
+                                <input type="hidden" asp-for="SortOrder" />
+                                <input type="hidden" asp-for="FilterColumn" />
+                                <input type="hidden" asp-for="FilterValue" />
+                            <td><button type="button" class="btn btn-danger" asp-route-filename="@photo.Filename" onclick="DisplayConfirmDeleteModal('@photo.Filename')">Delete</button></td>
+                            </form>
                         </tr>
                     }
                 </tbody>

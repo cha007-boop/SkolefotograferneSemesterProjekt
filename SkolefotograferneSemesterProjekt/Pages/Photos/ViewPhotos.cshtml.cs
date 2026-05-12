@@ -74,6 +74,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
             return Page();
         }
 
+        
+
         public string Toggle(string column)
         {
             //return (column == SortColumn) ? ("DESC") : "ASC";
