@@ -201,7 +201,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return null;
         }
 
-        public async Task<List<PhotoEvent>> GetPhotoEventsByParent(int parentId)
+        public async Task<List<PhotoEvent>> GetByParent(int parentId)
         {
             List<PhotoEvent> photoEvents = new List<PhotoEvent>();
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))

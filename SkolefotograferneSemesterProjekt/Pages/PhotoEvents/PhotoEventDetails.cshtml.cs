@@ -46,6 +46,15 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 return NotFound();
             }
 
+            int? role = HttpContext.Session.GetInt32("Role");
+            int? userid = HttpContext.Session.GetInt32("ID");
+            
+
+            if((userid != ThePhotoEvent.ThePhotographer.ID) && (userid != ThePhotoEvent.TheSchoolAdmin.ID) && (role != 4))
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+
             SchoolClasses = await _schoolClassService.GetByPhotoEvent(Id);
             SchoolClassesSelectList = SchoolClasses.Select(c => new SelectListItem
             {
