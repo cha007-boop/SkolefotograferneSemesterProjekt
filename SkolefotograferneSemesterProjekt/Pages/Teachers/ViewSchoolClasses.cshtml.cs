@@ -59,6 +59,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                         }
                     }
                 }
+                else
+                {
+                    return RedirectToPage("/Users/AccessDenied");
+                }
             }
             else
             {
