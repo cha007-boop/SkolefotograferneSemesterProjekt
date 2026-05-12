@@ -24,7 +24,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             try
             {
-                if(HttpContext.Session.GetInt32("ID") == 0)
+                if(HttpContext.Session.GetInt32("Role") == 0)
                 {
                     PhotoEvents = await PEService.GetByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
