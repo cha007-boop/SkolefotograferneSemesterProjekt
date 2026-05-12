@@ -49,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             catch (UnauthorizedAccessException)
             {
                 ViewData["ErrorMessage"] = "You do not have permission to access this page.";
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {

@@ -31,20 +31,38 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _photographerService = photographerService;
             _photoEventService = photoEventService;
         }
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
-            List<Photographer> photographers = await _photographerService.GetAll();
-            SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
+            try
             {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
-            });
-            Photographers = photographers.Select(s => new SelectListItem
+                if(HttpContext.Session.GetInt32("Role") != 1)
+                {
+                    throw new UnauthorizedAccessException();
+                }
+                List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
+                List<Photographer> photographers = await _photographerService.GetAll();
+                SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
+                {
+                    Value = Convert.ToString(s.ID),
+                    Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
+                });
+                Photographers = photographers.Select(s => new SelectListItem
+                {
+                    Value = Convert.ToString(s.ID),
+                    Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
+                });
+            }
+            catch (UnauthorizedAccessException uax)
             {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
-            });
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            catch(Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return Page();
+            }
+            return Page();
         }
         public async Task<IActionResult> OnPost()
         {

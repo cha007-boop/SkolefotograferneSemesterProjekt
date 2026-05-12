@@ -79,6 +79,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     }
                     PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
                 }
+                else
+                {
+                    throw new UnauthorizedAccessException();
+                }
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime) // this works
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
@@ -89,6 +93,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     await _photoEventService.Add(PhotoEvent);
                 }
             } 
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
+            }
             catch (SqlException ex)
             {
                 ViewData["ErrorMessage"] = ex;

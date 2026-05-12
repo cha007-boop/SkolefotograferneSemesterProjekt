@@ -34,8 +34,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new UnauthorizedAccessException();
                 }
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {
