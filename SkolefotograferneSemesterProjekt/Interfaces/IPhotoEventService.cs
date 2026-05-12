@@ -11,8 +11,10 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task<List<PhotoEvent>> SearchEventBySchoolAdminID(int ID);
         Task<List<PhotoEvent>> GetAll();
         Task<PhotoEvent?> GetByID(int id);
+        Task<List<PhotoEvent>> GetByParent(int parentId);
         Task UpdatePhotoEvent(PhotoEvent photoEvent);
         Task DeletePhotoEvent(PhotoEvent photoEvent);
+        Task<PhotoEvent> searchPhotoEvent(int id);
 
     }
 }

@@ -16,10 +16,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public int VerifyPhotographerID { get; set; }
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
-        [BindProperty]
-        private ISchoolAdminService _schoolAdminService { get; set; }
-        [BindProperty]
-        private IPhotographerService _photographerService { get; set; }
+        private ISchoolAdminService _schoolAdminService;
+        private IPhotographerService _photographerService;
         private IPhotoEventService _photoEventService;
         [BindProperty]
         public IEnumerable<SelectListItem> Photographers { get; set; }
@@ -31,20 +29,38 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _photographerService = photographerService;
             _photoEventService = photoEventService;
         }
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
-            List<Photographer> photographers = await _photographerService.GetAll();
-            SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
+            try
             {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
-            });
-            Photographers = photographers.Select(s => new SelectListItem
+                if(HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 3 && HttpContext.Session.GetInt32("Role") != 4)
+                {
+                    throw new UnauthorizedAccessException();
+                }
+                List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
+                List<Photographer> photographers = await _photographerService.GetAll();
+                SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
+                {
+                    Value = Convert.ToString(s.ID),
+                    Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
+                });
+                Photographers = photographers.Select(s => new SelectListItem
+                {
+                    Value = Convert.ToString(s.ID),
+                    Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
+                });
+            }
+            catch (UnauthorizedAccessException uax)
             {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
-            });
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            catch(Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+                return Page();
+            }
+            return Page();
         }
         public async Task<IActionResult> OnPost()
         {
@@ -53,27 +69,29 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    await OnGet(PhotoEvent.ID);
+
                     return Page();
                 }
                 else
                 {
-                    await _photoEventService.Add(PhotoEvent);
+                    await _photoEventService.UpdatePhotoEvent(PhotoEvent);
                 }
             }
             catch (SqlException ex)
             {
                 ViewData["ErrorMessage"] = ex;
                 ModelState.AddModelError("PhotoEvent", ex.Message);
+                await OnGet(PhotoEvent.ID);
                 return Page();
             }
             catch (SqlTypeException tex)
             {
                 ViewData["ErrorMessage"] = tex;
                 ModelState.AddModelError("PhotoEvent.StartTime", tex.Message);
+                await OnGet(PhotoEvent.ID);
                 return Page();
             }
-            await OnGet(PhotoEvent.ThePhotographer.ID);
-            await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             return RedirectToPage("/Index");
         }
     }

@@ -20,36 +20,46 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             HttpContextAccessor = httpContextAccessor;
             PEService = pEService;
         }
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
-                if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
+                if(HttpContext.Session.GetInt32("Role") == 0)
                 {
-                    PhotoEvents = PhotoEventSort(await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
+                    PhotoEvents = await PEService.GetByParent((int)HttpContext.Session.GetInt32("ID"));
+                }
+                else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
+                {
+                    PhotoEvents = (await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
                 } else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3)
                 {
-                    PhotoEvents = PhotoEventSort(await PEService.SearchEventBySchoolAdminID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
+                    PhotoEvents = (await PEService.SearchEventBySchoolAdminID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
                 }
                 else if(HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 4)
                 {
-                    PhotoEvents = PhotoEventSort(await PEService.ShowActivePhotoEvent()).OrderBy(n => n.StartTime).ToList();
+                    PhotoEvents = (await PEService.ShowActivePhotoEvent()).OrderBy(n => n.StartTime).ToList();
                 }
-               
+                else
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            catch(UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return Page();
             }
+            return Page();
         }
         public async Task<IActionResult> OnPostDeletePhotoEvents()
         {
             await PEService.DeletePhotoEvent(PhotoEvent);
             return RedirectToPage();
-        }
-        private List<PhotoEvent> PhotoEventSort(List<PhotoEvent> photoEvents)
-        {
-            return photoEvents;
         }
     }
 }

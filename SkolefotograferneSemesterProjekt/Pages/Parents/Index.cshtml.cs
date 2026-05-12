@@ -40,7 +40,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                 if (!string.IsNullOrEmpty(Filter))
                 {
                     Parents = await _parentService.FilterParents(Filter);
-                }else
+                }
+                else
                     Parents = await _parentService.GetAllParents();
 
                 Parents = SortParents(Parents);
@@ -49,7 +50,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             catch (UnauthorizedAccessException ex)
             {
                 ViewData["Errormessage"] = ex.Message;
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception ex)
             {

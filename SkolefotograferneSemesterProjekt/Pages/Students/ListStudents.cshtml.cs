@@ -28,7 +28,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
         }
         #endregion
         #region Methods
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
@@ -36,19 +36,26 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 {
                     Students = await _studentService.GetAllByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 1)
-                {
-                    throw new NotImplementedException();//skal dirigeres fra et fotoevent, skal vises børn tilknyttet til klasser der er oprettet til fotoeventet.
-                }
                 if (HttpContext.Session.GetInt32("Role") == 4)
                 {
                     Students = FilterStudents(await _studentService.GetAll());
                 }
+                else
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch(Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
+                return Page();
             }
+            return Page();
         }
 
         private IEnumerable<Student> FilterStudents(IEnumerable<Student> students)

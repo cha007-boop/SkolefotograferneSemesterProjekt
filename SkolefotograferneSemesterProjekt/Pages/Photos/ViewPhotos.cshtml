@@ -12,6 +12,7 @@
     <div class="row">
         <div class="col">
             <form method="get">
+                @* <div asp-validation-summary="" class="text-danger"></div> *@
                 <input type="hidden" asp-for=SortColumn />
                 <input type="hidden" asp-for=SortOrder />
                 <div class="form-group">
@@ -57,6 +58,7 @@
                                 </a>
                             </th>
                         }
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,14 +66,26 @@
                     {
                         <tr>
                             <td>
-                                <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@(photo.Filename)" class="img-thumbnail" style="height:60px;" />
+                                <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename"
+                                     class="img-thumbnail"
+                                     style="height:60px; cursor:pointer;"
+                                     onclick="showImage(
+                                     '/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename'
+                                 )" />
                             </td>
                             <td>@photo.ThePhotoEvent.ID</td>
                             <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
-                            <td>@photo.TheSchoolClass.Grade  @(photo.TheSchoolClass.Letter ?? "")</td>
+                            <td>@photo.TheSchoolClass.Grade @(photo.TheSchoolClass.Letter ?? "")</td>
                             <td>@(photo.Child?.FirstName ?? "")</td>
                             <td>@(photo.Child?.Surname ?? "")</td>
                             <td>@photo.UploadedAt.ToString("G")</td>
+                            <form method="post">
+                                <input type="hidden" asp-for="SortColumn" />
+                                <input type="hidden" asp-for="SortOrder" />
+                                <input type="hidden" asp-for="FilterColumn" />
+                                <input type="hidden" asp-for="FilterValue" />
+                            <td><button type="button" class="btn btn-danger" asp-route-filename="@photo.Filename" onclick="DisplayConfirmDeleteModal('@photo.Filename')">Delete</button></td>
+                            </form>
                         </tr>
                     }
                 </tbody>
@@ -80,3 +94,83 @@
     </div>
 
 </div>
+
+<form method="post" asp-page-handler="Delete" id="deleteForm">
+    <input type="hidden" name="filename" id="deleteFile" />
+</form>
+
+<div class="modal fade" id="deleteModalSchool" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this Photo?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+
+            <div class="modal-body text-center">
+                <button type="button"
+                        class="btn-close bg-white position-absolute top-0 end-0 m-3"
+                        data-bs-dismiss="modal">
+                </button>
+
+                <img id="modalImage"
+                     src=""
+                     class="img-fluid rounded shadow"
+                     style="max-height:90vh;" />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function DisplayConfirmDeleteModal(filename) {
+            document.getElementById("deleteFile").value = filename;
+
+            var modal = new bootstrap.Modal(document.getElementById('deleteModalSchool'));
+            modal.show();
+        }
+
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
+
+    <script>
+        function showImage(imagePath) {
+            document.getElementById("modalImage").src = imagePath;
+
+            var modal = new bootstrap.Modal(
+                document.getElementById('imageModal')
+            );
+
+            modal.show();
+        }
+    </script>
+}
