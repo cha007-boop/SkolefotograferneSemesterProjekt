@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Data.SqlTypes;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
@@ -29,7 +31,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _photographerService = photographerService;
             _photoEventService = photoEventService;
         }
-        public async Task OnGet()
+        public async Task OnGet(int id)
         {
             List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
             List<Photographer> photographers = await _photographerService.GetAll();
@@ -44,9 +46,35 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
             });
         }
-        public async Task OnPost()
+        public async Task<IActionResult> OnPost()
         {
-
+            try
+            {
+                if (PhotoEvent.StartTime > PhotoEvent.EndTime)
+                {
+                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    return Page();
+                }
+                else
+                {
+                    await _photoEventService.Add(PhotoEvent);
+                }
+            }
+            catch (SqlException ex)
+            {
+                ViewData["ErrorMessage"] = ex;
+                ModelState.AddModelError("PhotoEvent", ex.Message);
+                return Page();
+            }
+            catch (SqlTypeException tex)
+            {
+                ViewData["ErrorMessage"] = tex;
+                ModelState.AddModelError("PhotoEvent.StartTime", tex.Message);
+                return Page();
+            }
+            await OnGet(PhotoEvent.ThePhotographer.ID);
+            await OnGet(PhotoEvent.TheSchoolAdmin.ID);
+            return RedirectToPage("/Index");
         }
     }
 }

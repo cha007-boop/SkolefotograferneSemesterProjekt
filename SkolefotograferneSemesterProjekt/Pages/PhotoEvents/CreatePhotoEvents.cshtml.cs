@@ -37,7 +37,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _schoolAdminService = schoolAdminService;
             _photographerService = photographerService;
         }
-        public async Task OnGet()
+        public async Task OnGet(int id)
         {
             List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
             List<Photographer> photographers = await _photographerService.GetAll();
@@ -101,6 +101,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 ModelState.AddModelError("PhotoEvent.StartTime", tex.Message);
                 return Page();
             }
+            await OnGet(PhotoEvent.ThePhotographer.ID);
+            await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             return RedirectToPage("/Index"); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
         }
     }
