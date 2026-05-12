@@ -27,19 +27,25 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         }
         public async Task<IActionResult> OnGet(int id)
         {
-            int? userID = HttpContext.Session.GetInt32("ID");
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (userID == null || role != 2)
-            {
-                return RedirectToPage("/Users/AccessDenied");
-            }
-
             TheClassBooking = await _classBookingService.GetByID(id);
             if (TheClassBooking == null)
             {
                 return RedirectToPage("/Bookings/ListBookings");
             }
             PhotoEventID = TheClassBooking.ThePhotoEvent.ID;
+
+            int? userID = HttpContext.Session.GetInt32("ID");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (!userID.HasValue || role != (int)UserRole.Teacher)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+
+            int? classTeacherID = TheClassBooking.TheTeacher.ID;
+            if( userID != classTeacherID)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
 
             await LoadMenus();
             return Page();
@@ -89,7 +95,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 {
                     timeSlots.Add(new SelectListItem
                     {
-                        Value = peCurrent.ToString("yyyy-MM-dd THH:mm"),
+                        Value = peCurrent.ToString("dd/MM/yyyy HH:mm"),
                         Text = peCurrent.ToString("HH:mm")
                     });
                 }

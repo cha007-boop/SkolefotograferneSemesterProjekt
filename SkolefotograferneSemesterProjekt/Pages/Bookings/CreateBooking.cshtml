@@ -1,8 +1,12 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Bookings.CreateBookingModel
 @{
-    ViewData["Title"] = "Book";
+    ViewData["Title"] = "Opret booking";
 }
+
+<div>
+    <a asp-page="/Bookings/ListBookings">Tilbage</a>
+</div>
 
 <form method="post">
     <input type="hidden" asp-for="@Model.PhotoEventID" />
