@@ -24,7 +24,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             try
             {
-                if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
+                if(HttpContext.Session.GetInt32("ID") == 0)
+                {
+                    PhotoEvents = await PEService.GetByParent((int)HttpContext.Session.GetInt32("ID"));
+                }
+                else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
                 {
                     PhotoEvents = (await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
                 } else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3)
