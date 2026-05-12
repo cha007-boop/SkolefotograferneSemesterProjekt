@@ -162,6 +162,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 }
                 catch
                 {
+                    throw;
                 }
 
             }

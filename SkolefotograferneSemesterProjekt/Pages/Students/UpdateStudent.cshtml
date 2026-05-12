@@ -10,7 +10,41 @@
 
 @if(HttpContext.Session.GetInt32("Role") == 0)
 {
-	
+<form method="Post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.FirstName" class="control-label"></label>
+		<input asp-for="@Model.NewStudent.FirstName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.Surname" class="control-label"></label>
+		<input asp-for="@Model.NewStudent.Surname" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewStudent.TheSchool.ID" class="control-label"></label>
+		<select asp-for="@Model.SchoolID"
+				asp-items="Model.Schools"
+				id="schoolSelect"
+				class="form-select">
+			<option value="">-- Select School --</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.ClassGrade" class="control-label"></label>
+		<input asp-for="@Model.ClassGrade" class="form-control" id="Email" />
+		<span asp-validation-for="ClassGrade" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.ClassLetter" class="control-label"></label>
+		<input asp-for="@Model.ClassLetter" class="form-control" />
+			<span asp-validation-for="ClassLetter" class="text-danger"></span>
+	</div>
+		<div class="form-group">
+			<input type="submit" asp-page-handler="Update" value="Update" class="btn btn-primary" />
+		</div>
+	</form>
+	<div>
+		<a asp-page="/Users/EditProfile">Return</a>
+	</div>
 }
 else
 {

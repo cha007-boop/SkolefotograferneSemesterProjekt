@@ -20,7 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         public SchoolAdmin? ThisSchoolAdmin { get; set; }
         public int? UserID { get; set; }
         public bool IsUser { get; set; }
-        public int? Role { get; set; } = -1;
+        public int? Role { get; set; }
         #endregion
         #region Constructor
         public IndexModel(ITeacherService teacherService, IPhotoEventService photoEventService, ISchoolAdminService schoolAdminService)
@@ -37,44 +37,47 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 
             UserID = HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
-            if(UserID == null)
+            if(UserID == null || Role == null)
             {
                 return RedirectToPage("/Users/AccessDenied");
-            }
-            if (Role == 2)
-            {
-                Teacher t = await _teacherService.GetByID((int)UserID);
-                if (t == null)
-                {
-                    return RedirectToPage("/Users/AccessDenied");
-                }
-                IsUser = true;
-                ThisTeacher = t;
-
-                FilteredList = PhotoEvents.FindAll((pe) => pe.TheSchoolAdmin.TheSchool.ID == t.TheSchool.ID &&
-                                                           pe.StartTime.Date >= DateTime.Today);
-            }
-            else if(Role == 3)
-            {
-                SchoolAdmin sa = await _schoolAdminService.GetById((int)UserID);
-                if(sa == null)
-                {
-                    return RedirectToPage("/Users/AccessDenied");
-                }
-                IsUser = false;
-                ThisSchoolAdmin = sa;
-
-                FilteredList = PhotoEvents.FindAll((pe) => pe.TheSchoolAdmin.TheSchool.ID == sa.TheSchool.ID &&
-                                                           pe.StartTime.Date >= DateTime.Today);
-            }
-            else if(Role == 4)
-            {
-                IsUser = false;
-                FilteredList = PhotoEvents.FindAll((pe) => pe.StartTime.Date >= DateTime.Today);
             }
             else
             {
-                return RedirectToPage("/Users/AccessDenied");
+                if (Role == (int)UserRole.Teacher)
+                {
+                    Teacher t = await _teacherService.GetByID((int)UserID);
+                    if (t == null)
+                    {
+                        return RedirectToPage("/Users/AccessDenied");
+                    }
+                    IsUser = true;
+                    ThisTeacher = t;
+
+                    FilteredList = PhotoEvents.FindAll((pe) => pe.TheSchoolAdmin.TheSchool.ID == t.TheSchool.ID &&
+                                                               pe.StartTime.Date >= DateTime.Today);
+                }
+                else if (Role == (int)UserRole.SchoolAdmin)
+                {
+                    SchoolAdmin sa = await _schoolAdminService.GetById((int)UserID);
+                    if (sa == null)
+                    {
+                        return RedirectToPage("/Users/AccessDenied");
+                    }
+                    IsUser = false;
+                    ThisSchoolAdmin = sa;
+
+                    FilteredList = PhotoEvents.FindAll((pe) => pe.TheSchoolAdmin.TheSchool.ID == sa.TheSchool.ID &&
+                                                               pe.StartTime.Date >= DateTime.Today);
+                }
+                else if (Role == (int)UserRole.SysAdmin)
+                {
+                    IsUser = false;
+                    FilteredList = PhotoEvents.FindAll((pe) => pe.StartTime.Date >= DateTime.Today);
+                }
+                else
+                {
+                    return RedirectToPage("/Users/AccessDenied");
+                }
             }
             return Page();
         }

@@ -66,7 +66,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             TryValidateModel(ClassGrade);
             try
             {
-                if (ClassGrade > 10)
+                if (ClassGrade > 10 || ClassGrade < 0)
                 {
                     ModelState.AddModelError("ClassGrade", "Invalid Grade");
                     return Page();
