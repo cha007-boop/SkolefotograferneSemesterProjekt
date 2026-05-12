@@ -53,7 +53,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 
                 TheTeacher = await _teacherService.GetByID(userID.Value);
                 int? tSchoolID = TheTeacher?.TheSchool?.ID;
-                int? saSchoolID = ThePhotoEvent.TheSchoolAdmin?.ID;
+                int? saSchoolID = ThePhotoEvent.TheSchoolAdmin?.TheSchool.ID;
                 if (saSchoolID.HasValue && tSchoolID.HasValue)
                 {
                     bool sameSchool = tSchoolID == saSchoolID;
