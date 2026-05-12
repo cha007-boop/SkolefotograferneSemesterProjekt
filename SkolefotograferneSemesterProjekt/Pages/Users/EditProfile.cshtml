@@ -104,6 +104,12 @@
                         <td>@student.Surname</td>
                         <td>@student.TheSchoolClass.TheSchool.Name</td>
                         <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                        <td>
+                            <a asp-page="/Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Update child</a>
+                        </td>
+                        <td>
+                            @*add delete child here*@
+                        </td>
                     </tr>
                 }
             </tbody>
