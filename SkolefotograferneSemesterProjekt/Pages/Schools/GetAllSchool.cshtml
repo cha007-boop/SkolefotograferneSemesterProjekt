@@ -67,6 +67,7 @@
                             <input type="hidden" asp-for="Schools" />
                         <td><button type="button" class="btn btn-danger" asp-route-id="@s.ID" onclick="DisplayConfirmDeleteModal('@s.ID')">Delete</button></td>
                         </form>
+                        <td><a asp-page="/Schools/UpdateSchool" asp-route-id="@s.ID" class="btn btn-primary">Update school</a></td>
                     }
                 </tr>
                 
