@@ -7,6 +7,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
 {
     public class ViewPhotosModel : PageModel
     {
+        private IWebHostEnvironment _webHostEnvironment;
         private IPhotoService _photoService;
 
         public Dictionary<string, string> FilterableColumns
@@ -33,9 +34,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
 
         public List<Photo> Photos { get; set; } = new List<Photo>();
 
-        public ViewPhotosModel(IPhotoService photoService)
+        public ViewPhotosModel(IPhotoService photoService, IWebHostEnvironment webHostEnvironment)
         {
             _photoService = photoService;
+            _webHostEnvironment = webHostEnvironment;
             SortOrder = "ASC";
             Type = "All";
         }
@@ -74,7 +76,29 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
             return Page();
         }
 
-        
+        public async Task<IActionResult> OnPostDelete(string filename)
+        {
+            try
+            {
+                Photo photo = await _photoService.GetByFilename(filename);
+                if (photo == null)
+                {
+                    return NotFound();
+                }
+                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", photo.Child != null ? "Portraits" : "ClassPhotos", photo.Filename);
+                System.IO.File.Delete(filePath);
+
+                await _photoService.RemovePhoto(photo);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Delete", $"Error deleting photo: {ex.Message}");
+                await OnGet();
+                return Page();
+            }
+            await OnGet();
+            return Page();
+        }
 
         public string Toggle(string column)
         {
