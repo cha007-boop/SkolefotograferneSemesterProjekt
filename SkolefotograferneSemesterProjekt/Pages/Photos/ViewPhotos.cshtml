@@ -58,6 +58,7 @@
                                 </a>
                             </th>
                         }
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +66,12 @@
                     {
                         <tr>
                             <td>
-                                <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@(photo.Filename)" class="img-thumbnail" style="height:60px;" />
+                                <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename"
+                                     class="img-thumbnail"
+                                     style="height:60px; cursor:pointer;"
+                                     onclick="showImage(
+                                     '/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename'
+                                 )" />
                             </td>
                             <td>@photo.ThePhotoEvent.ID</td>
                             <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
@@ -118,18 +124,53 @@
 
         </div>
     </div>
+</div>
 
-@section Scripts{
-        <script>
-            function DisplayConfirmDeleteModal(filename) {
-                document.getElementById("deleteFile").value = filename;
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
 
-                var modal = new bootstrap.Modal(document.getElementById('deleteModalSchool'));
-                modal.show();
-            }
+            <div class="modal-body text-center">
+                <button type="button"
+                        class="btn-close bg-white position-absolute top-0 end-0 m-3"
+                        data-bs-dismiss="modal">
+                </button>
 
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
-                document.getElementById("deleteForm").submit();
-            });
-        </script>
+                <img id="modalImage"
+                     src=""
+                     class="img-fluid rounded shadow"
+                     style="max-height:90vh;" />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function DisplayConfirmDeleteModal(filename) {
+            document.getElementById("deleteFile").value = filename;
+
+            var modal = new bootstrap.Modal(document.getElementById('deleteModalSchool'));
+            modal.show();
+        }
+
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
+
+    <script>
+        function showImage(imagePath) {
+            document.getElementById("modalImage").src = imagePath;
+
+            var modal = new bootstrap.Modal(
+                document.getElementById('imageModal')
+            );
+
+            modal.show();
+        }
+    </script>
 }
