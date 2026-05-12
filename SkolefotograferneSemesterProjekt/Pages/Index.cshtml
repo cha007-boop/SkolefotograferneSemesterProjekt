@@ -77,11 +77,44 @@
                 <div class="column" style="flex:10%"></div>
             </div>
         </div>
+        <br />
+        <br />
 
     }
     @if (HttpContext.Session.GetInt32("Role") == 0)
     {
+
         <h1>Welcome Parent</h1>
+
+        <div class="row" style="display:flex">
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj barn</p>
+                <a asp-page="/Students/createStudent">Tilføj Barn</a>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+        </div>
+        <br />
+        <div class="row" style="display:flex">
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+        </div>
+
     }
     @if (HttpContext.Session.GetInt32("Role") == 1)
     {
@@ -101,8 +134,3 @@
     }
 </div>
 
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
