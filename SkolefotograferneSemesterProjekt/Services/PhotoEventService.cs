@@ -25,7 +25,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         private string _selectPhotoEventStringBySpecificSchoolAdminID = "select * from PhotoEvent where SchoolAdminID = @SchoolAdminID";
         private string _deletePhotoEventString = "Delete from PhotoEvent where ID = @ID";
         private string _updatePhotoEventString = "Update PhotoEvent " +
-                                                 "set StartTime =  @StartTime, EndTime = @EndTime, PhotographerID = @PhotographerID, SchoolAdminID = @SchoolAdminID, Location = @Location" +
+                                                 "set StartTime =  @StartTime, EndTime = @EndTime, PhotographerID = @PhotographerID, SchoolAdminID = @SchoolAdminID, Location = @Location " +
                                                  "where ID = @ID";
 
         public PhotoEventService()
@@ -248,8 +248,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                 command.Parameters.AddWithValue("@ID", photoEvent.ID);
                 command.Parameters.AddWithValue("@StartTime", photoEvent.StartTime);
                 command.Parameters.AddWithValue("@EndTime", photoEvent.EndTime);
-                command.Parameters.AddWithValue("@TheSchoolAdminID", photoEvent.TheSchoolAdmin.ID);
-                command.Parameters.AddWithValue("@ThePhotographerID", photoEvent.ThePhotographer.ID);
+                command.Parameters.AddWithValue("@SchoolAdminID", photoEvent.TheSchoolAdmin.ID);
+                command.Parameters.AddWithValue("@PhotographerID", photoEvent.ThePhotographer.ID);
                 command.Parameters.AddWithValue("@Location", photoEvent.Location);
                 await command.ExecuteNonQueryAsync();
             }
