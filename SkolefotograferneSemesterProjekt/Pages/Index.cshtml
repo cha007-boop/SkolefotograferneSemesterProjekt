@@ -7,11 +7,10 @@
 <div class="form-group">
     @if (HttpContext.Session.GetInt32("ID") == null)
     {
-        <h1>Welcome to SkoleFoto</h1>
 
         <div class="container-md">
 
-            <div style="background-color:beige" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div style="background-color:lightgray" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <ol class="carousel-indicators">
                     @for (int i = 0; i < 5; i++)
                     {
@@ -47,31 +46,75 @@
         </div>
         <br />
         <br />
+        <div style="text-align:center">
+        <h1>Welcome to SkoleFoto</h1>
+        </div>
+        <br />
+        <br />
         <div class="container-md">
             <div class="row" style="display:flex; flex-wrap:wrap">
-                <div class="column" style="flex:45%">
+                <div class="column" style="flex:10%"></div>
+                <div class="column" style="flex:35%; padding: 14px; border: 2px solid darkgrey; text-align:center" >
                     <div>
-                        <img style="height:200px; width:auto; margin:auto" src="~/images/FrontWebPhotos/Drawing2.jpeg" alt="Some other picture" />
+                        <img style="height:300px; width:auto; margin:auto;" src="~/images/FrontWebPhotos/Drawing2.jpeg" alt="Some other picture" />
                         <p>
-                            here you can write som random text about something anyone can know. No secrets allowed.
+                            <h4>First Header</h4>
+                            Here you can write som random text about something anyone can know. No secrets allowed.
                         </p>
                     </div>
                 </div>
-                <div class="column" style="flex:45%">
+                <div class="column" style="flex:10%"></div>
+                <div class="column" style="flex:35%; padding: 25px; border: 2px solid darkgrey; text-align:center">
                     <div>
-                        <img style="height:200px; width:auto; margin:auto" src="~/images/FrontWebPhotos/Man_3.jpg" alt="Some other picture" />
+                        <img style="height:300px; width:auto; margin:auto" src="~/images/FrontWebPhotos/Man_3.jpg" alt="Some other picture" />
                         <p>
-                            here you can write som random text about something anyone can know. No secrets allowed.
+                            <h4>Second Header</h4>
+                            Here you can write som random text about something anyone can know. No secrets allowed. 
+                            i have no idea what to write id was more a test to se if this one goes further down would the other one as well.
                         </p>
                     </div>
-                </div> 
+                </div>
+                <div class="column" style="flex:10%"></div>
             </div>
         </div>
+        <br />
+        <br />
 
     }
     @if (HttpContext.Session.GetInt32("Role") == 0)
     {
+
         <h1>Welcome Parent</h1>
+
+        <div class="row" style="display:flex">
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj barn</p>
+                <a asp-page="/Students/createStudent">Tilføj Barn</a>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+        </div>
+        <br />
+        <div class="row" style="display:flex">
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+            <div class="column" style="flex:2%"></div>
+            <div class="col" style="flex: 30%; border: 2px solid darkgrey; padding: 14px; text-align:center">
+                <p>tilføj noget tekst her</p>
+            </div>
+        </div>
+
     }
     @if (HttpContext.Session.GetInt32("Role") == 1)
     {
@@ -91,8 +134,3 @@
     }
 </div>
 
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>

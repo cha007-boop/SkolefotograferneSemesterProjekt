@@ -44,8 +44,8 @@
                             @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("Role")) user
                         </button>
                         <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Users/ViewProfile" class="dropdown-item">My Profile</a></li>
-                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0 ||
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Users/Profile" class="dropdown-item">My Profile</a></li>
+                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0 &&
                                  HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 2)
                             {
                                 <li class="nav-item">

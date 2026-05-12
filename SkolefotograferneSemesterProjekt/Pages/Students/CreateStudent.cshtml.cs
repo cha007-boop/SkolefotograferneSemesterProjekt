@@ -87,7 +87,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             {
                 ViewData["ErrorMessage"] = exc;
             }
-            return RedirectToPage("Users/Profile");
+            return RedirectToPage("/Users/Profile");
         }
         #endregion
     }
