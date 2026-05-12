@@ -23,14 +23,14 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
         {
-            { "Photo.Filename", "Filename" },
+            { "Filename", "Filename" },
             { "School.Name", "School name" },
-            { "Photo.SchoolID", "School ID" },
+            { "SchoolID", "School ID" },
             { "Student.FirstName", "Child first name" },
             { "Student.Surname", "Child surname" },
-            { "Photo.PhotoEventID", "Photo Event ID" },
-            { "Photo.ClassID", "Class ID" },
-            { "Photo.ChildID", "Child ID" },
+            { "PhotoEventID", "Photo Event ID" },
+            { "Student.ClassID", "Class ID" },
+            { "ChildID", "Child ID" },
             { "Student.ParentID", "Parent ID" },
             { "Parent.FirstName", "Parent first name" },
             { "Parent.Surname", "Parent surname" }
@@ -193,7 +193,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, string type)
         {
             List<Photo> photos = new List<Photo>();
             string query = @"SELECT * FROM Photo
@@ -207,10 +207,85 @@ namespace SkolefotograferneSemesterProjekt.Services
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                IEnumerable<string> validColumns = SortableColumns.Keys.Concat(FilterableColumns.Keys);
+                if (string.IsNullOrWhiteSpace(sortColumn))
+                {
+                    sortColumn = "Photo.UploadedAt";
+                }
+                if (string.IsNullOrWhiteSpace(filterColumn))
+                {
+                    filterColumn = "All";
+                }
+
+                if ((!FilterableColumns.Keys.Contains(filterColumn) && filterColumn != "All" && filterColumn != "Class"))
+                {
+                    throw new ArgumentException("Invalid column name");
+                }
+                if (!SortableColumns.Keys.Contains(sortColumn))
+                {
+                    throw new ArgumentException("Invalid column name");
+                }
+
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(filterValue))
+                    {
+                        query += " WHERE ";
+
+                        if (filterColumn == "All")
+                        {
+                            query += "(" + string.Join(" OR ", FilterableColumns.Keys.Select(col => $"{col} LIKE @FilterValue")) + ")";
+                        }
+                        else if (filterColumn == "Class")
+                        {
+
+                        }
+                        else
+                        {
+                            query += $" {filterColumn} LIKE @FilterValue";
+                        }
+                        if (type != "All")
+                        {
+                            query += " AND ";
+                            if (type == "ClassPhotos")
+                            {
+                                query += "ChildID IS NULL";
+                            }
+                            else if (type == "Portraits")
+                            {
+                                query += "ChildID IS NOT NULL";
+                            }
+                        }
+                    }
+                    else if (type != "All")
+                    {
+                        query += " WHERE ";
+                        if (type == "ClassPhotos")
+                        {
+                            query += "ChildID IS NULL";
+                        }
+                        else if (type == "Portraits")
+                        {
+                            query += "ChildID IS NOT NULL";
+                        }
+                    }
+                    query += $" ORDER BY {sortColumn} {sortOrder}";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+                    await conn.OpenAsync();
+                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        Photo photo = await PhotoReader(reader);
+                        photos.Add(photo);
+                    }
+                    reader.Close();
+                }
+                catch
+                {
+                    throw;
+                }
             }
-
-
             return photos;
         }
 

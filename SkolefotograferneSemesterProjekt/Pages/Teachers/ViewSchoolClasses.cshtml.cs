@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 {
@@ -9,38 +11,56 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
     {
         ITeacherService _teacherService;
         ISchoolClassService _schoolClassService;
+        ISchoolAdminService _schoolAdminService;
 
         public Teacher? TheTeacher { get; set; }
         public List<SchoolClass> ClassList { get; set; }
-        public int? UserID { get; set; }
         public bool IsUser { get; set; }
         public int? Role { get; set; }
 
-        public ViewSchoolClassesModel(ITeacherService teacherService, ISchoolClassService schoolClassService)
+        public ViewSchoolClassesModel(ITeacherService teacherService, ISchoolClassService schoolClassService, ISchoolAdminService schoolAdminService)
         {
             _teacherService = teacherService;
             _schoolClassService = schoolClassService;
+            _schoolAdminService = schoolAdminService;
         }
 
-        public async Task OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            UserID = HttpContext.Session.GetInt32("ID");
+            int? userID = HttpContext.Session.GetInt32("ID");
+            Role = HttpContext.Session.GetInt32("Role");
 
-            TheTeacher = await _teacherService.GetByID(id);
-            if (TheTeacher != null)
+            if (userID.HasValue && Role.HasValue)
             {
-                ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
-            }
-
-            if (UserID != null)
-            {
-                Teacher t = TheTeacher;
-                if (t != null && t.ID == id)
+                TheTeacher = await _teacherService.GetByID(id);
+                if (TheTeacher != null)
                 {
-                    IsUser = true;
+                    ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
+                }
+                if (Role == (int)UserRole.Teacher)
+                {
+                    TheTeacher = await _teacherService.GetByID((int)userID);
+                    Teacher? t = TheTeacher;
+                    if (t != null && t.ID == id)
+                    {
+                        IsUser = true;
+                    }
+                }
+                else if (Role == (int)UserRole.SchoolAdmin)
+                {
+                    SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)userID);
+                    int schoolID = schoolAdmin.TheSchool.ID;
+                    if(schoolID != TheTeacher.TheSchool.ID)
+                    {
+                        RedirectToPage("/Users/AccessDenied");
+                    }
                 }
             }
-            Role = HttpContext.Session.GetInt32("Role") ?? -1;
+            else
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            return Page();
         }
     }
 }

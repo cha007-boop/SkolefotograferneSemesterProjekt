@@ -2,7 +2,7 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Teachers.IndexModel
 @{
-    ViewData["Title"] = "Index (Teacher)";
+    ViewData["Title"] = "Index (Lærer)";
 }
 
 @if (Model.Role == (int)UserRole.SysAdmin)
@@ -16,13 +16,14 @@
 
         <input type="submit" value="Søg" />
     </form>
+
     <p>
         <a asp-page="CreateTeacher">Opret en bruger</a>
     </p>
+
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>ID</th>
                 <th>Navn</th>
                 <th>Efternavn</th>
@@ -30,7 +31,6 @@
                 <th>Telefon</th>
                 <th>Skole ID</th>
                 <th>Skole</th>
-                </form>
             </tr>
         </thead>
         <tbody>
@@ -61,24 +61,24 @@ else if (Model.Role == (int)UserRole.SchoolAdmin)
     <form method="get">
         <input type="text" asp-for="@Model.FilterCriteria" />
         <select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
-            <option value="t.FirstName">Skole</option>
+            <option value="t.FirstName">Navn</option>
             <option value="t.Email">Mail</option>
         </select>
 
         <input type="submit" value="Søg" />
     </form>
+
     <p>
         <a asp-page="CreateTeacher">Opret en bruger</a>
     </p>
+
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
-                </form>
             </tr>
         </thead>
         <tbody>
@@ -102,13 +102,11 @@ else if (Model.IsUser)
     <table class="table">
         <thead>
             <tr>
-                <form method="get">
                 <th>Navn</th>
                 <th>Efternavn</th>
                 <th>Mail</th>
                 <th>Telefon</th>
                 <th>Skole</th>
-                </form>
             </tr>
         </thead>
         <tbody>
@@ -129,23 +127,10 @@ else if (Model.IsUser)
         </tbody>
     </table>
 }
-@* else if (Model.UserID.HasValue)
-{
-    <h1 style="text-align: center;">Access denied...</h1>
-    <h2 style="text-align: center">
-        <a asp-page="/Index">Home Page</a>
-    </h2>
-}
-else if (Model.UserID == null)
-{
-    <h1 style="text-align: center;">Access denied...</h1>
-    <h2 style="text-align: center">
-        <a asp-page="/Users/Login">Login</a>
-    </h2>
-} *@
 else
 {
     <h1 style="text-align: center;">Access denied...</h1>
+    
     <h2 style="text-align: center">
         <a asp-page="CreateTeacher">Opret en bruger</a>
     </h2>
