@@ -43,14 +43,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                     ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
                     if (Role == (int)UserRole.Teacher)
                     {
-                        if (userID == teacherID)
-                        {
-                            IsUser = true;
-                        }
+                        IsUser = userID == teacherID;
                     }
                     else if (Role == (int)UserRole.SchoolAdmin)
                     {
-                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById((int)userID);
+                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID.Value);
                         int schoolID = schoolAdmin.TheSchool.ID;
                         int? tSchoolID = TheTeacher.TheSchool.ID;
                         if (tSchoolID.HasValue && schoolID != tSchoolID)
