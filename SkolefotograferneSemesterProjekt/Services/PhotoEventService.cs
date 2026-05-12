@@ -200,6 +200,44 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
             return null;
         }
+
+        public async Task<List<PhotoEvent>> GetByParent(int parentId)
+        {
+            List<PhotoEvent> photoEvents = new List<PhotoEvent>();
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                SqlCommand sql = new SqlCommand(@"
+                    SELECT pe.ID, pe.StartTime, pe.EndTime, pe.Location,
+                           p.ID AS PhotographerID, p.FirstName, p.Surname, p.PhoneNumber, p.Website, p.CVR, p.Facebook, p.Instagram,
+                           sa.ID AS SchoolAdminID, sa.PhoneNumber, sa.ContactPerson, sa.SchoolID
+                    FROM PhotoEvent pe
+                    INNER JOIN Photographer p ON pe.PhotographerID = p.ID
+                    INNER JOIN SchoolAdmin sa ON pe.SchoolAdminID = sa.ID
+                    INNER JOIN ClassBooking cb ON cb.PhotoEventID = pe.ID
+                    INNER JOIN Student s ON cb.ID = s.ClassID
+                    WHERE s.ParentID = @ParentID", connection);
+                await sql.Connection.OpenAsync();
+                sql.Parameters.AddWithValue("@ParentID", parentId);
+                SqlDataReader sqlDataReader = await sql.ExecuteReaderAsync();
+                while (sqlDataReader.Read())
+                {
+                    PhotoEvent photoEvent = new PhotoEvent();
+                    
+                    photoEvent.ID = sqlDataReader.GetInt32("ID");
+                    photoEvent.StartTime = sqlDataReader.GetDateTime("StartTime");
+                    photoEvent.EndTime = sqlDataReader.GetDateTime("EndTime");
+                    int photographerID = sqlDataReader.GetInt32("PhotographerID");
+                    int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
+                    photoEvent.Location = sqlDataReader.IsDBNull("Location") ? "Location is not set" : sqlDataReader.GetString("Location");
+                    photoEvent.ThePhotographer = await _photographerService.SearchByID(photographerID);
+                    photoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(schoolAdminID);
+                    photoEvents.Add(photoEvent);
+                }
+                sqlDataReader.Close();
+            }
+            return photoEvents;
+        }
+
         public async Task UpdatePhotoEvent(PhotoEvent photoEvent)
         {
             using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))

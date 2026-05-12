@@ -18,7 +18,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         public List<PhotoEvent> FilteredList { get; set; } = [];
         public Teacher? ThisTeacher { get; set; }
         public SchoolAdmin? ThisSchoolAdmin { get; set; }
-        public int? UserID { get; set; }
         public bool IsUser { get; set; }
         public int? Role { get; set; }
         #endregion
@@ -35,9 +34,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         {
             PhotoEvents = await _photoEventService.GetAll();
 
-            UserID = HttpContext.Session.GetInt32("ID");
+            int? userID = HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
-            if(UserID == null || Role == null)
+            if(!userID.HasValue || !Role.HasValue)
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
@@ -45,7 +44,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             {
                 if (Role == (int)UserRole.Teacher)
                 {
-                    Teacher t = await _teacherService.GetByID((int)UserID);
+                    Teacher t = await _teacherService.GetByID(userID.Value);
                     if (t == null)
                     {
                         return RedirectToPage("/Users/AccessDenied");
@@ -58,7 +57,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 }
                 else if (Role == (int)UserRole.SchoolAdmin)
                 {
-                    SchoolAdmin sa = await _schoolAdminService.GetById((int)UserID);
+                    SchoolAdmin sa = await _schoolAdminService.GetById(userID.Value);
                     if (sa == null)
                     {
                         return RedirectToPage("/Users/AccessDenied");

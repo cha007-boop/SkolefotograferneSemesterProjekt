@@ -14,6 +14,6 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task<List<Photo>> GetPortraitsByStudentId(int studentId);
         Task<List<Photo>> GetByPhotoEventId(int photoEventId);
         Task RemovePhoto(Photo photo);
-        Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, string type);
+        Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, List<string> conditions = null);
     }
 }
