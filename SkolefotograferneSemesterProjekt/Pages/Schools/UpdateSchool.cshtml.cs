@@ -38,7 +38,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Schools
             catch (AccessViolationException avx)
             {
                 ViewData["ErrorMessage"] = avx.Message;
-                return Page();
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {

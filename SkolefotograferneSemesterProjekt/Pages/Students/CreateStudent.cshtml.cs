@@ -66,6 +66,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             TryValidateModel(ClassGrade);
             try
             {
+                if (HttpContext.Session.GetInt32("Role") != 0)
+                {
+                    throw new UnauthorizedAccessException();
+                }
                 if (ClassGrade > 10 || ClassGrade < 0)
                 {
                     ModelState.AddModelError("ClassGrade", "Invalid Grade");
@@ -76,6 +80,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 NewStudent.TheSchool = await _schoolService.GetById(Convert.ToInt32(SchoolID));
                 NewStudent.TheParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                 await _studentService.Add(NewStudent);
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (ArgumentException)
             {

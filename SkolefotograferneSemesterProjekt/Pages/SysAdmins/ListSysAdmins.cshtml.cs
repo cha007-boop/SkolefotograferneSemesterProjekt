@@ -32,11 +32,20 @@ namespace SkolefotograferneSemesterProjekt.Pages.SysAdmins
                 {
                     SysAdmins = await _sysAdminService.GetAll();
                 }
+                else
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
-                return RedirectToPage("/Index");
+                return Page();
             }
             return Page();
         }
