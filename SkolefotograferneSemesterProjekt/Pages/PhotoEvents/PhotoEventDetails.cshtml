@@ -9,7 +9,6 @@
         Photo Event @Model.ThePhotoEvent.ID
     </h3>
 </div>
-<p>DEBUG Id: @Model.Id</p>
 
 <div>
     <div class="row">
@@ -42,7 +41,7 @@
                 <input type="submit" class="btn btn-primary" value="Select" />
             </form>
         </div>
-        @if (!string.IsNullOrEmpty(Model.SelectedClassId) && Model.SelectedClassId != "0")
+        @if (!string.IsNullOrEmpty(Model.SelectedClassId) && Model.SelectedClassId != "0" && (HttpContext.Session.GetInt32("Role") == 1 || HttpContext.Session.GetInt32("Role") == 4))
         {
             <div class="col-4">
                 <a asp-page="./UploadClassPhoto"
@@ -71,13 +70,16 @@
                             <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
                             <td>@student.ID</td>
                             <td>@student.FirstName @student.Surname</td>
-                            <td>
-                                <a asp-page="./UploadPortrait"
-                                   asp-route-photoeventid="@Model.Id"
-                                   asp-route-studentid="@student.ID" class="btn btn-secondary">
-                                    Upload Portrait
-                                </a>
-                            </td>
+                            @if (HttpContext.Session.GetInt32("Role") == 1 || HttpContext.Session.GetInt32("Role") == 4)
+                            {
+                                <td>
+                                    <a asp-page="./UploadPortrait"
+                                       asp-route-photoeventid="@Model.Id"
+                                       asp-route-studentid="@student.ID" class="btn btn-secondary">
+                                        Upload Portrait
+                                    </a>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>
