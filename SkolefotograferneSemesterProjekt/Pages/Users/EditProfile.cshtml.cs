@@ -58,19 +58,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     ThisParent = await _parentServices.SearchParent((int)HttpContext.Session.GetInt32("ID"));
                     Students = await _studentService.GetAllByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 1)
+                else if (HttpContext.Session.GetInt32("Role") == 1)
                 {
                     ThisPhotographer = await _photographerService.SearchByID((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 2)
+                else if (HttpContext.Session.GetInt32("Role") == 2)
                 {
                     ThisTeacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 3)
+                else if (HttpContext.Session.GetInt32("Role") == 3)
                 {
                     ThisSchoolAdmin = await _schoolAdminService.GetById((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 4)
+                else if (HttpContext.Session.GetInt32("Role") == 4)
                 {
                     ThisSysAdmin = await _sysAdminService.SearchByID((int)HttpContext.Session.GetInt32("ID"));
                 }
