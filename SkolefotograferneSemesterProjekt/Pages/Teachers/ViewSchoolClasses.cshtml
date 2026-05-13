@@ -12,6 +12,7 @@
     </div>
 
     <h1>Du har ingen klasser...</h1>
+    <h2><a asp-page="/SchoolClasses.AddSchoolClass">Opret en skoleklasse</a></h2>
 }
 else if(Model.ClassList.Count < 1)
 {
@@ -25,8 +26,9 @@ else
 {
     if (Model.IsUser)
     {
-        <div>
-            <a asp-page="Index">Tilbage</a>
+        <div class="form-group d-flex gap-2 mt-3">
+            <a asp-page="Index" class="btn btn-secondary">Tilbage</a>
+            <a asp-page="/SchoolClasses/AddSchoolClass" class="btn btn-primary">Opret en ny skoleklasse</a>
         </div>
 
         <table class="table">
