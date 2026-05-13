@@ -6,8 +6,8 @@
 }
 
 <div class="form-group">
-    @if (HttpContext.Session.GetInt32("ID") == null)
-    {
+@if (HttpContext.Session.GetInt32("ID") == null)
+{
 
         <div class="container-md">
 
@@ -81,9 +81,9 @@
         <br />
         <br />
 
-    }
-    @if (HttpContext.Session.GetInt32("Role") == 0)
-    {
+}
+@if (HttpContext.Session.GetInt32("Role") == 0)
+{
 
         <h1>Welcome Parent</h1>
 
@@ -132,9 +132,9 @@
             </div> *@
         </div>
 
-    }
-    @if (HttpContext.Session.GetInt32("Role") == 1)
-    {
+}
+@if (HttpContext.Session.GetInt32("Role") == 1)
+{
         <h1>Welcome Photographer</h1>
 
         <div class="row" style="display:flex">
@@ -165,12 +165,12 @@
         </div>
         <br />
 
-    }
-    @if (HttpContext.Session.GetInt32("Role") == 2)
-    {
+}
+@if (HttpContext.Session.GetInt32("Role") == 2)
+{
         <h1>Welcome Teacher</h1>
 
-        <div class="row" style="display:flex"></div>
+        <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/Bookings/Index">
@@ -181,7 +181,7 @@
             </div>
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
-            <a asp-page="/Bookings/ListBookings" asp-route-id="@HttpContext.Session.GetInt32("ID")">
+                <a asp-page="/Bookings/ListBookings" asp-route-id="@HttpContext.Session.GetInt32("ID")">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
                         Se dine KlasseFotoEventer
                     </div>
@@ -195,8 +195,11 @@
                     </div>
                 </a>
             </div>
+        </div>
+
         <br />
-        <div class="row" style="display:flex"></div>
+
+        <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
                 <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
@@ -205,15 +208,15 @@
                 </a>
             </div>
         </div>
-    }
-    @if (HttpContext.Session.GetInt32("Role") == 3)
-    {
+}
+@if (HttpContext.Session.GetInt32("Role") == 3)
+{
         <h1>Welcome School Admin</h1>
-    }
-    @if (HttpContext.Session.GetInt32("Role") == 4)
-    {
+}
+@if (HttpContext.Session.GetInt32("Role") == 4)
+{
         <h1>Welcome System Admin</h1>
-    }
+}
 
-</div>
+
 
