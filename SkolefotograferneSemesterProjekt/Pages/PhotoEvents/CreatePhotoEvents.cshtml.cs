@@ -15,22 +15,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     public class CreatePhotoEventsModel : PageModel
     {
         private IPhotoEventService _photoEventService;
+        private ISchoolAdminService _schoolAdminService;
+        private IPhotographerService _photographerService;
+
+        private string _queryStringPhotographerIDFinder = "Select from Photographer where PhotographerID = @PhotographerID";
 
         [BindProperty]
         public PhotoEvent PhotoEvent { get; set; }
-        private string _queryStringPhotographerIDFinder = "Select from Photographer where PhotographerID = @PhotographerID";
         [BindProperty]
         public int VerifyPhotographerID { get; set; }
         [BindProperty]
         public int VerifySchoolAdminID { get; set; }
         [BindProperty]
-        private ISchoolAdminService _schoolAdminService { get; set; }
-        [BindProperty]
-        private IPhotographerService _photographerService { get; set; }
-        [BindProperty]
         public IEnumerable<SelectListItem> Photographers { get; set; }
         [BindProperty]
         public IEnumerable<SelectListItem> SchoolAdmins { get; set; }
+
         public CreatePhotoEventsModel(IPhotoEventService photoEventService, IPhotographerService photographerService, ISchoolAdminService schoolAdminService)
         {
             _photoEventService = photoEventService;

@@ -170,20 +170,20 @@
     {
         <h1>Welcome Teacher</h1>
 
-        <div class="row" style="display:flex">
+        <div class="row" style="display:flex"></div>
 
             <div class="col" style="flex: 30%">
-                <a asp-page="/PhotoEvents/ReadPhotoEvents">
+                <a asp-page="/Bookings/Index">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
-                        Se alle FotoEvents
+                        Se alle aktive FotoEvents for din skole
                     </div>
                 </a>
             </div>
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
-                <a asp-page="/PhotoEvent/CreatePhotoEvents" asp-route-id="@HttpContext.Session.GetInt32("ID")">
+            <a asp-page="/Bookings/ListBookings" asp-route-id="@HttpContext.Session.GetInt32("ID")">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
-                        Opret nyt Photo Event
+                        Se dine KlasseFotoEventer
                     </div>
                 </a>
             </div>
@@ -195,11 +195,10 @@
                     </div>
                 </a>
             </div>
-        </div>
         <br />
-        <div class="row" style="display:flex">
+        <div class="row" style="display:flex"></div>
             <div class="col" style="flex: 30%">
-                <a asp-page="/Teachers/ViewSchoolClasses">
+                <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
                         Se alle klasser
                     </div>
@@ -215,5 +214,6 @@
     {
         <h1>Welcome System Admin</h1>
     }
+
 </div>
 
