@@ -83,6 +83,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 NewTeacher.Password = Password;
                 await _repo.Add(NewTeacher);
+                HttpContext.Session.SetInt32("ID", NewTeacher.ID);
+                HttpContext.Session.SetString("Email", NewTeacher.Email);
+                HttpContext.Session.SetInt32("Role", (int)NewTeacher.Role);
             }
             catch (PasswordTooShortException ex)
             {

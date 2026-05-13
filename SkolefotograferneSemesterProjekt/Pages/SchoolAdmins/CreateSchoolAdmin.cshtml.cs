@@ -54,7 +54,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
                     await OnGet();
                     return Page();
                 }
-
+                HttpContext.Session.SetInt32("ID", NewSchoolAdmin.ID);
+                HttpContext.Session.SetString("Email", NewSchoolAdmin.Email);
+                HttpContext.Session.SetInt32("Role", (int)NewSchoolAdmin.Role);
                 await _schoolAdminService.Add(NewSchoolAdmin);
             }
             catch (TakenMailException Tex)

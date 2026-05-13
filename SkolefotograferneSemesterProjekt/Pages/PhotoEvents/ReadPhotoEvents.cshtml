@@ -5,65 +5,135 @@
 }
 @inject IHttpContextAccessor HttpContextAccessor
 
-<h1>List of your Active Photo Events</h1>
+<h1>List of your Photo Events</h1>
+<h2>Active PhotoEvents</h2>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>SchoolName</th>
-            <th>SchoolAddress</th>
-            <th>ZipCode</th>
-            <th>StudenCount</th>
-            <th>StartTime</th>
-            <th>EndTIme</th>
-            <th>PhotographerID</th>
-            <th>SchoolAdminID</th>
-            <th>Location</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var photoEventItem in Model.PhotoEvents)
-        {
+
+        <thead>
             <tr>
-                <td>@photoEventItem.ID</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
-                <td>@photoEventItem.StartTime</td>
-                <td>@photoEventItem.EndTime</td>
-                <td>@photoEventItem.ThePhotographer.ID</td>
-                <td>@photoEventItem.TheSchoolAdmin.ID</td>
-                <td>@photoEventItem.Location</td>
-                <td>
-                    @if(HttpContext.Session.GetInt32("Role") != 0)
-                    {
-                        <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
-                            <button class="btn btn-primary">
-                                Click to see further information
-                            </button>
-                            </a>
-                    }
-                </td>
-                <td>
-                    @if (HttpContext.Session.GetInt32("Role") != 0)
-                    {
-                        <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
-                            <button class="btn btn-warning">
-                                Click to Edit the PhotoEvent
-                            </button>
-                        </a>
-                    }
-                </td>
-                @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
-                {
-                    <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
-                }
+                <th>ID</th>
+                <th>SchoolName</th>
+                <th>SchoolAddress</th>
+                <th>ZipCode</th>
+                <th>StudenCount</th>
+                <th>StartTime</th>
+                <th>EndTIme</th>
+                <th>PhotographerID</th>
+                <th>SchoolAdminID</th>
+                <th>Location</th>
             </tr>
+        </thead>
+    @foreach (var photoEventItem in Model.PhotoEvents)
+    {
+        @if (photoEventItem.StartTime > DateTime.Now)
+        {
+            <tbody>
+                <tr>
+                    <td>@photoEventItem.ID</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                    <td>@photoEventItem.StartTime</td>
+                    <td>@photoEventItem.EndTime</td>
+                    <td>@photoEventItem.ThePhotographer.ID</td>
+                    <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                    <td>@photoEventItem.Location</td>
+                    <td>
+                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                <button class="btn btn-primary">
+                                    Click to see further information
+                                </button>
+                            </a>
+                        }
+                    </td>
+                    <td>
+                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                <button class="btn btn-warning">
+                                    Click to Edit the PhotoEvent
+                                </button>
+                            </a>
+                        }
+                    </td>
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
+                    {
+                        <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                    }
+                </tr>
+            </tbody>
         }
-    </tbody>
+    }
 </table>
+<h2>Previous PhotoEvents</h2>
+    <table class="table">
+        
+        <table class="table">
+            <thead>
+                 <tr>
+                        <th>ID</th>
+                        <th>SchoolName</th>
+                        <th>SchoolAddress</th>
+                        <th>ZipCode</th>
+                        <th>StudenCount</th>
+                        <th>StartTime</th>
+                        <th>EndTIme</th>
+                        <th>PhotographerID</th>
+                        <th>SchoolAdminID</th>
+                        <th>Location</th>
+                 </tr>
+            </thead>
+            @foreach (var photoEventItem in Model.PhotoEvents)
+            {
+                @if (photoEventItem.StartTime < DateTime.Now)
+                {
+                    <tbody>
+                        <tr>
+                            <td>@photoEventItem.ID</td>
+                            <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                            <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                            <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                            <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                            <td>@photoEventItem.StartTime</td>
+                            <td>@photoEventItem.EndTime</td>
+                            <td>@photoEventItem.ThePhotographer.ID</td>
+                            <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                            <td>@photoEventItem.Location</td>
+                            <td>
+                            @if (HttpContext.Session.GetInt32("Role") != 0)
+                            {
+                                <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                    <button class="btn btn-primary">
+                                        Click to see further information
+                                    </button>
+                                </a>
+                            }
+                            </td>
+                            <td>
+                            @if (HttpContext.Session.GetInt32("Role") != 0)
+                            {
+                                <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                    <button class="btn btn-warning">
+                                        Click to Edit the PhotoEvent
+                                    </button>
+                                </a>
+                            }
+                        </td>
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                        }
+                    </tr>
+                </tbody>
+            
+        }
+}
+</table>
+
 <form method="post" asp-page-handler="DeletePhotoEvents" id="deleteForm">
     <input type="hidden" name="id" id="deleteId" />
 </form>
