@@ -242,9 +242,9 @@
         <br />
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
-                <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")">
+                <a asp-page="/Teachers/Index">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
-                        Se alle klasser
+                        Se alle lærer (og deres klasser) for din skole
                     </div>
                 </a>
             </div>
@@ -285,9 +285,9 @@
         <br />
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
-                <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")">
+                <a asp-page="/Teachers/Index">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
-                        Se alle klasser
+                        Se alle lærer (og deres klasser) for alle skoler
                     </div>
                 </a>
             </div>
