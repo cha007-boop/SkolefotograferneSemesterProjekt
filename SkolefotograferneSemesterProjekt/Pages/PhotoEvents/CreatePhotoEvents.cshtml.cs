@@ -88,6 +88,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
                     return Page();
                 }
+                if (PhotoEvent.StartTime >= DateTime.Now)
+                {
+                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    return Page();
+                }
                 else
                 {
                     await _photoEventService.Add(PhotoEvent);
