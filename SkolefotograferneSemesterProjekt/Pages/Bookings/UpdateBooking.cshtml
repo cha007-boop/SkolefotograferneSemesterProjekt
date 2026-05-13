@@ -4,6 +4,10 @@
 @{
     ViewData["Title"] = "Opdater booking";
 }
+<div>
+	<a asp-page="/Bookings/ListBookings">Tilbage</a>
+</div>
+
 <form method="post">
 	<input type="hidden" asp-for="@Model.TheClassBooking.ID" />
 	<input type="hidden" asp-for="@Model.PhotoEventID" />
@@ -23,6 +27,3 @@
 	</div>
 </form>
 	
-<div>
-	<a asp-page="/Bookings/ListBookings">Tilbage</a>
-</div>

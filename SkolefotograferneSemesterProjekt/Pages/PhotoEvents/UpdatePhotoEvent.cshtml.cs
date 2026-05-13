@@ -33,6 +33,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             try
             {
+                PhotoEvent = await _photoEventService.searchPhotoEvent(id);
                 if(HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 3 && HttpContext.Session.GetInt32("Role") != 4)
                 {
                     throw new UnauthorizedAccessException();
@@ -70,7 +71,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
                     await OnGet(PhotoEvent.ID);
-
+                    return Page();
+                }
+                if (PhotoEvent.StartTime < DateTime.Now)
+                {
+                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    await OnGet(PhotoEvent.ID);
                     return Page();
                 }
                 else
@@ -92,7 +98,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 await OnGet(PhotoEvent.ID);
                 return Page();
             }
-            return RedirectToPage("/Index");
+            return RedirectToPage("/PhotoEvents/ReadPhotoEvents");
         }
     }
 }

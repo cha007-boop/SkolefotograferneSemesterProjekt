@@ -20,12 +20,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         public ClassBooking NewBooking { get; set; } = new ClassBooking();
         [BindProperty]
         public int PhotoEventID { get; set; }
-        public PhotoEvent? ThePhotoEvent { get; set; } = new PhotoEvent();
-        public Teacher? TheTeacher { get; set; } = new Teacher();
-        public IEnumerable<SelectListItem> Classes { get; set; }
-        public IEnumerable<SelectListItem> TimeSlots { get; set; }
-        public int? UserID { get; set; }
-        public int? Role { get; set; }
+        public PhotoEvent? ThePhotoEvent { get; set; }
+        public Teacher? TheTeacher { get; set; }
+        public IEnumerable<SelectListItem> Classes { get; set; } = [];
+        public IEnumerable<SelectListItem> TimeSlots { get; set; } = [];
 
         public CreateBookingModel(IClassBookingService classBookingService, ITeacherService teacherService, IPhotoEventService photoEventService, ISchoolClassService schoolClassService)
         {
@@ -35,31 +33,53 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             _schoolClassService = schoolClassService;
         }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet(int? id)
         {
-            UserID = HttpContext.Session.GetInt32("ID");
-            Role = HttpContext.Session.GetInt32("Role");
-            if(UserID == null || Role == null || Role != 2)
+            if (id.HasValue)
             {
-                return RedirectToPage("/Users/AccessDenied");
-            }
+                int? userID = HttpContext.Session.GetInt32("ID");
+                int? role = HttpContext.Session.GetInt32("Role");
+                if (!userID.HasValue || role != (int)UserRole.Teacher)
+                {
+                    return RedirectToPage("/Users/AccessDenied");
+                }
 
-            PhotoEventID = id;
-            ThePhotoEvent = await _photoEventService.GetByID(id);
-            if (ThePhotoEvent == null)
-            {
-                return RedirectToPage("Index");
-            }
+                PhotoEventID = id.Value;
+                ThePhotoEvent = await _photoEventService.GetByID(id.Value);
+                if (ThePhotoEvent == null)
+                {
+                    return RedirectToPage("Index");
+                }
 
-            await LoadMenus();
-            return Page();
+                TheTeacher = await _teacherService.GetByID(userID.Value);
+                int? tSchoolID = TheTeacher?.TheSchool?.ID;
+                int? saSchoolID = ThePhotoEvent.TheSchoolAdmin?.TheSchool.ID;
+                if (saSchoolID.HasValue && tSchoolID.HasValue)
+                {
+                    bool sameSchool = tSchoolID == saSchoolID;
+                    if (!sameSchool)
+                    {
+                        return RedirectToPage("/Users/AccessDenied");
+                    }
+                }
+
+                await LoadMenus();
+                return Page();
+            }
+            return RedirectToPage("Index");
         }
         public async Task<IActionResult> OnPost()
         {
             ModelState.CustomizedMessages("Feltet Mangler");
 
-            UserID = HttpContext.Session.GetInt32("ID");
-            TheTeacher = await _teacherService.GetByID((int)UserID);
+            int? userID = HttpContext.Session.GetInt32("ID");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (!userID.HasValue || role != (int)UserRole.Teacher)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+
+            TheTeacher = await _teacherService.GetByID(userID.Value);
             if (TheTeacher == null)
             {
                 return RedirectToPage("Index");
@@ -77,9 +97,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 return RedirectToPage("Index");
             }
             NewBooking.ThePhotoEvent = ThePhotoEvent;
-            
-            await LoadMenus();
 
+
+            await LoadMenus();
             SchoolClass? schoolClass = await _schoolClassService.GetByID(NewBooking.TheSchoolClass.ID);
             if (schoolClass == null)
             {
@@ -105,11 +125,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         }
         private async Task LoadMenus()
         {
-            if(ThePhotoEvent == null)
+            int? userID = HttpContext.Session.GetInt32("ID");
+            if (!userID.HasValue || ThePhotoEvent == null)
             {
                 return;
             }
-            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher((int)UserID);
+            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher(userID.Value);
             Classes = classes.Select(c => new SelectListItem
             {
                 Value = Convert.ToString(c.ID),
@@ -128,7 +149,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 {
                     timeSlots.Add(new SelectListItem
                     {
-                        Value = peCurrent.ToString("yyyy-MM-dd THH:mm"),
+                        Value = peCurrent.ToString("dd/MM/yyyy HH:mm"),
                         Text = peCurrent.ToString("HH:mm")
                     });
                 }
