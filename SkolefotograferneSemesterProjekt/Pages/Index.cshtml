@@ -261,7 +261,7 @@
             <div class="col" style="flex: 30%">
                 <a asp-page="/PhotoEvents/ReadPhotoEvents">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
-                        Se alle FotoEvents på skolen
+                        Se alle FotoEvents
                     </div>
                 </a>
             </div>
@@ -288,6 +288,13 @@
                 <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")">
                     <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
                         Se alle klasser
+                    </div>
+                </a>
+            </div>
+            <div class="col" style="flex: 30%">
+                <a asp-page="/SysAdmins/ListOfAllUsers" asp-route-id="@HttpContext.Session.GetInt32("ID")">
+                    <div style="border: 2px solid darkgrey; padding: 30px; text-align:center">
+                        Se alle bruger
                     </div>
                 </a>
             </div>

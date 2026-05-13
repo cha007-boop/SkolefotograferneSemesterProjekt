@@ -1,0 +1,50 @@
+﻿@page
+@using SkolefotograferneSemesterProjekt.Models
+@model SkolefotograferneSemesterProjekt.Pages.SysAdmins.ListOfAllUsersModel
+@{
+    ViewData["Title"] = "List of Users";
+}
+
+
+<h1>List of Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>The Role</th>
+            <th>The List</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Parents</td>
+            <td>
+                <a asp-page="/Parents/Index">View Parents</a>
+            </td>
+        </tr >
+        <tr>
+            <td>Photographers</td>
+            <td>
+                <a asp-page="/Photographers/ShowPhotographers">View Photographers</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Teacher</td>
+            <td>
+                <a asp-page="/Teachers/Index">View Teachers</a>
+            </td>
+        </tr>
+        <tr>
+            <td>SchoolAdmin</td>
+            <td>
+                <a asp-page="/SchoolAdmins/GetAllSchoolAdmin">View school Admin</a>
+            </td>
+        </tr>
+        <tr>
+            <td>SysAdmin</td>
+            <td>
+                <a asp-page="/SysAdmins/ListSysAdmins">View SysAmin</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
