@@ -165,7 +165,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<SchoolClass> classes = new List<SchoolClass>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("select sc.* from SchoolClass sc join Teacher sc.TeacherID = t.ID where SchoolID = @SchoolID", connection);
+                SqlCommand command = new SqlCommand("select sc.* from SchoolClass sc join Teacher t on sc.TeacherID = t.ID where SchoolID = @SchoolID", connection);
                 await command.Connection.OpenAsync();
                 command.Parameters.AddWithValue("@SchoolID", schoolID);
                 SqlDataReader reader = await command.ExecuteReaderAsync();
