@@ -74,11 +74,20 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 {
                     ThisSysAdmin = await _sysAdminService.SearchByID((int)HttpContext.Session.GetInt32("ID"));
                 }
+                else
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            catch (UnauthorizedAccessException uax)
+            {
+                ViewData["ErrorMessage"] = uax.Message;
+                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {
                 ViewData["ErrorMessage"] = exc.Message;
-                return RedirectToPage("/Index");
+                return Page();
             }
             return Page();
         }
@@ -131,6 +140,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                         Check = true;
                     }
                 }
+            }
+            catch (PasswordTooShortException pexc)
+            {
+                ViewData["ErrorMessage"] = pexc.Message;
+                return Page();
             }
             catch (InvalidMailException iexc)
             {
