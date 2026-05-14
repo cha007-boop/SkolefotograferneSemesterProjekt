@@ -7,6 +7,15 @@
 
 <h1>List of your Active Photo Events</h1>
 
+<form>
+    @if (HttpContext.Session.GetInt32("Role") == 3)
+    {
+        <div>
+            <a asp-page="/PhotoEvents/CreatePhotoEvent" class="btn btn-primary">Create PhotoEvent</a>
+        </div>
+    }
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -96,16 +105,16 @@
 </div>
 
 <form method="post">
-    @if (HttpContext.Session.GetInt32("Role") != 0)
+   @*  @if (HttpContext.Session.GetInt32("Role") != 0)
     {
     <div>
-        <a asp-page="index">Back to index of Photo Events</a> @* to index in the photoevents folder *@
-    </div>
+        <a asp-page="index">Back to index of Photo Events</a>  to index in the photoevents folder 
+    </div> *@
     }
     @if(HttpContext.Session.GetInt32("Role") == 0)
     {
         <div>
-            <a asp-page="/Index">Back to FrontPage</a>
+            <a asp-page="/Users/Index">Back to Homepage</a> @* debatable om den skal være der*@
         </div>
     }
 </form>
