@@ -1,0 +1,14 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.Bookings.ViewBookingModel
+@{
+    ViewData["Title"] = "View Booking";
+}
+
+<h1>Viewing Booking</h1>
+
+<p>Booking ID: @Model.TheClassBooking.ID</p>
+<p>Start time: @Model.TheClassBooking.StartTime</p>
+<p>Location: @Model.TheClassBooking.ThePhotoEvent.Location</p>
+<p>Class: @Model.TheClassBooking.TheSchoolClass.Grade .@Model.TheClassBooking.TheSchoolClass.Letter</p>
+
+<a asp-page="/Bookings/ListBookings" class="btn btn-primary">Tilbage</a>
