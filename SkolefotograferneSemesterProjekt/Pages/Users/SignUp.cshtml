@@ -1,4 +1,30 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Users.SignUpModel
 @{
+    ViewData["Title"] = "SignUp";
 }
+
+<h1> Creating New Account</h1>
+<div class="row">
+    <div class="col-md-4">
+        <a asp-page="/Photographers/CreatePhotographer" class="btn btn-primary">Create Photographer</a>
+    </div>
+</div>
+<h1> </h1>
+<div class="row">
+    <div class="col-md-4">
+        <a asp-page="/SchoolAdmins/CreateSchoolAdmin" class="btn btn-primary">Create SchoolAdmin</a>
+    </div>
+</div>
+<h1> </h1>
+<div class="row">
+    <div class="col-md-4">
+        <a asp-page="/Parents/CreateParent" class="btn btn-primary">Create Parent</a>
+    </div>
+</div>
+<h1> </h1>
+<div class="row">
+    <div class="col-md-4">
+        <a asp-page="/Teachers/CreateTeacher" class="btn btn-primary">Create Teacher</a>
+    </div>
+</div>

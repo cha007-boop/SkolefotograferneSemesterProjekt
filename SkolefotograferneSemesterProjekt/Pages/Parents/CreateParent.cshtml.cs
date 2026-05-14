@@ -50,6 +50,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         throw new Exceptions.PasswordNotTheSameException("Passwords are not the same");
                     }
                 }
+                HttpContext.Session.SetInt32("ID", NewParent.ID);
+                HttpContext.Session.SetString("Email", NewParent.Email!);
+                HttpContext.Session.SetInt32("Role", (int)NewParent.Role);
             }
             catch (TakenMailException ex)
             {

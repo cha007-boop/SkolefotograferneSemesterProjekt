@@ -71,7 +71,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             {
                 ViewData["ErrorMessage"] = exc.Message;
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("ListSchoolClasses");
         }
     }
 }

@@ -23,6 +23,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             _teacherService = teacherService;
             _schoolClassService = schoolClassService;
             _schoolAdminService = schoolAdminService;
+            ClassList = new List<SchoolClass>();
         }
 
         public async Task<IActionResult> OnGet(int? id)
@@ -60,6 +61,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 {
                     return RedirectToPage("/Users/AccessDenied");
                 }
+            }
+            else if(HttpContext.Session.GetInt32("Role") == 4)
+            {
+                foreach (SchoolClass sc in await _schoolClassService.GetAll())
+                {
+                    ClassList.Add(sc);
+                }
+                return Page();
             }
             else
             {

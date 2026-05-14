@@ -85,6 +85,10 @@ namespace SkolefotograferneSemesterProjekt.Services
                 {
                     parentsList.Add(p);
                 }
+                else if(p.ToString().Contains(Filter, StringComparison.OrdinalIgnoreCase))
+                {
+                    parentsList.Add(p);
+                }
             }
             return parentsList;
         }

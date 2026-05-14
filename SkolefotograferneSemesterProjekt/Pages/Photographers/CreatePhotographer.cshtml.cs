@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Photographers
 {
@@ -34,13 +35,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             TryValidateModel(NewPhotographer);
             try
             {
-                if(NewPhotographer.Password == VerifyPassword)
+                if (NewPhotographer.Password == VerifyPassword)
                 await _photographerService.Add(NewPhotographer);
                 else
                 {
                     ModelState.AddModelError("NewPhotographer.Password", "Password not the same");
                     return Page();
                 }
+                HttpContext.Session.SetInt32("ID", NewPhotographer.ID);
+                HttpContext.Session.SetString("Email", NewPhotographer.Email);
+                HttpContext.Session.SetInt32("Role", (int)NewPhotographer.Role);
             }
             catch (TakenMailException texc)
             {

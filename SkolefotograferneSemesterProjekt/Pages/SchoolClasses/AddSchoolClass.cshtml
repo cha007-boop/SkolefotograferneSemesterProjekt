@@ -1,10 +1,15 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.SchoolClasses.AddSchoolClassModel
 @{
-    ViewData["Title"] = "Add new class";
+    ViewData["Title"] = "Opret et nyt skoleklasse";
 }
 
 <h1>Input class details</h1>
+
+@{int? userID = HttpContext.Session.GetInt32("ID");}
+<div>
+	<a asp-page="/Teachers/ViewSchoolClasses?id=@userID">Tilbage</a>
+</div>
 
 <form method="Post" enctype="multipart/form-data">
 	<div asp-validation-summary="All" class="text-danger"></div>
@@ -18,11 +23,8 @@
 		<input asp-for="@Model.NewSchoolClass.Letter" class="form-control" />
 	</div>
 
-	<div class="form-group">
+	<div class="form-group d-flex gap-2 mt-3">
 		<input type="submit" value="Create" class="btn-primary" />
-	</div>
-
-	<div>
-		<a asp-page="index">Back to Homepage</a>
+		<a asp-page="/Teachers/ViewSchoolClasses?id=@userID" class="btn btn-secondary">Fortryd</a>
 	</div>
 </form>
