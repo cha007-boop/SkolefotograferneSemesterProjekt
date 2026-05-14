@@ -12,6 +12,9 @@
             Role = UserRole.Parent;
         }
 
-        
+        public override string ToString()
+        {
+            return $"{FirstName} {Surname} {PhoneNumber}";
+        }
     }
 }

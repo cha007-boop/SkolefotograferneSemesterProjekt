@@ -12,6 +12,12 @@
     <input type="submit" value="Filter" />
 </form>
 
+@if (HttpContext.Session.GetInt32("Role") == 4)
+{
+    <div style="text-align:right">
+        <a asp-page="/Parents/CreateParent" class="btn btn-primary">Opret ny Forældre</a>
+    </div>
+}
 
 <table class="table">
     <thead>

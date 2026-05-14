@@ -8,6 +8,13 @@
 
 <h1>List of Photographers</h1>
 
+@if (HttpContext.Session.GetInt32("Role") == 4)
+{
+	<div style="text-align:right">
+		<a asp-page="/Photographers/CreatePhotographer" class="btn btn-primary">Opret ny Fotograf</a>
+	</div>
+}
+
 <form method="get">
 	search:<input type="text" asp-for="@Model.FilterCriteria" />
 	<select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
