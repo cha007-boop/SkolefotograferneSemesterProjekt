@@ -2,6 +2,7 @@
 using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.ComponentModel;
 using System.Data;
 
 namespace SkolefotograferneSemesterProjekt.Services
@@ -61,6 +62,29 @@ namespace SkolefotograferneSemesterProjekt.Services
                 await connection.OpenAsync();
                 await command.ExecuteNonQueryAsync();
             }
+        }
+        public async Task<List<User>> GetAll()
+        {
+            List<User> users = new List<User>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Users";
+                SqlCommand command = new SqlCommand(query, connection);
+                await connection.OpenAsync();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    User user = new User
+                    {
+                        ID = reader.GetInt32("ID"),
+                        Email = reader.GetString("Email"),
+                        Password = reader.GetString("Password"),
+                        Role = (UserRole)reader.GetInt32("Role")
+                    };
+                    users.Add(user);
+                }
+            }
+            return users;
         }
 
         public async Task ValidateUpdate(User user)

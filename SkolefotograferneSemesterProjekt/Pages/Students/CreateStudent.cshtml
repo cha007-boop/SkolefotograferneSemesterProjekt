@@ -26,7 +26,7 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="@Model.ClassGrade" class="control-label"></label>
-		<input asp-for="@Model.ClassGrade" class="form-control" id="Email" />
+		<input asp-for="@Model.ClassGrade" class="form-control" min="0" max="10"/>
 		<span asp-validation-for="ClassGrade" class="text-danger"></span>
 	</div>
 	<div class="form-group">
@@ -40,6 +40,6 @@
 	</div>
 
 	<div>
-		<a asp-page="/Index">Back to Homepage</a> @* eh *@
+		<a asp-page="/Index">Back to Homepage</a>
 	</div>
 </form>

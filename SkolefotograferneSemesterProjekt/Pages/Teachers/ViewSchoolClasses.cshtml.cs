@@ -76,5 +76,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             }
             return Page();
         }
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            try
+            {
+                await _schoolClassService.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+            }
+            return RedirectToPage("Index");
+        }
     }
 }

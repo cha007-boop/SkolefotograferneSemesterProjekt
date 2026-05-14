@@ -29,14 +29,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             {
                 if (HttpContext.Session.GetInt32("Role") != 2 && HttpContext.Session.GetInt32("Role") != 4)
                 {
-                    throw new UnauthorizedAccessException();
+                    return RedirectToPage("/Users/AccessDenied");
                 }
                 SchoolClasses = await _schoolClassService.GetAllByTeacher((int)HttpContext.Session.GetInt32("ID"));
-            }
-            catch (UnauthorizedAccessException uax)
-            {
-                ViewData["ErrorMessage"] = uax.Message;
-                return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
             {
