@@ -4,7 +4,8 @@
 @{
     ViewData["Title"] = "Se skoleklasser";
 }
-
+@if(HttpContext.Session.GetInt32("Role") != 4)
+{
 @if(Model.ClassList.Count < 1 && Model.IsUser)
 {
     <div>
@@ -87,5 +88,36 @@ else
 
         <h1>Access denied...</h1>
     }
+    }
+}
+else if (HttpContext.Session.GetInt32("Role") == 4)
+{
+    <div>
+        <a asp-page="/Index">Tilbage</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Klasse</th>
+                <th>Årgang</th>
+                <th>Skole ID</th>
+                <th>Skole</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SchoolClass sc in Model.ClassList)
+            {
+                <tr>
+                    <td>@sc.ID</td>
+                    <td>@(sc.Grade + "." + sc.Letter)</td>
+                    <td>@sc.SchoolYear</td>
+                    <td>@sc.TheSchool.ID</td>
+                    <td>@sc.TheSchool.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 

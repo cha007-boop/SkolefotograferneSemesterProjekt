@@ -23,7 +23,6 @@
     <thead>
         <tr>
             <form method="get">
-            <th>ID</th>
             @* <th>Firstname</th> *@
             <th>
                 <a asp-page="Index" 
@@ -65,7 +64,6 @@
         @foreach(Parent p in Model.Parents)
         {
             <tr>
-                <td>@p.ID</td>
                 <td>@p.FirstName</td>
                 <td>@p.Surname</td>
                 <td>@p.PhoneNumber</td>
