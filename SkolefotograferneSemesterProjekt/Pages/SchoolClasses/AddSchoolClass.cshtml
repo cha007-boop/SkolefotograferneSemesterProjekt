@@ -8,7 +8,7 @@
 
 @{int? userID = HttpContext.Session.GetInt32("ID");}
 <div>
-	<a asp-page="/Teachers/ViewSchoolClasses?id=@userID">Tilbage</a>
+	<a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@userID">Tilbage</a>
 </div>
 
 <form method="Post" enctype="multipart/form-data">
@@ -25,6 +25,6 @@
 
 	<div class="form-group d-flex gap-2 mt-3">
 		<input type="submit" value="Create" class="btn-primary" />
-		<a asp-page="/Teachers/ViewSchoolClasses?id=@userID" class="btn btn-secondary">Fortryd</a>
+		<a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@userID" class="btn btn-secondary">Fortryd</a>
 	</div>
 </form>
