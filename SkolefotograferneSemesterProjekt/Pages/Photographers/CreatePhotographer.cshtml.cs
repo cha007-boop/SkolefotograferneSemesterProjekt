@@ -62,7 +62,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
                 ViewData["ErrorMessage"] = exc;
                 return Page();
             }
-            return RedirectToPage("/index");
+            return RedirectToPage("/Index");
         }
         #endregion
     }

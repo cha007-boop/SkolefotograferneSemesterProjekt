@@ -109,7 +109,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 return RedirectToPage("Index");
             }
 
-            return RedirectToPage("/Users/Login");
+            return RedirectToPage("Index");
         }
     }
 }
