@@ -117,7 +117,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             }
             await OnGet(PhotoEvent.ThePhotographer.ID);
             await OnGet(PhotoEvent.TheSchoolAdmin.ID);
-            return RedirectToPage("/Index"); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
+            return RedirectToPage("/Index", null); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
         }
     }
 }

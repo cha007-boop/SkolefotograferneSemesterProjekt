@@ -71,7 +71,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
                 await OnGet();
                 return Page();
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("/Index", null);
         }
     }
 }

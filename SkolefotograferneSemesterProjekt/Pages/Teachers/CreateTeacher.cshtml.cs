@@ -106,10 +106,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             int? role = HttpContext.Session.GetInt32("Role");
             if (role  == (int)UserRole.SysAdmin)
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("Index", null);
             }
 
-            return RedirectToPage("Index");
+            return RedirectToPage("Index", null);
         }
     }
 }
