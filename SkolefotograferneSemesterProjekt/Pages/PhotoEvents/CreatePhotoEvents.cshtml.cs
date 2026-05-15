@@ -54,8 +54,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         }
         public async Task<IActionResult> OnPost() /*possibly validation checker or exception check could be used here*/
         {
-            ModelState.Clear();
-            TryValidateModel(PhotoEvent);
+            //ModelState.Clear();
+            //TryValidateModel(PhotoEvent);
             try
             {
                 //This is used to validate if the statements below is true or false - doesnt work atm
@@ -85,17 +85,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
-                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError(nameof(PhotoEvent.StartTime), "The Date for StartTime needs to be before the Date of EndTime");
                     return Page();
                 }
                 if (PhotoEvent.StartTime >= DateTime.Now)
                 {
-                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
                     return Page();
                 } 
-                if(PhotoEvent.ThePhotographer == null)
+                if(PhotoEvent.ThePhotographer.ID == null)
                 {
-                    ModelState.AddModelError("PhotoEvent", "Please choose a photographer");
+                    ModelState.AddModelError(nameof(PhotoEvent.ThePhotographer.ID), "Please choose a photographer");
                     return Page();
                 }
                 if (PhotoEvent.TheSchoolAdmin == null)
