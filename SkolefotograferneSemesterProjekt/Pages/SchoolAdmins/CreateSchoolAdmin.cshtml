@@ -52,6 +52,13 @@
         </form>
     </div>
     <div>
-        <a asp-page="/GetAllSchoolAdmin">Back to List</a>
+        @if(HttpContext.Session.GetInt32("ID") == null)
+        {
+            <a asp-page="/Users/SignUp">Back to Signup page</a>
+        }
+        else
+        {
+            <a asp-page="/GetAllSchoolAdmin">Back to List</a>
+        }
     </div>
 </div>
