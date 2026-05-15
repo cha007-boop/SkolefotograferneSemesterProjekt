@@ -12,7 +12,8 @@
 </div>
 
 <form method="Post" enctype="multipart/form-data">
-	<div asp-validation-summary="All" class="text-danger"></div>
+	@* <div asp-validation-summary="All" class="text-danger"></div> *@
+	<span asp-validation-for="Message" class="text-danger"></span>
 	<div class="form-group">
 		<label asp-for="@Model.NewSchoolClass.Grade" class="control-label"></label>
 		<input asp-for="@Model.NewSchoolClass.Grade" class="form-control" />
@@ -21,6 +22,7 @@
 	<div class="form-group">
 		<label asp-for="@Model.NewSchoolClass.Letter" class="control-label"></label>
 		<input asp-for="@Model.NewSchoolClass.Letter" class="form-control" />
+		<span asp-validation-for="NewSchoolClass.Letter" class="text-danger"></span>
 	</div>
 
 	<div class="form-group d-flex gap-2 mt-3">

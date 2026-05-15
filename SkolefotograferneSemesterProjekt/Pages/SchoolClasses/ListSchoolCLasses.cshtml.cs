@@ -49,8 +49,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return Page();
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("/Teachers/ViewSchoolClasses", HttpContext.Session.GetInt32("ID"));
         }
         #endregion
     }
