@@ -69,7 +69,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 //    ModelState.AddModelError("PhotoEvent.SchoolAdminID", "pls input an existing School admin's id");
                 //    return Page();
                 //}
-                if(HttpContext.Session.GetInt32("Role") == 3)
+                if(HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
                 {
                     var id = HttpContext.Session.GetInt32("ID");
                     if (!id.HasValue)
@@ -83,7 +83,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
-                if (PhotoEvent.StartTime > PhotoEvent.EndTime) // this works
+                if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
                     return Page();
@@ -91,6 +91,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 if (PhotoEvent.StartTime >= DateTime.Now)
                 {
                     ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    return Page();
+                } 
+                if(PhotoEvent.ThePhotographer == null)
+                {
+                    ModelState.AddModelError("PhotoEvent", "Please choose a photographer");
+                    return Page();
+                }
+                if (PhotoEvent.TheSchoolAdmin == null)
+                {
+                    ModelState.AddModelError("PhotoEvent", "please choose a school admin");
+                    return Page();
+                }
+                if (PhotoEvent.Location == null)
+                {
+                    ModelState.AddModelError("PhotoEvent", "please insert a location");
                     return Page();
                 }
                 else
@@ -109,10 +124,20 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 ModelState.AddModelError("PhotoEvent", ex.Message);
                 return Page();
             }
+            catch (NullReferenceException nrex)
+            {
+                ViewData["ErrorMessage"] = nrex.Message;
+                return Page();
+            }
             catch (SqlTypeException tex)
             {
                 ViewData["ErrorMessage"] = tex;
                 ModelState.AddModelError("PhotoEvent.StartTime", tex.Message);
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
             await OnGet(PhotoEvent.ThePhotographer.ID);
