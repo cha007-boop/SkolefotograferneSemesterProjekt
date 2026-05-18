@@ -3,11 +3,11 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Services
 {
-    public class UploadClass : IUploadIFormFile
+    public class UploadClassPhoto : IUploadIFormFile
     {
         private IWebHostEnvironment _webHostEnvironment;
         private SchoolClass _schoolClass;
-        public UploadClass(IWebHostEnvironment webHostEnvironment, SchoolClass schoolClass)
+        public UploadClassPhoto(IWebHostEnvironment webHostEnvironment, SchoolClass schoolClass)
         {
             _webHostEnvironment = webHostEnvironment;
             _schoolClass = schoolClass;
