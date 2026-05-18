@@ -9,7 +9,6 @@ namespace SkolefotograferneSemesterProjekt.Services
     public class StudentService : Connection, IStudentService
     {
         private IParentServices _parentService = new ParentServices();
-        private ISchoolService _schoolService = new SchoolService();
         private ISchoolClassService _schoolClassService = new SchoolClassService();
 
         public async Task Add(Student student)

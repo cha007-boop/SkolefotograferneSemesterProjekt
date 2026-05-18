@@ -135,6 +135,40 @@ namespace SkolefotograferneSemesterProjekt.Services
             return eventGetter;
         }
 
+        public async Task<bool> IsTimeAvailable(PhotoEvent pe)
+        {
+            using (SqlConnection connection = new SqlConnection(Secret.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT ID, StartTime
+                    FROM PhotoEvent
+                    WHERE CAST (StartTime AS DATE) = CAST (@StartTime AS DATE)", connection);
+                cmd.Parameters.AddWithValue("@StartTime", pe.StartTime);
+
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                DateTime cbEndTime = pe.StartTime.AddMinutes(20);
+
+                while (await reader.ReadAsync())
+                {
+                    int elmID = reader.GetInt32("ID");
+                    if (elmID != pe.ID)
+                    {
+                        DateTime timeStart = reader.GetDateTime("StartTime");
+                        DateTime timeEnd = timeStart.AddMinutes(20);
+
+                        if (pe.StartTime < timeEnd && cbEndTime > timeStart)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public async Task<List<PhotoEvent>> GetAll()
         {
             List<PhotoEvent> photoEventList = [];

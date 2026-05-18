@@ -27,7 +27,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") != 2)
+                if (HttpContext.Session.GetInt32("Role") != 2 && HttpContext.Session.GetInt32("Role") != 4)
                 {
                     return RedirectToPage("/Users/AccessDenied");
                 }
@@ -49,8 +49,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
+                return Page();
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("/Teachers/ViewSchoolClasses", HttpContext.Session.GetInt32("ID"));
         }
         #endregion
     }

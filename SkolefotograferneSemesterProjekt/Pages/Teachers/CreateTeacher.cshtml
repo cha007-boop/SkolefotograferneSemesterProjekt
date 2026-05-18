@@ -53,5 +53,12 @@
 </form>
 
 <div>
-    <a asp-page="Index">Tilbage til listen over lærere</a>
+    @if (HttpContext.Session.GetInt32("ID") == null)
+    {
+        <a asp-page="/Users/SignUp">Back to Signup page</a>
+    }
+    else
+    {
+        <a asp-page="Index">Tilbage til listen over lærere</a>
+    }
 </div>

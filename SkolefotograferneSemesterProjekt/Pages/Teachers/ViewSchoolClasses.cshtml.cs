@@ -86,7 +86,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 ViewData["ErrorMessage"] = ex.Message;
             }
-            return RedirectToPage("Index");
+            return Page();
         }
     }
 }

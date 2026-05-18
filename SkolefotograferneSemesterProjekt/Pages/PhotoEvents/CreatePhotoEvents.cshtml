@@ -7,7 +7,6 @@
 <h1>Create PhotoEvent</h1>
 
 <form method="post">
-    <div asp-validation-summary="All" class="text-danger"></div> @* sender beskeden over i browseren hvis der mangles nogen informationer *@
     <div class="form-group">
         <label asp-for="@Model.PhotoEvent.StartTime" class="control-label"></label>
         <input asp-for="@Model.PhotoEvent.StartTime" class="form-control"/>
@@ -28,6 +27,7 @@
                 class="form-select">
             <option value="">-- Select Photographer --</option>
         </select>
+        <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
     @inject IHttpContextAccessor HttpContextAccessor
     <div class="form-group">
@@ -44,6 +44,7 @@
                     class="form-select">
                 <option value="">-- Select SchoolAdmin --</option>
             </select>
+            <span asp-validation-for="PhotoEvent.TheSchoolAdmin.ID" class="text-danger"></span>
         }
     </div>
 

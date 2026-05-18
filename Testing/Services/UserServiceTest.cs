@@ -10,7 +10,7 @@ namespace Testing.Services
     [DoNotParallelize]
     public sealed class UserServiceTest
     {
-        IUserService _userService = new UserService();
+        private IUserService _userService = new UserService();
         [TestMethod]
         public async Task TestAddSuccesfulAsync()
         {

@@ -44,7 +44,14 @@
     </div>
 
     <div>
-        <a asp-page="index">Back to list of parents</a>
+        @if (HttpContext.Session.GetInt32("ID") == null)
+        {
+            <a asp-page="/Users/SignUp">Back to Signup page</a>
+        }
+        else
+        {
+            <a asp-page="index">Back to list of parents</a>
+        }
     </div>
 </form>
 
