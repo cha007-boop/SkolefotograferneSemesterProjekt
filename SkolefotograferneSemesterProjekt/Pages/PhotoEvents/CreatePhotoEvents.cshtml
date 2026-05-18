@@ -27,6 +27,7 @@
                 class="form-select">
             <option value="">-- Select Photographer --</option>
         </select>
+        <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
     @inject IHttpContextAccessor HttpContextAccessor
     <div class="form-group">
@@ -43,6 +44,7 @@
                     class="form-select">
                 <option value="">-- Select SchoolAdmin --</option>
             </select>
+            <span asp-validation-for="PhotoEvent.TheSchoolAdmin.ID" class="text-danger"></span>
         }
     </div>
 
