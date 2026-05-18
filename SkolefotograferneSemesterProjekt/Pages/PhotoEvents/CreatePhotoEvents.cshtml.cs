@@ -25,6 +25,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         [BindProperty]
         public IEnumerable<SelectListItem> SchoolAdmins { get; set; }
         public IEnumerable<SelectListItem> TimeSlots { get; set; } = [];
+        [BindProperty]
+        public string PhotographerID { get; set; }
+        [BindProperty]
+        public string SchoolAdminID { get; set; }
 
         public CreatePhotoEventsModel(IPhotoEventService photoEventService, IPhotographerService photographerService, ISchoolAdminService schoolAdminService)
         {
@@ -48,7 +52,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             });
             await LoadMenus();
         }
-        public async Task<IActionResult> OnPost(PhotoEvent photoEvent)
+        public async Task<IActionResult> OnPost()
         {
             //ModelState.Clear();
             //TryValidateModel(PhotoEvent);
@@ -75,7 +79,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 if (PhotoEvent.StartTime >= DateTime.Now)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the c");
                     return Page();
                 } 
                 if(PhotoEvent.ThePhotographer.ID == null)
@@ -98,6 +102,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     await _photoEventService.Add(PhotoEvent);
                 }
                 await LoadMenus();
+                await OnGet(PhotoEvent.ThePhotographer.ID);
+                await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             } 
             catch (UnauthorizedAccessException uax)
             {
@@ -126,8 +132,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            await OnGet(PhotoEvent.ThePhotographer.ID);
-            await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             return RedirectToPage("/Index", null); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
         }
         private async Task LoadMenus()
