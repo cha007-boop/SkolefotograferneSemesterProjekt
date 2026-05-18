@@ -12,9 +12,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class SchoolClassService : Connection, ISchoolClassService
     {
-        private ISchoolService _schoolService = new SchoolService();
         private ITeacherService _teacherService = new TeacherService();
-        private IClassBookingService _classBookingService = new ClassBookingService();
 
         public async Task Add(SchoolClass @class)
         {

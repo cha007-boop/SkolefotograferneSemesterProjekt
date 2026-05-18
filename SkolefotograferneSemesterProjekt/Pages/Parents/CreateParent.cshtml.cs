@@ -44,15 +44,25 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         {
                             await _parentservices.AddParent(NewParent);
                         }
+                        else
+                        {
+                            throw new InvalidMailException("Must enter a Mail");
+                        }
                     }
                     else
                     {
-                        throw new Exceptions.PasswordNotTheSameException("Passwords are not the same");
+                        throw new PasswordNotTheSameException("Passwords are not the same");
                     }
                 }
                 HttpContext.Session.SetInt32("ID", NewParent.ID);
                 HttpContext.Session.SetString("Email", NewParent.Email!);
                 HttpContext.Session.SetInt32("Role", (int)NewParent.Role);
+            }
+            catch (InvalidMailException iex)
+            {
+                ViewData["ErrorMessage"] = iex.Message;
+                ModelState.AddModelError("Email", iex.Message);
+                return Page();
             }
             catch (TakenMailException ex)
             {

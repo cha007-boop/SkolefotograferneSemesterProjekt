@@ -68,7 +68,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     TheSchoolClass = await _schoolClassService.GetByID(SchoolClassId);
                     ThePhotoEvent = await _photoEventService.GetByID(PhotoEventId);
-                    IUploadIFormFile uploader = new UploadClass(_webHostEnvironment, TheSchoolClass);
+                    IUploadIFormFile uploader = new UploadClassPhoto(_webHostEnvironment, TheSchoolClass);
                     Photo classPhoto = new Photo
                     {
                         Filename = uploader.UploadFile(Photo),
