@@ -9,7 +9,7 @@
 <h1>Students</h1>
 
 
-@if(HttpContext.Session.GetInt32("Role") == 1 || HttpContext.Session.GetInt32("Role") == 4)
+@if(HttpContext.Session.GetInt32("Role") == 4)
 {
 	<form method="get">
 	search:<input type="text" asp-for="@Model.FilterCriteria" />
