@@ -6,12 +6,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
     public class IndexModel : PageModel
     {
-        public IndexModel()
-        {
+        //public IndexModel()
+        //{
 
-        }
-        public void OnGet()
-        {
-        }
+        //}
+        //public void OnGet()
+        //{
+        //}
     }
 }
