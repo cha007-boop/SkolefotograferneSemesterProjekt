@@ -50,12 +50,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 Value = Convert.ToString(s.ID),
                 Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
             });
-            await LoadMenus();
         }
         public async Task<IActionResult> OnPost()
         {
-            //ModelState.Clear();
-            //TryValidateModel(PhotoEvent);
+            ModelState.Clear();
+            TryValidateModel(PhotoEvent);
             try
             {
                 if(HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
@@ -64,9 +63,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     if (!id.HasValue)
                     {
                         ModelState.AddModelError("", "Session ID missing.");
+                        await OnGet(PhotoEvent.ThePhotographer.ID);
+                        await OnGet(PhotoEvent.TheSchoolAdmin.ID);
                         return Page();
                     }
-                    PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
+                    if (HttpContext.Session.GetInt32("Role") == 3)
+                    {
+                        PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(Convert.ToInt32(PhotographerID));
+                        PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
+                    } else if (HttpContext.Session.GetInt32("Role") == 4)
+                    {
+                        PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(Convert.ToInt32(SchoolAdminID));
+                        PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(Convert.ToInt32(PhotographerID));
+                    }
                 }
                 else
                 {
@@ -74,36 +83,57 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
-                    ModelState.AddModelError(nameof(PhotoEvent.StartTime), "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
-                if (PhotoEvent.StartTime >= DateTime.Now)
+                if (PhotoEvent.StartTime == default)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the c");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Please set a StartTime");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    return Page();
+                }
+                if (PhotoEvent.EndTime == default)
+                {
+                    ModelState.AddModelError("PhotoEvent.EndTime", "Please set an EndTime");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    return Page();
+                }
+                if (PhotoEvent.StartTime < DateTime.Now)
+                {
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to not be before the current todays date");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 } 
-                if(PhotoEvent.ThePhotographer.ID == null)
+                if(PhotographerID == null)
                 {
-                    ModelState.AddModelError(nameof(PhotoEvent.ThePhotographer.ID), "Please choose a photographer");
+                    ModelState.AddModelError("PhotoEvent.PhotographerID", "Please choose a photographer");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
-                if (PhotoEvent.TheSchoolAdmin == null)
+                if (SchoolAdminID == null)
                 {
-                    ModelState.AddModelError("PhotoEvent", "please choose a school admin");
+                    ModelState.AddModelError("PhotoEvent.SchoolAdminID", "please choose a school admin");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (PhotoEvent.Location == null)
                 {
-                    ModelState.AddModelError("PhotoEvent", "please insert a location");
+                    ModelState.AddModelError("PhotoEvent.Location", "please insert a location");
+                    await OnGet(Convert.ToInt32(PhotographerID));
+                    await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 else
                 {
                     await _photoEventService.Add(PhotoEvent);
                 }
-                await LoadMenus();
-                await OnGet(PhotoEvent.ThePhotographer.ID);
-                await OnGet(PhotoEvent.TheSchoolAdmin.ID);
             } 
             catch (UnauthorizedAccessException uax)
             {
@@ -133,46 +163,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 return Page();
             }
             return RedirectToPage("/Index", null); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
-        }
-        private async Task LoadMenus()
-        {
-            int? userID = HttpContext.Session.GetInt32("ID");
-            if (!userID.HasValue || PhotoEvent == null)
-            {
-                return;
-            }
-            List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
-            List<Photographer> photographers = await _photographerService.GetAll();
-            SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
-            {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
-            });
-            Photographers = photographers.Select(s => new SelectListItem
-            {
-                Value = Convert.ToString(s.ID),
-                Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
-            });
-            DateTime peCurrent = PhotoEvent.StartTime;
-            DateTime peEnd = PhotoEvent.EndTime;
-            List<SelectListItem> timeSlots = [];
-            while (peCurrent.AddMinutes(20) <= peEnd)
-            {
-                PhotoEvent temp = new PhotoEvent() { StartTime = peCurrent };
-
-                bool isAvailable = await _photoEventService.IsTimeAvailable(temp);
-                if (isAvailable)
-                {
-                    timeSlots.Add(new SelectListItem
-                    {
-                        Value = peCurrent.ToString("dd/MM/yyyy HH:mm"),
-                        Text = peCurrent.ToString("HH:mm")
-                    });
-                }
-                peCurrent = peCurrent.AddMinutes(20);
-            }
-
-            TimeSlots = timeSlots;
         }
     }
 }

@@ -6,7 +6,10 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <h1>List of your Photo Events</h1>
-<h2>Active PhotoEvents</h2>
+@if(!Model.PhotoEvents.Any(b =>b.StartTime > DateTime.Now))
+{
+    <h2>Active PhotoEvents</h2>
+}
 
 <form>
     @if (HttpContext.Session.GetInt32("Role") == 3)
@@ -28,8 +31,9 @@
                 <th>StudenCount</th>
                 <th>StartTime</th>
                 <th>EndTIme</th>
-                <th>PhotographerID</th>
-                <th>SchoolAdminID</th>
+                @* <th>PhotographerID</th>
+                <th>SchoolAdminID</th> *@
+                <th>Photographer</th>
                 <th>Location</th>
             </tr>
         </thead>
@@ -46,8 +50,8 @@
                     <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
                     <td>@photoEventItem.StartTime</td>
                     <td>@photoEventItem.EndTime</td>
-                    <td>@photoEventItem.ThePhotographer.ID</td>
-                    <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                    <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
+@*                     <td>@photoEventItem.TheSchoolAdmin.ID</td> *@
                     <td>@photoEventItem.Location</td>
                     <td>
                         @if (HttpContext.Session.GetInt32("Role") != 0)
