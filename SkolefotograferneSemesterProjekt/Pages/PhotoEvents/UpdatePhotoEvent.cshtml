@@ -52,10 +52,9 @@
             <option value="">-- Select Photographer --</option>
         </select>
     </div>
-    @inject IHttpContextAccessor HttpContextAccessor
     <div class="form-group">
         <h6>SchoolAdminID</h6>
-        @if (@HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3)
+        @if (HttpContext.Session.GetInt32("Role") == 3)
         {
             <p>@HttpContext.Session.GetInt32("ID")</p>
         }

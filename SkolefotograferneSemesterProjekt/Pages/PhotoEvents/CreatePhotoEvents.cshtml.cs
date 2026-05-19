@@ -111,14 +111,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 } 
                 if(PhotographerID == null)
                 {
-                    ModelState.AddModelError("PhotoEvent.PhotographerID", "Please choose a photographer");
+                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Please choose a photographer");
                     await OnGet(Convert.ToInt32(PhotographerID));
                     await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (SchoolAdminID == null)
                 {
-                    ModelState.AddModelError("PhotoEvent.SchoolAdminID", "please choose a school admin");
+                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "please choose a school admin");
                     await OnGet(Convert.ToInt32(PhotographerID));
                     await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
@@ -132,6 +132,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 else
                 {
+                    PhotoEvent.ThePhotographer = new Photographer();
+                    PhotoEvent.ThePhotographer.ID = Convert.ToInt32(PhotographerID);
+
+                    PhotoEvent.TheSchoolAdmin = new SchoolAdmin();
+                    PhotoEvent.TheSchoolAdmin.ID = Convert.ToInt32(SchoolAdminID);
+
                     await _photoEventService.Add(PhotoEvent);
                 }
             } 

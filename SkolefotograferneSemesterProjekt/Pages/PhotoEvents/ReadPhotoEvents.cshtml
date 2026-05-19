@@ -136,7 +136,7 @@
                                 </a>
                             }
                         </td>
-                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
+                        @if (HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
                         {
                             <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
                         }

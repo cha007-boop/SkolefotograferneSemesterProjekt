@@ -29,8 +29,7 @@
         </select>
         <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
-    @inject IHttpContextAccessor HttpContextAccessor
-    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 4)
+    @if (HttpContext.Session.GetInt32("Role") == 4)
     {
         <h6>SchoolAdminID</h6>
         <div class="form-group">
