@@ -15,6 +15,5 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         Task UpdatePhotoEvent(PhotoEvent photoEvent);
         Task DeletePhotoEvent(PhotoEvent photoEvent);
         Task<PhotoEvent> searchPhotoEvent(int id);
-        Task<bool> IsTimeAvailable(PhotoEvent ce);
     }
 }

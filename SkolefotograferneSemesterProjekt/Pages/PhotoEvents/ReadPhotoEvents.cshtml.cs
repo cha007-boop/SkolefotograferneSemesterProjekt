@@ -9,15 +9,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
     public class ReadPhotoEventsModel : PageModel
     {
         private IPhotoEventService PEService;
-        private IHttpContextAccessor HttpContextAccessor;
 
         [BindProperty]
         public PhotoEvent PhotoEvent { get; set; }
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; }
-        public ReadPhotoEventsModel(IPhotoEventService pEService, IHttpContextAccessor httpContextAccessor)
+        public ReadPhotoEventsModel(IPhotoEventService pEService)
         {
-            HttpContextAccessor = httpContextAccessor;
             PEService = pEService;
         }
         public async Task<IActionResult> OnGet()
@@ -28,14 +26,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     PhotoEvents = await PEService.GetByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
-                else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1)
+                else if (HttpContext.Session.GetInt32("Role") == 1)
                 {
                     PhotoEvents = (await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
-                } else if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3)
+                } else if (HttpContext.Session.GetInt32("Role") == 3)
                 {
                     PhotoEvents = (await PEService.SearchEventBySchoolAdminID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
                 }
-                else if(HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 4)
+                else if(HttpContext.Session.GetInt32("Role") == 4)
                 {
                     PhotoEvents = (await PEService.ShowActivePhotoEvent()).OrderBy(n => n.StartTime).ToList();
                 }

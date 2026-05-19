@@ -10,15 +10,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
     public class UpdatePhotoEventModel : PageModel
     {
-        [BindProperty]
-        public PhotoEvent PhotoEvent { get; set; }
-        [BindProperty]
-        public int VerifyPhotographerID { get; set; }
-        [BindProperty]
-        public int VerifySchoolAdminID { get; set; }
         private ISchoolAdminService _schoolAdminService;
         private IPhotographerService _photographerService;
         private IPhotoEventService _photoEventService;
+
+        [BindProperty]
+        public PhotoEvent PhotoEvent { get; set; }
         [BindProperty]
         public IEnumerable<SelectListItem> Photographers { get; set; }
         [BindProperty]
