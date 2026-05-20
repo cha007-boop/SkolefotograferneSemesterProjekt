@@ -42,9 +42,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
                     ModelState.AddModelError("NewPhotographer.Password", "Password not the same");
                     return Page();
                 }
-                HttpContext.Session.SetInt32("ID", NewPhotographer.ID);
-                HttpContext.Session.SetString("Email", NewPhotographer.Email);
-                HttpContext.Session.SetInt32("Role", (int)NewPhotographer.Role);
+                if (!HttpContext.Session.GetInt32("Role").HasValue)
+                {
+                    HttpContext.Session.SetInt32("ID", NewPhotographer.ID);
+                    HttpContext.Session.SetString("Email", NewPhotographer.Email);
+                    HttpContext.Session.SetInt32("Role", (int)NewPhotographer.Role);
+                }
+                else
+                {
+                    return RedirectToPage("/Photographers/ShowPhotographers");
+                }
+                
             }
             catch (TakenMailException texc)
             {
