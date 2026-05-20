@@ -54,9 +54,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         throw new PasswordNotTheSameException("Passwords are not the same");
                     }
                 }
-                HttpContext.Session.SetInt32("ID", NewParent.ID);
-                HttpContext.Session.SetString("Email", NewParent.Email!);
-                HttpContext.Session.SetInt32("Role", (int)NewParent.Role);
+
+                if (!HttpContext.Session.GetInt32("Role").HasValue)
+                {
+                    HttpContext.Session.SetInt32("ID", NewParent.ID);
+                    HttpContext.Session.SetString("Email", NewParent.Email!);
+                    HttpContext.Session.SetInt32("Role", (int)NewParent.Role);
+                }
+                else
+                {
+                    return RedirectToPage("/Parents/Index");
+                }
+                
             }
             catch (InvalidMailException iex)
             {
@@ -81,7 +90,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                 ViewData["Errormessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("/Index", null);
+            return RedirectToPage("/Index");
 
         }
     }

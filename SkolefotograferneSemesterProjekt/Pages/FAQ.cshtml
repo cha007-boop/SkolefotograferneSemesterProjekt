@@ -1,0 +1,20 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.FAQModel
+@{
+    ViewData["Title"] = "FAQ";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Spørgsmål</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var q in Model.Questions)
+        {
+            <tr>
+                <td>@q</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -83,9 +83,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 NewTeacher.Password = Password;
                 await _repo.Add(NewTeacher);
-                HttpContext.Session.SetInt32("ID", NewTeacher.ID);
-                HttpContext.Session.SetString("Email", NewTeacher.Email);
-                HttpContext.Session.SetInt32("Role", (int)NewTeacher.Role);
+                if (!HttpContext.Session.GetInt32("Role").HasValue)
+                {
+                    HttpContext.Session.SetInt32("ID", NewTeacher.ID);
+                    HttpContext.Session.SetString("Email", NewTeacher.Email);
+                    HttpContext.Session.SetInt32("Role", (int)NewTeacher.Role);
+                }
+                else
+                {
+                    return RedirectToPage("/Teachers/Index");
+                }
+
             }
             catch (PasswordTooShortException ex)
             {
@@ -103,13 +111,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 return Page();
             }
 
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (role  == (int)UserRole.SysAdmin)
-            {
-                return RedirectToPage("/Index", null);
-            }
-
-            return RedirectToPage("/Index", null);
+            return RedirectToPage("/Index");
         }
     }
 }

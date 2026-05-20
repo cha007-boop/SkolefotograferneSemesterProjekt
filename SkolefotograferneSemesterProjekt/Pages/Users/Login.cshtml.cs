@@ -6,13 +6,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
 {
     public class LoginModel : PageModel
     {
+        private IUserService _userService;
+
         [BindProperty] 
         public string Email { get; set; }
 
         [BindProperty]
         public string Password { get; set; }
 
-        private IUserService _userService;
         public LoginModel(IUserService userService)
         {
             _userService = userService;

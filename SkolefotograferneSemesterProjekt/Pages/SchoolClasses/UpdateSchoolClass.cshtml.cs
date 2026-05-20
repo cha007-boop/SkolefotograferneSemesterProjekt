@@ -29,11 +29,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") != 2)
+                if (HttpContext.Session.GetInt32("Role") != 2 && HttpContext.Session.GetInt32("Role") != 4)
                 {
                     throw new UnauthorizedAccessException();
                 }
                 NewSchoolClass = await _schoolClassService.GetByID(id);
+
+                if (HttpContext.Session.GetInt32("Role") == 2 && NewSchoolClass.TheTeacher.ID != HttpContext.Session.GetInt32("ID"))
+                {
+                    throw new UnauthorizedAccessException();
+                }
             }
             catch (UnauthorizedAccessException uax)
             {
