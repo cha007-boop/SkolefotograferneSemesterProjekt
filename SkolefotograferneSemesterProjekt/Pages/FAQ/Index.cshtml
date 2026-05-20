@@ -1,0 +1,28 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.FAQ.IndexModel
+@{
+    ViewData["Title"] = "FAQ";
+}
+<h1 style="text-align: center">FAQ</h1>
+@if (Model.IsAdmin)
+{
+    @* <h2><a asp-page="/FAQ">Opret et nyt spørgsmål</a></h2> *@
+    <td>
+        <input type="submit" asp-page-handler="" value="Opret et nyt spørgsmål" class="btn btn-primary" />
+    </td>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Spørgsmål</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var q in Model.Questions)
+        {
+            <tr>
+                <td>@q</td>
+            </tr>
+        }
+    </tbody>
+</table>
