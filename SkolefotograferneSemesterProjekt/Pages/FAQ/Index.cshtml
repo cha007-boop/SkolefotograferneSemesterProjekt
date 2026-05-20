@@ -10,19 +10,43 @@
     <td>
         <input type="submit" asp-page-handler="" value="Opret et nyt spørgsmål" class="btn btn-primary" />
     </td>
-}
-<table class="table">
-    <thead>
-        <tr>
-            <th>Spørgsmål</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var q in Model.Questions)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@q</td>
+                <th>Emner</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Entries)
+            {
+                int i = 0;
+                <tr>
+                    <td>@e</td>
+                    <td>
+                        <a asp-page="EditEntry" asp-route-id="@e[i]">Opdater</a> |
+                        <a asp-page="DeleteEntry" asp-route-id="@e[i]">Slet</a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Emner</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Entries)
+            {
+                <tr>
+                    <td>@e</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.FAQ
@@ -9,7 +10,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         private IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
-        public List<string> Questions { get; set; } = [];
+        public string[] Entries { get; set; } = [];
         [BindProperty]
         public bool IsAdmin { get; set; }
         //[BindProperty]
@@ -31,23 +32,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
                 IsAdmin = true;
             }
 
-            string? filePath = Path.Combine(_webHostEnvironment.WebRootPath, FolderName, FileName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                Questions.Add("Ingen spørgsmål");
-            }
             try
             {
-                string temp = "";
-                using (StreamReader reader = new StreamReader(filePath))
-                {
-                    while (!reader.EndOfStream) 
-                    {
-                        temp += await reader.ReadLineAsync();
-                    }
-                }
-                Questions = temp.Split("|").ToList();
+                Entries = (string[])await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 return Page();
             }
             catch(Exception ex)
@@ -56,5 +43,39 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
                 return Page();
             }
         }
+        //OG
+        //public async Task<IActionResult> OnGet()
+        //{
+        //    int? role = HttpContext.Session.GetInt32("Role");
+        //    if(role == (int)UserRole.SysAdmin)
+        //    {
+        //        IsAdmin = true;
+        //    }
+
+        //    string? filePath = Path.Combine(_webHostEnvironment.WebRootPath, FolderName, FileName);
+
+        //    if (!System.IO.File.Exists(filePath))
+        //    {
+        //        Questions.Append("Ingen spørgsmål");
+        //    }
+        //    try
+        //    {
+        //        string temp = "";
+        //        using (StreamReader reader = new StreamReader(filePath))
+        //        {
+        //            while (!reader.EndOfStream) 
+        //            {
+        //                temp += await reader.ReadLineAsync();
+        //            }
+        //        }
+        //        Questions = temp.Split("|");
+        //        return Page();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        ViewData["ErrorMessage"] = ex.Message;
+        //        return Page();
+        //    }
+        //}
     }
 }
