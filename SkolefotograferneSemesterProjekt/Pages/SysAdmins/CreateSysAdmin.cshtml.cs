@@ -10,7 +10,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SysAdmins
     public class CreateSysAdminModel : PageModel
     {
         #region Instance fields
-        private ISysAdminService sysAdminService;
+        private ISysAdminService _sysAdminService;
         #endregion
         #region Properties
         [BindProperty]
@@ -23,7 +23,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SysAdmins
         #region Constructor
         public CreateSysAdminModel(ISysAdminService service)
         {
-            sysAdminService = service;
+            _sysAdminService = service;
         }
         #endregion
         #region Methods
@@ -54,7 +54,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SysAdmins
                     return Page();
                 }
                 else
-                    await sysAdminService.Add(NewSysAdmin);
+                    await _sysAdminService.Add(NewSysAdmin);
             }
             catch(PasswordTooShortException pexc)
             {

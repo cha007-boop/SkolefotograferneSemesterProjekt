@@ -13,17 +13,30 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="@Model.TheStudent.ID" />
-            <input type="hidden" asp-for="@Model.ThePhotoEvent.ID" />
+            <input type="hidden" asp-for="@Model.TheStudent.ID" name="StudentId" />
+            <input type="hidden" asp-for="@Model.ThePhotoEvent.ID" name="PhotoEventId" />
             <div class="form-group">
-                <label asp-for="@Model.Portrait" class="control-label"></label>
+                <label asp-for="FileUpload.Files" class="control-label"></label>
                 <div class="custom-file">
-                    <input asp-for="@Model.Portrait" class="custom-file-input form-control" />
+                    <input type="file" asp-for="FileUpload.Files" class="custom-file-input form-control" multiple aria-label="File browser example">
+                    <span asp-validation-for="FileUpload.Files" class="text-danger"></span>
+                </div>
+                <div class="formgroup mt-3">
+                    <input asp-page-handler="UploadMulti" class="btn btn-primary" type="submit" value="Upload">
                 </div>
             </div>
-            <div class="formgroup mt-3">
-                <input type="submit" value="Upload" class="btn btn-primary" />
-            </div>
         </form>
+        @{
+            if (ViewData["SuccessMessage"] != null)
+            {
+                <span class="text-success"> @ViewData["SuccessMessage"]</span>
+            }
+        }
+
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a asp-page="/PhotoEvents/PhotoEventDetails" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-secondary">Back to PhotoEvent Details</a>
     </div>
 </div>
