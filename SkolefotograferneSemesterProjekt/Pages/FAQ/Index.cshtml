@@ -18,14 +18,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var e in Model.Entries)
+            @for (int i=0; i < Model.Entries.Length; i++)
             {
                 <tr>
-                    <td>@e</td>
-                    @* <td>
-                        <a asp-page="EditEntry" asp-route-id="@e[i]">Opdater</a> |
-                        <a asp-page="DeleteEntry" asp-route-id="@e[i]">Slet</a>
-                    </td> *@
+                    <td>@Model.Entries[i]</td>
+                    <td>
+                        <a asp-page="EditEntry" asp-route-id="@i">Opdater</a> |
+                        <a asp-page="DeleteEntry" asp-route-id="@i">Slet</a>
+                    </td>
                 </tr>
             }
         </tbody>

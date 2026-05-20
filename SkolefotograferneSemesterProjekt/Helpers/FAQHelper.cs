@@ -5,14 +5,13 @@ namespace SkolefotograferneSemesterProjekt.Helpers
     public static class FAQHelper
     {
         
-        public async static Task<Array> FAQReader(string webRootPath, string folderName, string fileName, string[] arr)
+        public async static Task<string[]> FAQReader(string webRootPath, string folderName, string fileName, string[] arr)
         {
             string? filePath = Path.Combine(webRootPath, folderName, fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
-                arr = arr.Append("Ingen entry").ToArray();
-                return arr;
+                return ["Ingen entry"];
             }
 
             string temp = "";
@@ -35,20 +34,8 @@ namespace SkolefotograferneSemesterProjekt.Helpers
                 return;
             }
 
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                int i = 0;
-                while (i < arr.Length)
-                {
-                    if (i == arr.Length-1)
-                    {
-                        await writer.WriteLineAsync(arr[i]);
-                        return;
-                    }
-                    await writer.WriteLineAsync(arr[i] + "|");
-                    i++;
-                }
-            }
+            string temp = string.Join("|", arr);
+            await File.WriteAllTextAsync(filePath, temp);
         }
     }
 }

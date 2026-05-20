@@ -50,7 +50,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             }
             try
             {
-                Entries = (string[])await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 Entries = Entries.Append(NewEntry).ToArray();
 
                 await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);

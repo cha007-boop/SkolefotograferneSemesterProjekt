@@ -9,11 +9,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
     {
         private IWebHostEnvironment _webHostEnvironment;
 
-        [BindProperty]
         public string[] Entries { get; set; } = [];
-        [BindProperty]
         public bool IsAdmin { get; set; }
-        //[BindProperty]
         private string FileName { get; set; }
         private string FolderName { get; set; }
 
@@ -34,7 +31,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
 
             try
             {
-                Entries = (string[])await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 return Page();
             }
             catch(Exception ex)
