@@ -31,7 +31,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
                 {
                     return RedirectToPage("/Users/AccessDenied");
                 }
-                SchoolClasses = await _schoolClassService.GetAllByTeacher((int)HttpContext.Session.GetInt32("ID"));
+                if (HttpContext.Session.GetInt32("Role") == 4)
+                {
+                    SchoolClasses = await _schoolClassService.GetAll();
+                }
+                else
+                {
+                    SchoolClasses = await _schoolClassService.GetAllByTeacher((int)HttpContext.Session.GetInt32("ID"));
+                }
             }
             catch (Exception exc)
             {
