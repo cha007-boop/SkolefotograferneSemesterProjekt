@@ -8,26 +8,25 @@
 {
     @* <h2><a asp-page="/FAQ">Opret et nyt spørgsmål</a></h2> *@
     <td>
-        <input type="submit" asp-page-handler="" value="Opret et nyt spørgsmål" class="btn btn-primary" />
+        <a asp-page="AddEntry" class="btn btn-primary">Opret et nyt spørgsmål</a>
     </td>
     <table class="table">
         <thead>
             <tr>
                 <th>Emner</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var e in Model.Entries)
             {
-                int i = 0;
                 <tr>
                     <td>@e</td>
-                    <td>
+                    @* <td>
                         <a asp-page="EditEntry" asp-route-id="@e[i]">Opdater</a> |
                         <a asp-page="DeleteEntry" asp-route-id="@e[i]">Slet</a>
-                    </td>
+                    </td> *@
                 </tr>
-                i++;
             }
         </tbody>
     </table>

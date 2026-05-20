@@ -4,3 +4,17 @@
     ViewData["Title"] = "Opret et nyt entry"; 
 }
 
+<a asp-page="Index">Tilbage</a>
+
+<form method="post">
+    @* <input type="hidden" asp-for="@Model.NewEntry" /> *@
+    <div class="form-group">
+        <label asp-for="@Model.NewEntry" class="control-label">Tekst</label>
+        <input asp-for="@Model.NewEntry" class="form-control" />
+        <span asp-validation-for="@Model.NewEntry" class="text-danger"></span>      
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Opret" class="btn btn-primary" />
+    </div>
+</form>
