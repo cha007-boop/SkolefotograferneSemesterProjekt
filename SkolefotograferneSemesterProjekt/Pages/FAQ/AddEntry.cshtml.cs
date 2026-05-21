@@ -15,7 +15,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         public string NewEntry { get; set; }
         [BindProperty]
         public bool IsAdmin { get; set; }
-        //[BindProperty]
         private string FileName { get; set; }
         private string FolderName { get; set; }
 

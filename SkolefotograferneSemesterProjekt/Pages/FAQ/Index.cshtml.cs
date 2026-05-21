@@ -9,7 +9,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
     {
         private IWebHostEnvironment _webHostEnvironment;
 
-        //public string[] Entries { get; set; } = [];
         public List<string> Entries { get; set; } = [];
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }

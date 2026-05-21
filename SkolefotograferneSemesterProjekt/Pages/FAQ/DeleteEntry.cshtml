@@ -4,11 +4,13 @@
     ViewData["Title"] = "Slet Entry";
 }
 
-<h1>Slet Entry</h1>
+<a asp-page="Index">Tilbage</a>
+<p>Er du sikker på du vil slette emnet?</p>
+
 <form method="post">
     <input type="hidden" asp-for="@Model.EntryID" />
-
-    <div class="form-group d-flex gap-2 mt-3">
+    
+    <div class="form-group">
         <input type="submit" asp-page-handler="Delete" class="btn btn-danger" value="Slet" />
         <a asp-page="Index" class="btn btn-secondary">Fortryd</a>
     </div>

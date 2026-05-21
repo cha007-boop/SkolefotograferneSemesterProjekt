@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Helpers;
@@ -6,7 +5,7 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.FAQ
 {
-    public class DeleteEntryModel : PageModel
+    public class EditEntryModel : PageModel
     {
         private IWebHostEnvironment _webHostEnvironment;
 
@@ -15,11 +14,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         [BindProperty]
         public int EntryID { get; set; }
         [BindProperty]
+        public string NewEntry { get; set; }
+        [BindProperty]
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
         private string FolderName { get; set; }
 
-        public DeleteEntryModel(IWebHostEnvironment webHostEnvironment)
+
+        public EditEntryModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
             FolderName = "faq";
@@ -39,10 +41,20 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
-            return Page();
+            try
+            {
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                NewEntry = Entries[EntryID];
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
         }
 
-        public async Task<IActionResult> OnPostDelete()
+        public async Task<IActionResult> OnPost()
         {
             int? role = HttpContext.Session.GetInt32("Role");
             if (role != (int)UserRole.SysAdmin)
@@ -52,7 +64,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             try
             {
                 Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                Entries.RemoveAt(EntryID);
+                Entries[EntryID] = NewEntry;
 
                 await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 return RedirectToPage("Index");
