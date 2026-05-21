@@ -8,6 +8,18 @@
 
 <h1>List of your Photo Events</h1>
 
+@* Checkbox to toggle visibility of active photo events*@
+<div class="form-group">
+    <label for="activePhotoEventsCheckbox">Click to view Active PhotoEvents:</label>
+    <input type="checkbox" id="activePhotoEventsCheckbox" />
+</div>
+
+@* Checkbox to toggle visibility of previous photo events *@
+<div class="form-group">
+    <label for="previousPhotoEventsCheckbox">Click to view Previous PhotoEvents:</label>
+    <input type="checkbox" id="previousPhotoEventsCheckbox" />
+</div>
+
 <form>
     @if (HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
     {
@@ -16,6 +28,7 @@
         </div>
     }
 </form>
+<br />
 
 @if (HttpContext.Session.GetInt32("Role") == (int)UserRole.SysAdmin)
 {
@@ -84,7 +97,7 @@
                             {
                                 <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
                                     <button class="btn btn-primary">
-                                        Click to see further information
+                                        Details
                                     </button>
                                 </a>
                             }
@@ -99,66 +112,140 @@
 </table>
 
 
+            }
+        </table>
+    }
+</div>
+    
 
-    <form method="post" asp-page-handler="DeletePhotoEvents" id="deleteForm">
-        <input type="hidden" name="id" id="deleteId" />
-    </form>
+<div id="previousEventsSection" style="display:none">
+    <h2>Previous PhotoEvents</h2>
+    <table class="table">
+        <thead>
+             <tr>
+                    <th>ID</th>
+                    <th>SchoolName</th>
+                    <th>SchoolAddress</th>
+                    <th>ZipCode</th>
+                    <th>StudenCount</th>
+                    <th>StartTime</th>
+                    <th>EndTIme</th>
+                    <th>Photographer</th>
+                    <th>Location</th>
+             </tr>
+        </thead>
+        @foreach (var photoEventItem in Model.PhotoEvents)
+        {
+            @if (photoEventItem.StartTime < DateTime.Now)
+            {
+                <tbody>
+                    <tr>
+                        <td>@photoEventItem.ID</td>
+                        <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                        <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                        <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                        <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                        <td>@photoEventItem.StartTime</td>
+                        <td>@photoEventItem.EndTime</td>
+                        <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
+                        <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                        <td>@photoEventItem.Location</td>
+                        <td>
+                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                <button class="btn btn-primary">
+                                    Details
+                                </button>
+                            </a>
+                        }
+                    </td>
+                    <td>
+                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
+                                <button class="btn btn-warning">
+                                    Edit
+                                </button>
+                            </a>
+                        }
+                    </td>
+                    @if (HttpContext.Session.GetInt32("Role") != 1 && HttpContextAccessor.HttpContext.Session.GetInt32("Role") != 0)
+                    {
+                        <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                    }
+                </tr>
+            </tbody>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        }
+    }
+    </table>
+</div>
 
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+<form method="post" asp-page-handler="DeletePhotoEvents" id="deleteForm">
+    <input type="hidden" name="id" id="deleteId" />
+</form>
 
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this PhotoEvent?</p>
-                </div>
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                        Delete
-                    </button>
-                </div>
-
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this PhotoEvent?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    Delete
+                </button>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <form method="post">
-        @*  @if (HttpContext.Session.GetInt32("Role") != 0)
+<form method="post">
+    @if (HttpContext.Session.GetInt32("Role") != 0)
     {
-    <div>
-        <a asp-page="index">Back to index of Photo Events</a>  to index in the photoevents folder 
-    </div>
-    }*@
-        @if (HttpContext.Session.GetInt32("Role") == 0)
-        {
-            <div>
-                <a asp-page="/Index">Back to Homepage</a> @* debatable om den skal være der*@
-            </div>
-        }
-    </form>
+        <div>
+            <a asp-page="/Index">Back to Homepage</a>
+        </div>
+    }
+</form>
 
 @section Scripts {
-        <script>
-            function DisplayConfirmDeleteModal(id) {
-                document.getElementById("deleteId").value = id;
-
-                var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-                modal.show();
+    <script>
+        // Toggle previous events visibility based on the checkbox.
+        document.addEventListener('DOMContentLoaded', function () {
+            var cb = document.getElementById('previousPhotoEventsCheckbox');
+            var section = document.getElementById('previousEventsSection');
+            if (!cb || !section) return;
+            function update() {
+                section.style.display = cb.checked ? 'block' : 'none';
             }
+            cb.addEventListener('change', update);
+            update();
+        });
 
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
-                document.getElementById("deleteForm").submit();
-            });
-        </script>
+        function DisplayConfirmDeleteModal(id) {
+            document.getElementById("deleteId").value = id;
+
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
 }
-</table>
 

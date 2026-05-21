@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Helpers;
@@ -5,27 +6,34 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.FAQ
 {
-    public class AddEntryModel : PageModel
+    public class DeleteEntryModel : PageModel
     {
         private IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
         public List<string> Entries { get; set; } = [];
         [BindProperty]
-        public string NewEntry { get; set; }
+        public int EntryID { get; set; }
         [BindProperty]
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
         private string FolderName { get; set; }
 
-        public AddEntryModel(IWebHostEnvironment webHostEnvironment)
+        public DeleteEntryModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
             FolderName = "faq";
             FileName = "FAQtekst.txt";
         }
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(int? id)
         {
+            if (!id.HasValue)
+            {
+                ModelState.AddModelError("EntryID", "Ugyldig entry...");
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            EntryID = id.Value;
+
             int? role = HttpContext.Session.GetInt32("Role");
             if (role != (int)UserRole.SysAdmin)
             {
@@ -34,23 +42,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostDelete()
         {
-            ModelState.CustomizedMessages("Felter Mangler");
-
             int? role = HttpContext.Session.GetInt32("Role");
             if (role != (int)UserRole.SysAdmin)
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
-            if (string.IsNullOrWhiteSpace(NewEntry))
-            {
-                return Page();
-            }
             try
             {
                 Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                Entries.Add(NewEntry);
+                Entries.RemoveAt(EntryID);
 
                 await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 return RedirectToPage("Index");

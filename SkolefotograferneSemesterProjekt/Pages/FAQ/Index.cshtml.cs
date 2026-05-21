@@ -9,7 +9,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
     {
         private IWebHostEnvironment _webHostEnvironment;
 
-        public string[] Entries { get; set; } = [];
+        public List<string> Entries { get; set; } = [];
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
         private string FolderName { get; set; }
@@ -37,42 +37,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             catch(Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
-                return Page();
+                return RedirectToPage("/Index");
             }
         }
-        //OG
-        //public async Task<IActionResult> OnGet()
-        //{
-        //    int? role = HttpContext.Session.GetInt32("Role");
-        //    if(role == (int)UserRole.SysAdmin)
-        //    {
-        //        IsAdmin = true;
-        //    }
-
-        //    string? filePath = Path.Combine(_webHostEnvironment.WebRootPath, FolderName, FileName);
-
-        //    if (!System.IO.File.Exists(filePath))
-        //    {
-        //        Questions.Append("Ingen spørgsmål");
-        //    }
-        //    try
-        //    {
-        //        string temp = "";
-        //        using (StreamReader reader = new StreamReader(filePath))
-        //        {
-        //            while (!reader.EndOfStream) 
-        //            {
-        //                temp += await reader.ReadLineAsync();
-        //            }
-        //        }
-        //        Questions = temp.Split("|");
-        //        return Page();
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        ViewData["ErrorMessage"] = ex.Message;
-        //        return Page();
-        //    }
-        //}
     }
 }

@@ -16,7 +16,7 @@
 }
 
 <form method="get">
-	search:<input type="text" asp-for="@Model.FilterCriteria" />
+	search: <input type="text" asp-for="@Model.FilterCriteria" />
 	<select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
 		<option value="All">All</option>
 			<option value="FirstName">FirstName</option>
@@ -37,6 +37,7 @@
 			    <th>surname</th>
 			    <th>phonenumber</th>
 			    <th>mail</th>
+				<th></th>
 			</form>
 		</tr>
 	</thead>
