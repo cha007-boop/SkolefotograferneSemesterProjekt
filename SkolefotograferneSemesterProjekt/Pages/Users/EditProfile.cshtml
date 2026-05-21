@@ -93,6 +93,7 @@
                     <th>Child Surname</th>
                     <th>Child School</th>
                     <th>Child Class</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -169,6 +170,7 @@
             <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
             <span asp-validation-for="ThisPhotographer.Password" class="text-danger"></span>
         </div>
+        <br />
     }
     @if (HttpContext.Session.GetInt32("Role") == 2)
     {
@@ -204,6 +206,7 @@
             <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
             <span asp-validation-for="ThisTeacher.Password" class="text-danger"></span>
         </div>
+        <br />
     }
     @if (HttpContext.Session.GetInt32("Role") == 3)
     {
@@ -234,6 +237,7 @@
             <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
             <span asp-validation-for="ThisSchoolAdmin.Password" class="text-danger"></span>
         </div>
+        <br />
     }
     @if (HttpContext.Session.GetInt32("Role") == 4)
     {
@@ -255,6 +259,7 @@
             <input type="password" asp-for="@Model.VerifyPassword" class="form-control" id="Password" />
             <span asp-validation-for="ThisSysAdmin.Password" class="text-danger"></span>
         </div>
+        <br />
     }
     @if(Model.Check)
     {

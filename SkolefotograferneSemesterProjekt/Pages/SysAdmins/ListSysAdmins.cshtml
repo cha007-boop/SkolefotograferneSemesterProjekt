@@ -14,6 +14,8 @@
 		<form method="get">
 		<th>ID</th>
 		<th>Mail</th>
+        <th></th>
+        <th></th>
 		</form>
 	</tr>
 </thead>
@@ -29,7 +31,7 @@
                     <form method="post">
                 <td><button type="button" class="btn btn-danger" asp-route-id="@sysAdmin.ID" onclick="DisplayConfirmDeleteModal('@sysAdmin.ID')">Delete</button></td>
                 </form>
-               </td>
+                </td>
                 }
 		</tr>
 	}
