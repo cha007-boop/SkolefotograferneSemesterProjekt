@@ -15,8 +15,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public PhotoEvent PhotoEvent { get; set; }
         [BindProperty]
         public List<PhotoEvent> PhotoEvents { get; set; }
-        [BindProperty]
-        public bool PreviousPhotoEventsCheckBox { get; set; }
         [BindProperty(SupportsGet = true)]
         public int? EventType { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -44,17 +42,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 else if(HttpContext.Session.GetInt32("Role") == 4)
                 {
-                    //PhotoEvents = (await PEService.ShowActivePhotoEvent()).OrderBy(n => n.StartTime).ToList();
                     PhotoEvents = PhotoEventsFilter(await PEService.GetAll()).OrderBy(n => n.StartTime).ToList();
                 }
                 else
                 {
                     throw new UnauthorizedAccessException();
                 }
-                //if (!PreviousPhotoEventsCheckBox)
-                //{
-                //    PhotoEvents = PhotoEvents.Where(c => c.StartTime >= DateTime.Now).ToList();
-                //}
             }
             catch(UnauthorizedAccessException uax)
             {
