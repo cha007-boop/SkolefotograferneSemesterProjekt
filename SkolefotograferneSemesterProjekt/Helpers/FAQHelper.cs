@@ -5,7 +5,7 @@ namespace SkolefotograferneSemesterProjekt.Helpers
     public static class FAQHelper
     {
         
-        public async static Task<string[]> FAQReader(string webRootPath, string folderName, string fileName, string[] arr)
+        public async static Task<List<string>> FAQReader(string webRootPath, string folderName, string fileName, List<string> list)
         {
             string? filePath = Path.Combine(webRootPath, folderName, fileName);
 
@@ -22,10 +22,10 @@ namespace SkolefotograferneSemesterProjekt.Helpers
                     temp += await reader.ReadLineAsync();
                 }
             }
-            arr = temp.Split("|");
-            return arr;
+            list = temp.Split("|").ToList();
+            return list;
         }
-        public async static Task FAQWriter(string webRootPath, string folderName, string fileName, string[] arr)
+        public async static Task FAQWriter(string webRootPath, string folderName, string fileName, List<string> list)
         {
             string? filePath = Path.Combine(webRootPath, folderName, fileName);
 
@@ -34,7 +34,7 @@ namespace SkolefotograferneSemesterProjekt.Helpers
                 return;
             }
 
-            string temp = string.Join("|", arr);
+            string temp = string.Join("|", list);
             await File.WriteAllTextAsync(filePath, temp);
         }
     }

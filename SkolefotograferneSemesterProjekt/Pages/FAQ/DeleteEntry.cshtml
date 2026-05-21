@@ -1,0 +1,15 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.FAQ.DeleteEntryModel
+@{
+    ViewData["Title"] = "Slet Entry";
+}
+
+<h1>Slet Entry</h1>
+<form method="post">
+    <input type="hidden" asp-for="@Model.EntryID" />
+
+    <div class="form-group d-flex gap-2 mt-3">
+        <input type="submit" asp-page-handler="Delete" class="btn btn-danger" value="Slet" />
+        <a asp-page="Index" class="btn btn-secondary">Fortryd</a>
+    </div>
+</form>
