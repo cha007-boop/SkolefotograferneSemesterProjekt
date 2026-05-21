@@ -21,6 +21,8 @@
         <a asp-page="CreateTeacher">Opret en bruger</a>
     </p>
 
+    <a asp-page="/Teachers/ViewSchoolClasses" class="btn btn-primary">Se klasser</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -49,9 +51,6 @@
                     <td>
                         <a asp-page="EditTeacher" asp-route-id="@t.ID">Opdater</a> |
                         <a asp-page="DeleteTeacher" asp-route-id="@t.ID">Slet</a>
-                    </td>
-                    <td>
-                        <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@t.ID" class="btn btn-primary">Se klasser</a>
                     </td>
                 </tr>
             }

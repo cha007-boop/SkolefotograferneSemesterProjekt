@@ -13,9 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         ISchoolClassService _schoolClassService;
         ISchoolAdminService _schoolAdminService;
 
-        public Teacher? TheTeacher { get; set; }
         public List<SchoolClass> ClassList { get; set; }
-        public bool IsUser { get; set; }
         public int? Role { get; set; }
 
         public ViewSchoolClassesModel(ITeacherService teacherService, ISchoolClassService schoolClassService, ISchoolAdminService schoolAdminService)
@@ -32,7 +30,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             Role = HttpContext.Session.GetInt32("Role");
 
             if (Role == (int)UserRole.Teacher)
-            {                
+            {
                 ClassList = await _schoolClassService.GetAllByTeacher(userID);
             }
             else if (Role == (int)UserRole.SchoolAdmin)
@@ -40,7 +38,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
                 SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID);
                 ClassList = await _schoolClassService.GetBySchool(schoolAdmin.TheSchool.ID);
             }
-            else if (HttpContext.Session.GetInt32("Role") == (int)UserRole.SysAdmin)
+            else if (Role == (int)UserRole.SysAdmin)
             {
                 ClassList = await _schoolClassService.GetAll();
             }
@@ -48,6 +46,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 return RedirectToPage("/Users/AccessDenied");
             }
+
             return Page();
         }
         public async Task<IActionResult> OnPostDelete(int id)
