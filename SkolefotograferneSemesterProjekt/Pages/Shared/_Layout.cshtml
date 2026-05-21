@@ -48,14 +48,6 @@
                         </button>
                         <ul class="dropdown-menu">
                                 <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Users/ViewProfile" class="dropdown-item">My Profile</a></li>
-                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 1 || 
-                            HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 3 || 
-                            HttpContextAccessor.HttpContext.Session.GetInt32("Role") == 4)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/PhotoEvents/Index">PhotoEvent</a> @* Create fotoevent *@
-                                </li>
-                            }
                             <li><hr class="dropdown-divider"></hr></li>
                             <li><a asp-area="" asp-page="/Users/Login" asp-page-handler="Logout" class="dropdown-item">Log out</a></li>
                         </ul>

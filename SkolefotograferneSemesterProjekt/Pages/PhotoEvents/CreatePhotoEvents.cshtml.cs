@@ -36,7 +36,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             _schoolAdminService = schoolAdminService;
             _photographerService = photographerService;
         }
-        public async Task OnGet(int id)
+        public async Task OnGet()
         {
             List<SchoolAdmin> schoolAdmins = await _schoolAdminService.GetAll();
             List<Photographer> photographers = await _photographerService.GetAll();
@@ -63,8 +63,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     if (!id.HasValue)
                     {
                         ModelState.AddModelError("", "Session ID missing.");
-                        await OnGet(PhotoEvent.ThePhotographer.ID);
-                        await OnGet(PhotoEvent.TheSchoolAdmin.ID);
+                        //await OnGet(PhotoEvent.ThePhotographer.ID);
+                        //await OnGet(PhotoEvent.TheSchoolAdmin.ID);
                         return Page();
                     }
                     if (HttpContext.Session.GetInt32("Role") == 3)
@@ -84,59 +84,57 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
                     ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (PhotoEvent.StartTime == default)
                 {
                     ModelState.AddModelError("PhotoEvent.StartTime", "Please set a StartTime");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (PhotoEvent.EndTime == default)
                 {
                     ModelState.AddModelError("PhotoEvent.EndTime", "Please set an EndTime");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (PhotoEvent.StartTime < DateTime.Now)
                 {
                     ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to not be before the current todays date");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 } 
                 if(PhotographerID == null)
                 {
                     ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Please choose a photographer");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (SchoolAdminID == null)
                 {
                     ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "please choose a school admin");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 if (PhotoEvent.Location == null)
                 {
                     ModelState.AddModelError("PhotoEvent.Location", "please insert a location");
-                    await OnGet(Convert.ToInt32(PhotographerID));
-                    await OnGet(Convert.ToInt32(SchoolAdminID));
+                    //await OnGet(Convert.ToInt32(PhotographerID));
+                    //await OnGet(Convert.ToInt32(SchoolAdminID));
                     return Page();
                 }
                 else
                 {
-                    PhotoEvent.ThePhotographer = new Photographer();
-                    PhotoEvent.ThePhotographer.ID = Convert.ToInt32(PhotographerID);
+                    PhotoEvent.ThePhotographer = await _photographerService.SearchByID(Convert.ToInt32(PhotographerID));
 
-                    PhotoEvent.TheSchoolAdmin = new SchoolAdmin();
-                    PhotoEvent.TheSchoolAdmin.ID = Convert.ToInt32(SchoolAdminID);
+                    PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(Convert.ToInt32(SchoolAdminID));
 
                     await _photoEventService.Add(PhotoEvent);
                 }
