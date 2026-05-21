@@ -8,10 +8,12 @@
 
 <h1>Welcome @Model.Parent.FirstName</h1>
 
-<p style="text-align:right">
-    <a asp-page="/Parents/EditParents" asp-route-id="@Model.Parent.ID">Edit Parent Information</a>
-</p>
-
+@if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Parent)
+{
+    <p style="text-align:right">
+        <a asp-page="/Parents/EditParents" asp-route-id="@Model.Parent.ID">Edit Parent Information</a>
+    </p>
+}
 
 
 <div class="row" style="padding:5px">
@@ -45,13 +47,16 @@
         </div>
     </div>
 </div>
+@if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Parent)
+{
 <br />
-    You have registered @Model.Students.Count() child/children to you.
+    <p>You have registered @Model.Students.Count() child/children to you.</p>
 <br />
 <br />
 <p>
     <a asp-page="/Students/CreateStudent">Add Child</a>
 </p>
+}
 
 <table class="table">
     <thead>

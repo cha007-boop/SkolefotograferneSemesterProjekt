@@ -191,6 +191,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 return false;
             }
         }
+        public async Task<IActionResult> OnPostDeleteStudent(int studentID)
+        {
+            try
+            {
+                await _studentService.Delete(studentID);
+            }
+            catch (Exception exc)
+            {
+                ViewData["ErrorMessage"] = exc.Message;
+            }
+            await OnGet();
+            return Page();
+        }
         #endregion
     }
 }
