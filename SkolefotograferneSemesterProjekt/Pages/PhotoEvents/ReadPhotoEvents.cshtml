@@ -15,6 +15,7 @@
         </div>
     }
 </form>
+<br />
 
     <table class="table">
 
@@ -42,6 +43,10 @@
                 <th>Location</th>
                 <th></th>
                 <th></th>
+                @if (HttpContext.Session.GetInt32("Role") == 3 && HttpContext.Session.GetInt32("Role") == 4)
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         @foreach (var photoEventItem in Model.PhotoEvents)
@@ -64,7 +69,7 @@
                             {
                                 <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
                                     <button class="btn btn-primary">
-                                        Click to see further information
+                                        Details
                                     </button>
                                 </a>
                             }
@@ -74,7 +79,7 @@
                             {
                                 <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
                                     <button class="btn btn-warning">
-                                        Click to Edit the PhotoEvent
+                                        Edit
                                     </button>
                                 </a>
                             }
@@ -107,6 +112,8 @@
 </input>
 
  *@
+ <br />
+ <br />
 <h2>Previous PhotoEvents</h2>
     <table class="table">
         
@@ -122,6 +129,12 @@
                         <th>EndTIme</th>
                         <th>Photographer</th>
                         <th>Location</th>
+                        <th></th>
+                        <th></th>
+                        @if (HttpContext.Session.GetInt32("Role") == 3 && HttpContext.Session.GetInt32("Role") == 4)
+                        {
+                            <th></th>
+                        }
                  </tr>
             </thead>
             @foreach (var photoEventItem in Model.PhotoEvents)
@@ -138,7 +151,7 @@
                             <td>@photoEventItem.StartTime</td>
                             <td>@photoEventItem.EndTime</td>
                             <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
-                            <td>@photoEventItem.TheSchoolAdmin.ID</td>
+                        @*<td>@photoEventItem.TheSchoolAdmin.ID</td>*@
                             <td>@photoEventItem.Location</td>
                             <td>
                             @if (HttpContext.Session.GetInt32("Role") != 0)

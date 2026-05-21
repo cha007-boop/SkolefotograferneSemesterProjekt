@@ -4,106 +4,106 @@
 @{
     ViewData["Title"] = "Se skoleklasser";
 }
-@if(HttpContext.Session.GetInt32("Role") != 4)
+@if (HttpContext.Session.GetInt32("Role") != 4)
 {
-@if(Model.ClassList.Count < 1 && Model.IsUser)
-{
-    <div>
-        <a asp-page="Index">Tilbage</a>
-    </div>
-
-    <h1>Du har ingen klasser...</h1>
-    <h2><a asp-page="/SchoolClasses.AddSchoolClass">Opret en skoleklasse</a></h2>
-}
-else if(Model.ClassList.Count < 1)
-{
-    <div>
-        <a asp-page="Index">Tilbage</a>
-    </div>
-
-    <h1>Denne lærer har ingen klasser...</h1>
-}
-else
-{
-    if (Model.IsUser)
-    {
-        <div class="form-group d-flex gap-2 mt-3">
-            <a asp-page="Index" class="btn btn-secondary">Tilbage</a>
-            <a asp-page="/SchoolClasses/AddSchoolClass" class="btn btn-primary">Opret en ny skoleklasse</a>
-        </div>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Klasse</th>
-                    <th>Årgang</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (SchoolClass sc in Model.ClassList)
-                {
-                    <tr>
-                        <td>@(sc.Grade + "." + sc.Letter)</td>
-                        <td>@sc.SchoolYear</td>
-                            <td>
-                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Update/Edit</a>
-                            </td>
-                            <form method="Post">
-                            <td class="form-group">
-                                <input type="submit" asp-page-handler="Delete" asp-route-id="@sc.ID" value="Delete SchoolClass" class="btn btn-danger" />
-                            </td>
-                            </form>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else if (Model.Role.HasValue && (Model.Role == (int)UserRole.SysAdmin || Model.Role == (int)UserRole.SchoolAdmin))
+    @if (Model.ClassList.Count < 1 && Model.IsUser)
     {
         <div>
             <a asp-page="Index">Tilbage</a>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Klasse</th>
-                    <th>Årgang</th>
-                    <th>Skole ID</th>
-                    <th>Skole</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (SchoolClass sc in Model.ClassList)
-                {
-                    <tr>
-                        <td>@sc.ID</td>
-                        <td>@(sc.Grade + "." + sc.Letter)</td>
-                        <td>@sc.SchoolYear</td>
-                        <td>@sc.TheSchool.ID</td>
-                        <td>@sc.TheSchool.Name</td>
-                            <td>
-                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Update/Edit</a>
-                            </td>
-                            <form method="Post">
-                            <td class="form-group">
-                                <input type="submit" asp-page-handler="Delete" asp-route-id="@sc.ID" value="Delete SchoolClass" class="btn btn-danger" />
-                            </td>
-                            </form>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <h1>Du har ingen klasser...</h1>
+        <h2><a asp-page="/SchoolClasses.AddSchoolClass">Opret en skoleklasse</a></h2>
+    }
+    else if (Model.ClassList.Count < 1)
+    {
+        <div>
+            <a asp-page="Index">Tilbage</a>
+        </div>
+
+        <h1>Denne lærer har ingen klasser...</h1>
     }
     else
     {
-        <div>
-            <a asp-page="Index">Tilbage</a>
-        </div>
+        if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Teacher)
+        {
+            <div class="form-group d-flex gap-2 mt-3">
+                <a asp-page="Index" class="btn btn-secondary">Tilbage</a>
+                <a asp-page="/SchoolClasses/AddSchoolClass" class="btn btn-primary">Opret en ny skoleklasse</a>
+            </div>
 
-        <h1>Access denied...</h1>
-    }
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Klasse</th>
+                        <th>Årgang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (SchoolClass sc in Model.ClassList)
+                    {
+                        <tr>
+                            <td>@(sc.Grade + "." + sc.Letter)</td>
+                            <td>@sc.SchoolYear</td>
+                            <td>
+                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Update/Edit</a>
+                            </td>
+                            <form method="Post">
+                            <td class="form-group">
+                                <input type="submit" asp-page-handler="Delete" asp-route-id="@sc.ID" value="Delete SchoolClass" class="btn btn-danger" />
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (Model.Role.HasValue && (Model.Role == (int)UserRole.SysAdmin || Model.Role == (int)UserRole.SchoolAdmin))
+        {
+            <div>
+                <a asp-page="Index">Tilbage</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Klasse</th>
+                        <th>Årgang</th>
+                        <th>Skole ID</th>
+                        <th>Skole</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (SchoolClass sc in Model.ClassList)
+                    {
+                        <tr>
+                            <td>@sc.ID</td>
+                            <td>@(sc.Grade + "." + sc.Letter)</td>
+                            <td>@sc.SchoolYear</td>
+                            <td>@sc.TheSchool.ID</td>
+                            <td>@sc.TheSchool.Name</td>
+                            <td>
+                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Update/Edit</a>
+                            </td>
+                            <form method="Post">
+                            <td class="form-group">
+                                <input type="submit" asp-page-handler="Delete" asp-route-id="@sc.ID" value="Delete SchoolClass" class="btn btn-danger" />
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div>
+                <a asp-page="Index">Tilbage</a>
+            </div>
+
+            <h1>Access denied...</h1>
+        }
     }
 }
 else if (HttpContext.Session.GetInt32("Role") == 4)
@@ -173,18 +173,18 @@ else if (HttpContext.Session.GetInt32("Role") == 4)
 
         </div>
     </div>
+</div>
+@section Scripts {
+    <script>
+        function DisplayConfirmDeleteModal(id) {
+            document.getElementById("deleteId").value = id;
 
-@section Scripts{
-        <script>
-            function DisplayConfirmDeleteModal(id) {
-                document.getElementById("deleteId").value = id;
+            var modal = new bootstrap.Modal(document.getElementById('deleteClassModal'));
+            modal.show();
+        }
 
-                var modal = new bootstrap.Modal(document.getElementById('deleteClassModal'));
-                modal.show();
-            }
-
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
-                document.getElementById("deleteForm").submit();
-            });
-        </script>
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
 }
