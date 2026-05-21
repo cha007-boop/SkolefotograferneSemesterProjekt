@@ -16,7 +16,6 @@ namespace SkolefotograferneSemesterProjekt.Models
         public DateTime EndTime { get; set; }
         public Photographer ThePhotographer { get; set; }
         public SchoolAdmin TheSchoolAdmin { get; set; }
-        public SchoolClass TheSchoolClass { get; set; }
         public string Location { get; set; }
         public PhotoEvent()
         {

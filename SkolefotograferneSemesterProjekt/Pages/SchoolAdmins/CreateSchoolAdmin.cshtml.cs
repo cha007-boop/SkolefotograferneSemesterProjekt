@@ -54,10 +54,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
                     await OnGet();
                     return Page();
                 }
-                HttpContext.Session.SetInt32("ID", NewSchoolAdmin.ID);
-                HttpContext.Session.SetString("Email", NewSchoolAdmin.Email);
-                HttpContext.Session.SetInt32("Role", (int)NewSchoolAdmin.Role);
                 await _schoolAdminService.Add(NewSchoolAdmin);
+
+                if (!HttpContext.Session.GetInt32("Role").HasValue)
+                {
+                    HttpContext.Session.SetInt32("ID", NewSchoolAdmin.ID);
+                    HttpContext.Session.SetString("Email", NewSchoolAdmin.Email);
+                    HttpContext.Session.SetInt32("Role", (int)NewSchoolAdmin.Role);
+                }
+                else
+                {
+                    return RedirectToPage("/SchoolAdmins/GetAllSchoolAdmin");
+                }
+                
             }
             catch (TakenMailException Tex)
             {
@@ -71,7 +80,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
                 await OnGet();
                 return Page();
             }
-            return RedirectToPage("/Index", null);
+            return RedirectToPage("/Index");
         }
     }
 }

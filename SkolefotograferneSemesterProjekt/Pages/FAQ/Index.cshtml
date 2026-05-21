@@ -1,0 +1,51 @@
+﻿@page
+@model SkolefotograferneSemesterProjekt.Pages.FAQ.IndexModel
+@{
+    ViewData["Title"] = "FAQ";
+}
+<h1 style="text-align: center">FAQ</h1>
+@if (Model.IsAdmin)
+{
+    @* <h2><a asp-page="/FAQ">Opret et nyt spørgsmål</a></h2> *@
+    <td>
+        <a asp-page="AddEntry" class="btn btn-primary">Opret et nyt spørgsmål</a>
+    </td>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Emner</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i=0; i < Model.Entries.Length; i++)
+            {
+                <tr>
+                    <td>@Model.Entries[i]</td>
+                    <td>
+                        <a asp-page="EditEntry" asp-route-id="@i">Opdater</a> |
+                        <a asp-page="DeleteEntry" asp-route-id="@i">Slet</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Emner</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Entries)
+            {
+                <tr>
+                    <td>@e</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

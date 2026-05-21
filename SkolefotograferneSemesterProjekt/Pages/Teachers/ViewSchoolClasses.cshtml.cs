@@ -26,29 +26,25 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             ClassList = new List<SchoolClass>();
         }
 
-        public async Task<IActionResult> OnGet(int? id)
+        public async Task<IActionResult> OnGet()
         {
-            int? userID = HttpContext.Session.GetInt32("ID");
+            int userID = (int)HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
 
-            if (id.HasValue)
+            if (Role == 2)
             {
-                if (!userID.HasValue && !Role.HasValue)
-                {
-                    return RedirectToPage("/Users/AccessDenied");
-                }
-                TheTeacher = await _teacherService.GetByID(id.Value);
+                TheTeacher = await _teacherService.GetByID(userID);
                 if (TheTeacher != null)
                 {
-                    int teacherID = id.Value;
+                    //int teacherID = id.Value;
                     ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
                     if (Role == (int)UserRole.Teacher)
                     {
-                        IsUser = userID == teacherID;
+                        //IsUser = userID == teacherID;
                     }
                     else if (Role == (int)UserRole.SchoolAdmin)
                     {
-                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID.Value);
+                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID);
                         int schoolID = schoolAdmin.TheSchool.ID;
                         int? tSchoolID = TheTeacher.TheSchool.ID;
                         if (tSchoolID.HasValue && schoolID != tSchoolID)
@@ -86,6 +82,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             {
                 ViewData["ErrorMessage"] = ex.Message;
             }
+            await OnGet();
             return Page();
         }
     }

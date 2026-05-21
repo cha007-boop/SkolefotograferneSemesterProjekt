@@ -20,7 +20,14 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             if(id != null)
             {
                 TeacherToDelete = await _teacherService.GetByID((int)id);
-                return Page();
+                if (TeacherToDelete == null)
+                {
+                    return RedirectToPage("/Teachers/Index");
+                }
+                else
+                {
+                    return Page();
+                } 
             }
             return RedirectToPage("/Users/AccessDenied");
         }
