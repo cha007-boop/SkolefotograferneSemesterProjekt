@@ -116,7 +116,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
                     ViewData["ErrorMessage"] = exc.Message;
                     return Page();
                 }
-                return RedirectToPage("ListSchoolClasses");
+                return RedirectToPage("/Teachers/ViewSchoolClasses", new { id = ThisTeacher.ID });
             }
             else
             {

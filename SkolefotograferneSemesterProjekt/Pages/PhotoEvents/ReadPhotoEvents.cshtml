@@ -27,6 +27,7 @@
         </div>
     }
 </form>
+<br />
 
 <div id="activePhotoEventsCheckbox" style="display:none">
     @if (Model.PhotoEvents.Count() <= 0)
@@ -75,7 +76,7 @@
                             {
                                 <a asp-page="/Photoevents/PhotoEventDetails" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
                                     <button class="btn btn-primary">
-                                        Click to see further information
+                                        Details
                                     </button>
                                 </a>
                             }
@@ -85,7 +86,7 @@
                             {
                                 <a asp-page="/Photoevents/UpdatePhotoEvent" class="text-light text-decoration-none" asp-route-id="@photoEventItem.ID">
                                     <button class="btn btn-warning">
-                                        Click to Edit the PhotoEvent
+                                        Edit
                                     </button>
                                 </a>
                             }

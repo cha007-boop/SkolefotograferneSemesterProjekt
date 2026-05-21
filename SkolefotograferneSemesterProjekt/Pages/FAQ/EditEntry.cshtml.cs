@@ -5,12 +5,14 @@ using SkolefotograferneSemesterProjekt.Models;
 
 namespace SkolefotograferneSemesterProjekt.Pages.FAQ
 {
-    public class AddEntryModel : PageModel
+    public class EditEntryModel : PageModel
     {
         private IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
         public List<string> Entries { get; set; } = [];
+        [BindProperty]
+        public int EntryID { get; set; }
         [BindProperty]
         public string NewEntry { get; set; }
         [BindProperty]
@@ -18,39 +20,51 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         private string FileName { get; set; }
         private string FolderName { get; set; }
 
-        public AddEntryModel(IWebHostEnvironment webHostEnvironment)
+
+        public EditEntryModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
             FolderName = "faq";
             FileName = "FAQtekst.txt";
         }
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(int? id)
         {
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (role != (int)UserRole.SysAdmin)
+            if (!id.HasValue)
             {
+                ModelState.AddModelError("EntryID", "Ugyldig entry...");
                 return RedirectToPage("/Users/AccessDenied");
             }
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPost()
-        {
-            ModelState.CustomizedMessages("Felter Mangler");
+            EntryID = id.Value;
 
             int? role = HttpContext.Session.GetInt32("Role");
             if (role != (int)UserRole.SysAdmin)
             {
                 return RedirectToPage("/Users/AccessDenied");
-            }
-            if (string.IsNullOrWhiteSpace(NewEntry))
-            {
-                return Page();
             }
             try
             {
                 Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                Entries.Add(NewEntry);
+                NewEntry = Entries[EntryID];
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+        }
+
+        public async Task<IActionResult> OnPost()
+        {
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (role != (int)UserRole.SysAdmin)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            try
+            {
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                Entries[EntryID] = NewEntry;
 
                 await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
                 return RedirectToPage("Index");

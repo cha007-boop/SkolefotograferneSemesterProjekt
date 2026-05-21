@@ -93,7 +93,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                         };
                         await _photoService.Add(photo);
                     }
-                    FileUpload.SuccessMessage = $"{FileUpload.Files.Count} Files uploaded successfully!";
+                    ViewData["SuccessMessage"] = $"{FileUpload.Files.Count} Files uploaded successfully!";
                 }
                 catch (Exception ex)
                 {
@@ -104,7 +104,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             {
                 ModelState.AddModelError(string.Empty, "Please select at least one file to upload.");
             }
-            ViewData["SuccessMessage"] = FileUpload.SuccessMessage;
+            
             return Page();
         }
     }
@@ -114,6 +114,5 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         [Required]
         [Display(Name = "File")]
         public List<IFormFile> Files { get; set; }
-        public string SuccessMessage { get; set; } = string.Empty;
     }
 }
