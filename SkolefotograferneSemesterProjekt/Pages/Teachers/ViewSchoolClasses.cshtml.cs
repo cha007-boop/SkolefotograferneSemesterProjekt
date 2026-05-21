@@ -31,40 +31,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             int userID = (int)HttpContext.Session.GetInt32("ID");
             Role = HttpContext.Session.GetInt32("Role");
 
-            if (Role == 2)
-            {
-                TheTeacher = await _teacherService.GetByID(userID);
-                if (TheTeacher != null)
-                {
-                    //int teacherID = id.Value;
-                    ClassList = await _schoolClassService.GetAllByTeacher(TheTeacher.ID);
-                    if (Role == (int)UserRole.Teacher)
-                    {
-                        //IsUser = userID == teacherID;
-                    }
-                    else if (Role == (int)UserRole.SchoolAdmin)
-                    {
-                        SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID);
-                        int schoolID = schoolAdmin.TheSchool.ID;
-                        int? tSchoolID = TheTeacher.TheSchool.ID;
-                        if (tSchoolID.HasValue && schoolID != tSchoolID)
-                        {
-                            return RedirectToPage("/Users/AccessDenied");
-                        }
-                    }
-                }
-                else
-                {
-                    return RedirectToPage("/Users/AccessDenied");
-                }
+            if (Role == (int)UserRole.Teacher)
+            {                
+                ClassList = await _schoolClassService.GetAllByTeacher(userID);
             }
-            else if(HttpContext.Session.GetInt32("Role") == 4)
+            else if (Role == (int)UserRole.SchoolAdmin)
             {
-                foreach (SchoolClass sc in await _schoolClassService.GetAll())
-                {
-                    ClassList.Add(sc);
-                }
-                return Page();
+                SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(userID);
+                ClassList = await _schoolClassService.GetBySchool(schoolAdmin.TheSchool.ID);
+            }
+            else if (HttpContext.Session.GetInt32("Role") == (int)UserRole.SysAdmin)
+            {
+                ClassList = await _schoolClassService.GetAll();
             }
             else
             {
