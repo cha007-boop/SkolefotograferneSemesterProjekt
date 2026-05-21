@@ -49,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
 
             return Page();
         }
-        public async Task<IActionResult> OnPostDelete(int id, int? teacherId)
+        public async Task<IActionResult> OnPostDelete(int id)
         {
             try
             {
