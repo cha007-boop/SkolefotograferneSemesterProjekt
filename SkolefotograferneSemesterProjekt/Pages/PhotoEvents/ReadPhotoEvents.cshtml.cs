@@ -43,6 +43,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
+                //if (!PreviousPhotoEventsCheckBox)
+                //{
+                //    PhotoEvents = PhotoEvents.Where(c => c.StartTime >= DateTime.Now).ToList();
+                //}
             }
             catch(UnauthorizedAccessException uax)
             {
