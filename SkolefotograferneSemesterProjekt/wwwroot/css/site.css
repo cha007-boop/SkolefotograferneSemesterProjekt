@@ -30,3 +30,9 @@ body {
     background-position: center;
     background-size: 2.5rem 2.5rem;
 }
+
+.center-user-form {
+    margin: auto;
+    width: 50%;
+    padding: 25px;
+}
