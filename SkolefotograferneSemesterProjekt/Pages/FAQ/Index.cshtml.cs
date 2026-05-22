@@ -9,7 +9,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
     {
         private IWebHostEnvironment _webHostEnvironment;
 
-        public List<string> Entries { get; set; } = [];
+        public List<FAQEntry> Entries { get; set; } = [];
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
         private string FolderName { get; set; }
@@ -24,17 +24,17 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         public async Task<IActionResult> OnGet()
         {
             int? role = HttpContext.Session.GetInt32("Role");
-            if(role == (int)UserRole.SysAdmin)
+            if (role == (int)UserRole.SysAdmin)
             {
                 IsAdmin = true;
             }
 
             try
             {
-                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName);
                 return Page();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewData["ErrorMessage"] = ex.Message;
                 return RedirectToPage("/Index");
