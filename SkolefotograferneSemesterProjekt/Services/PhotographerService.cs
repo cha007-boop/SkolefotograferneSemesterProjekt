@@ -51,7 +51,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<Photographer> photographers = new List<Photographer>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(@"select * from Photographer", connection);
+                SqlCommand command = new SqlCommand(@"select * from Photographer join Users on Users.ID = Photographer.ID", connection);
                 await command.Connection.OpenAsync();
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
