@@ -64,15 +64,34 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         {
             try
             {
+                ModelState.Clear();
+                TryValidateModel(PhotoEvent);
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
-                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }
                 if (PhotoEvent.StartTime < DateTime.Now)
                 {
-                    ModelState.AddModelError("PhotoEvent", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be after the current todays date");
+                    await OnGet(PhotoEvent.ID);
+                    return Page();
+                }if(PhotoEvent.ThePhotographer.ID == default)
+                {
+                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Please pick a photographer");
+                    await OnGet(PhotoEvent.ID);
+                    return Page();
+                }
+                if (PhotoEvent.TheSchoolAdmin.ID == default)
+                {
+                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Please pick a school admin");
+                    await OnGet(PhotoEvent.ID);
+                    return Page();
+                }
+                if (PhotoEvent.Location == null)
+                {
+                    ModelState.AddModelError("PhotoEvent.Location", "Please pick a location");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }
