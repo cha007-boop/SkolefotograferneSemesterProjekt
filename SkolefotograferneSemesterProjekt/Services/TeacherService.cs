@@ -14,10 +14,11 @@ namespace SkolefotograferneSemesterProjekt.Services
         private ISchoolService _schoolService = new SchoolService();
         public async Task<int> Add(Teacher teacher)
         {
+            int userID;
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                int userID = await _userService.Add(connection, teacher);
+                userID = await _userService.Add(connection, teacher);
 
                 SqlCommand cmd = new SqlCommand(@"
                     INSERT INTO Teacher 
@@ -29,8 +30,9 @@ namespace SkolefotograferneSemesterProjekt.Services
                 cmd.Parameters.AddWithValue("@PhoneNumber", teacher.PhoneNumber);
                 cmd.Parameters.AddWithValue("@SchoolID", teacher.TheSchool.ID);
 
-                return await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();
             }
+            return userID;
         }
         public async Task<List<Teacher>> GetAll()
         {

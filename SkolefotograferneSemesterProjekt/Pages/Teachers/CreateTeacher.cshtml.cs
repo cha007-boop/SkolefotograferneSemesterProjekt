@@ -82,7 +82,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
             try
             {
                 NewTeacher.Password = Password;
-                await _repo.Add(NewTeacher);
+                NewTeacher.ID = await _repo.Add(NewTeacher);
                 if (!HttpContext.Session.GetInt32("Role").HasValue)
                 {
                     HttpContext.Session.SetInt32("ID", NewTeacher.ID);

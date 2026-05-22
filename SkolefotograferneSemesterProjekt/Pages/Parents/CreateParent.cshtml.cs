@@ -42,7 +42,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                     {
                         if (NewParent.Email != null )
                         {
-                            await _parentservices.AddParent(NewParent);
+                            NewParent.ID = await _parentservices.AddParent(NewParent);
                         }
                         else
                         {

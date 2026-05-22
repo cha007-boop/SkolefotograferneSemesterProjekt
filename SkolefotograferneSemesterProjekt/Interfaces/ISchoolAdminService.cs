@@ -20,7 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         /// </summary>
         /// <param name="schoolAdmin">The school admin to add</param>
         /// <returns>A task representing the asynchronous operation</returns>
-        Task Add(SchoolAdmin schoolAdmin);
+        Task<int> Add(SchoolAdmin schoolAdmin);
 
         /// <summary>
         /// Method for getting a school admin by their user ID.

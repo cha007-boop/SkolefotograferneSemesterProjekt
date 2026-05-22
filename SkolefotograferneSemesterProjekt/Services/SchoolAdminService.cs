@@ -43,15 +43,16 @@ namespace SkolefotograferneSemesterProjekt.Services
         };
 
 
-        public async Task Add(SchoolAdmin schoolAdmin)
+        public async Task<int> Add(SchoolAdmin schoolAdmin)
         {
+            int userID;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     await conn.OpenAsync();
 
-                    int userID = await _userService.Add(conn, schoolAdmin);
+                    userID = await _userService.Add(conn, schoolAdmin);
 
                     var cmd = new SqlCommand(@"
                 INSERT INTO SchoolAdmin (ID, PhoneNumber, ContactPerson, SchoolID)
@@ -71,6 +72,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw;
                 }
             }
+            return userID;
         }
 
         public async Task<List<SchoolAdmin>> GetAll()
