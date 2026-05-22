@@ -11,7 +11,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         private IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
-        public List<string> Entries { get; set; } = [];
+        public List<FAQEntry> Entries { get; set; } = [];
         [BindProperty]
         public int EntryID { get; set; }
         [BindProperty]
@@ -42,26 +42,26 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             return Page();
         }
 
-        //public async Task<IActionResult> OnPostDelete()
-        //{
-        //    int? role = HttpContext.Session.GetInt32("Role");
-        //    if (role != (int)UserRole.SysAdmin)
-        //    {
-        //        return RedirectToPage("/Users/AccessDenied");
-        //    }
-        //    try
-        //    {
-        //        Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName,);
-        //        Entries.RemoveAt(EntryID);
+        public async Task<IActionResult> OnPostDelete()
+        {
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (role != (int)UserRole.SysAdmin)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            try
+            {
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName);
+                Entries.RemoveAt(EntryID);
 
-        //        await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-        //        return RedirectToPage("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewData["ErrorMessage"] = ex.Message;
-        //        return Page();
-        //    }
-        //}
+                await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                return RedirectToPage("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+        }
     }
 }

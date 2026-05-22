@@ -18,13 +18,9 @@ namespace SkolefotograferneSemesterProjekt.Services
         }
         #endregion
         #region Methods
-        public async Task Add(SysAdmin sysAdmin)
+        public async Task<int> Add(SysAdmin sysAdmin)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                await userService.Add(connection, sysAdmin);
-            }
+            return await userService.Add(sysAdmin);
         }
         public async Task<List<SysAdmin>> GetAll()
         {

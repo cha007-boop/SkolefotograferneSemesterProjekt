@@ -102,7 +102,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 if (PhotoEvent.StartTime < DateTime.Now)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to not be before the current todays date");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be after the current todays date");
                     await OnGet();
                     return Page();
                 } 

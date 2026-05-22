@@ -24,7 +24,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public PhotoEvent ThePhotoEvent { get; set; }
 
         [BindProperty]
-        public IFormFile Photo { get; set; }
+        public List<IFormFile> Photos { get; set; }
 
         public UploadClassPhotoModel(IWebHostEnvironment webHostEnvironment, IPhotoService photoService, ISchoolClassService schoolClassService, IPhotoEventService photoEventService)
         {
@@ -62,24 +62,24 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 
         public async Task<IActionResult> OnPost()
         {
-            if (Photo != null)
+            if (Photos != null && Photos.Count > 0)
             {
                 try
                 {
                     TheSchoolClass = await _schoolClassService.GetByID(SchoolClassId);
                     ThePhotoEvent = await _photoEventService.GetByID(PhotoEventId);
                     IUploadIFormFile uploader = new UploadClassPhoto(_webHostEnvironment, TheSchoolClass);
-                    Photo classPhoto = new Photo
+                    foreach (var photo in Photos)
                     {
-                        Filename = uploader.UploadFile(Photo),
-                        ThePhotoEvent = this.ThePhotoEvent,
-
-                        TheSchoolClass = this.TheSchoolClass,
-                        UploadedAt = DateTime.Now
-                    };
-
-
-                    await _photoService.Add(classPhoto);
+                        Photo classPhoto = new Photo
+                        {
+                            Filename = await uploader.UploadFile(photo),
+                            ThePhotoEvent = this.ThePhotoEvent,
+                            TheSchoolClass = this.TheSchoolClass,
+                            UploadedAt = DateTime.Now
+                        };
+                        await _photoService.Add(classPhoto);
+                    }
                 }
                 catch (Exception exc)
                 {

@@ -88,7 +88,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
                 string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", photo.Child != null ? "Portraits" : "ClassPhotos", photo.Filename);
                 System.IO.File.Delete(filePath);
 
-                await _photoService.RemovePhoto(photo);
+                await _photoService.RemovePhoto(photo.Filename);
             }
             catch (Exception ex)
             {

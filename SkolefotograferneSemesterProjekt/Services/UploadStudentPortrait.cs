@@ -14,7 +14,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             _student = student;
         }
 
-        public string UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file)
         {
             string uniqueFilename = null;
             if (file != null)
@@ -26,7 +26,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 string filePath = Path.Combine(uploadsFolder, uniqueFilename);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    file.CopyTo(fileStream);
+                    await file.CopyToAsync(fileStream);
                 }
             }
             return uniqueFilename;

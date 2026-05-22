@@ -5,7 +5,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
 {
     public interface IPhotographerService
     {
-        Task Add(Photographer photographer);
+        Task<int> Add(Photographer photographer);
         Task<List<Photographer>> GetAll();
         Task<Photographer> SearchByID(int id);
         Task Update(Photographer newPhotographer);

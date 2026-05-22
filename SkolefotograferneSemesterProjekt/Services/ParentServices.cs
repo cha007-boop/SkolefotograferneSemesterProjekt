@@ -13,19 +13,19 @@ namespace SkolefotograferneSemesterProjekt.Services
             userService = new UserService();
         }
 
-        public async Task AddParent(Parent parent)
+        public async Task<int> AddParent(Parent parent)
         {
+            int userID = await userService.Add(parent); ;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 {
                     await connection.OpenAsync();
 
-                    int UserID = await userService.Add(connection, parent);
                     SqlCommand command = new SqlCommand(@"INSERT INTO Parent
                     (ID, FirstName, Surname, PhoneNumber) VALUES 
                     (@ID, @FirstName, @Surname, @PhoneNumber)", connection);
                    
-                    command.Parameters.AddWithValue("@ID", UserID);
+                    command.Parameters.AddWithValue("@ID", userID);
                     command.Parameters.AddWithValue("@FirstName", parent.FirstName);
                     command.Parameters.AddWithValue("@Surname", parent.Surname);
                     command.Parameters.AddWithValue("@PhoneNumber", parent.PhoneNumber);
@@ -33,6 +33,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     await command.ExecuteNonQueryAsync();
                 }
             }
+            return userID;
         }
 
 
@@ -125,7 +126,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task deleteParent(Parent parent)
+        public async Task DeleteParent(Parent parent)
         {
             using SqlConnection conn = new SqlConnection(connectionString);
             {

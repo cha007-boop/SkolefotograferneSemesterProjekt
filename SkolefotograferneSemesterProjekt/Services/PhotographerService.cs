@@ -17,15 +17,14 @@ namespace SkolefotograferneSemesterProjekt.Services
         }
         #endregion
         #region Methods
-        public async Task Add(Photographer photographer)
+        public async Task<int> Add(Photographer photographer)
         {
+            int userID = await userService.Add(photographer);
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     await connection.OpenAsync();
-
-                    int userID = await userService.Add(connection, photographer);
 
                     SqlCommand sqlCommand = new SqlCommand(@"insert into Photographer 
                                          (ID, FirstName, Surname, PhoneNumber) 
@@ -45,6 +44,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw;
                 }
             }
+            return userID;
         }
         public async Task<List<Photographer>> GetAll()
         {

@@ -29,11 +29,7 @@ namespace Testing.Services
             try
             {
                 // Act
-                using (SqlConnection conn = new SqlConnection(Secret.ConnectionString))
-                {
-                    conn.Open();
-                    newestId = await _userService.Add(conn, newUser);
-                }
+                newestId = await _userService.Add(newUser);
 
                 // Assert
                 List<User> users = await _userService.GetAll();
@@ -62,12 +58,9 @@ namespace Testing.Services
             };
 
             // Act
-            using (SqlConnection conn = new SqlConnection(Secret.ConnectionString))
-            {
-                conn.Open();
-                await Assert.ThrowsExceptionAsync<TakenMailException>(async () =>
-                await _userService.Add(conn, newUserTakenMail));
-            }
+
+            await Assert.ThrowsExceptionAsync<TakenMailException>(async () =>
+            await _userService.Add(newUserTakenMail));
 
             Assert.AreEqual(countBeforeAdd, (await _userService.GetAll()).Count);
         }
@@ -86,12 +79,9 @@ namespace Testing.Services
             int countBeforeAdd = (await _userService.GetAll()).Count;
 
             // Act
-            using (SqlConnection conn = new SqlConnection(Secret.ConnectionString))
-            {
-                conn.Open();
-                await Assert.ThrowsExceptionAsync<PasswordTooShortException>(async () =>
-                await _userService.Add(conn, newUserShortPassword));
-            }
+
+            await Assert.ThrowsExceptionAsync<PasswordTooShortException>(async () =>
+            await _userService.Add(newUserShortPassword));
 
             Assert.AreEqual(countBeforeAdd, (await _userService.GetAll()).Count);
         }
@@ -108,11 +98,7 @@ namespace Testing.Services
             };
             int newestId = 0;
 
-            using (SqlConnection conn = new SqlConnection(Secret.ConnectionString))
-            {
-                conn.Open();
-                newestId = await _userService.Add(conn, newUser);
-            }
+            newestId = await _userService.Add(newUser);
 
             int countBeforeDelete = (await _userService.GetAll()).Count;
 

@@ -9,13 +9,13 @@ namespace SkolefotograferneSemesterProjekt.Services
 {
     public class UserService : Connection, IUserService
     {
-        public async Task<int> Add(SqlConnection conn, User user)
+        public async Task<int> Add(User user)
         {
-            if(user.Password.Length < 6)
+            if (user.Password.Length < 6)
             {
                 throw new PasswordTooShortException("Password too short");
             }
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string emailSearch = "Select Email from Users Where Email = @Email";
                 SqlCommand command = new SqlCommand(emailSearch, connection);
@@ -28,27 +28,30 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw new TakenMailException("Email is already used");
                 }
             }
-            
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                try
+                {
 
-                var cmd = new SqlCommand(@"
+                    var cmd = new SqlCommand(@"
                 INSERT INTO Users (Email, Password, Role)
                 VALUES (@Email, @Password, @Role);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
-            ", conn);
+            ", connection);
 
-                cmd.Parameters.AddWithValue("@Email", user.Email);
-                cmd.Parameters.AddWithValue("@Password", user.Password);
-                cmd.Parameters.AddWithValue("@Role", user.Role);
-
-                var result = await cmd.ExecuteScalarAsync();
-                return Convert.ToInt32(result);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+                    cmd.Parameters.AddWithValue("@Password", user.Password);
+                    cmd.Parameters.AddWithValue("@Role", user.Role);
+                    
+                    await connection.OpenAsync();
+                    var result = await cmd.ExecuteScalarAsync();
+                    return Convert.ToInt32(result);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
             }
         }
 
@@ -119,7 +122,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         public async Task<User> VerifyUser(string mail, string password)
         {
             User foundUser = null;
-             using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT * FROM Users WHERE Email = @Email AND Password = @Password";
                 SqlCommand command = new SqlCommand(query, connection);

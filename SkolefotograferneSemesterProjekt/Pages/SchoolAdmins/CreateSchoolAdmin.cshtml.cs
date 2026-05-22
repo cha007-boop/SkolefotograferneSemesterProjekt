@@ -54,7 +54,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
                     await OnGet();
                     return Page();
                 }
-                await _schoolAdminService.Add(NewSchoolAdmin);
+                NewSchoolAdmin.ID = await _schoolAdminService.Add(NewSchoolAdmin);
 
                 if (!HttpContext.Session.GetInt32("Role").HasValue)
                 {

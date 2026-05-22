@@ -40,7 +40,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         };
 
-        public async Task Add(Photo photo)
+        public async Task<string> Add(Photo photo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -49,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID, UploadedAt) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID, @UploadedAt)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Filename", photo.Filename);
-                    command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent.ID);
+                    command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent?.ID ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@ClassID", photo.TheSchoolClass?.ID ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@ChildID", photo.Child?.ID ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@UploadedAt", photo.UploadedAt);
@@ -62,11 +62,12 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw;
                 }
             }
+            return photo.Filename;
         }
 
         public async Task<List<Photo>> GetAll()
         {
-            using (SqlConnection conn = new SqlConnection())
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -275,7 +276,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return photos;
         }
 
-        public async Task RemovePhoto(Photo photo)
+        public async Task RemovePhoto(string filename)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -283,7 +284,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 {
                     string query = "DELETE FROM Photo WHERE Filename = @Filename";
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Filename", photo.Filename);
+                    command.Parameters.AddWithValue("@Filename", filename);
                     await connection.OpenAsync();
                     await command.ExecuteNonQueryAsync();
                 }
@@ -300,7 +301,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return new Photo
             {
                 Filename = reader.GetString("Filename"),
-                ThePhotoEvent = await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")),
+                ThePhotoEvent = reader["PhotoEventID"] != DBNull.Value ? await _photoEventService.GetByID(reader.GetInt32("PhotoEventID")) : null,
                 TheSchoolClass = reader["ClassID"] != DBNull.Value ? await _schoolClassService.GetByID(reader.GetInt32("ClassID")) : null,
                 Child = reader["ChildID"] != DBNull.Value ? await _studentService.GetById(reader.GetInt32("ChildID")) : null,
                 UploadedAt = reader.GetDateTime("UploadedAt")

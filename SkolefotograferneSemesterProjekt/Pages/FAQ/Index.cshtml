@@ -6,16 +6,19 @@
 <h1 style="text-align: center">FAQ</h1>
 @if (Model.IsAdmin)
 {
-    @for (int i=0; i < Model.Entries.Count; i++)
+    <p>
+        <a asp-page="AddEntry" class="btn btn-primary">Opret et nyt FAQ-indlæg</a>
+    </p>
+    @for (int i = 0; i < Model.Entries.Count; i++)
     {
-        <tr>
-            <td>@Model.Entries[i].Question</td>
-            <td>@Model.Entries[i].Answer</td>
-            <td>
-                <a asp-page="EditEntry" asp-route-id="@i">Opdater</a> |
-                <a asp-page="DeleteEntry" asp-route-id="@i">Slet</a>
-            </td>
-        </tr>
+        <div>
+            <h2>@Model.Entries[i].Question</h2>
+            <p1>@Model.Entries[i].Answer</p1>
+        </div>
+        <div class="form-group mt-2">
+            <a asp-page="EditEntry" asp-route-id="@i" class="btn btn-primary btn-sm">Opdater</a>
+            <a asp-page="DeleteEntry" asp-route-id="@i" class="btn btn-danger btn-sm">Slet</a>
+        </div>
     }
 }
 else
@@ -28,47 +31,3 @@ else
         </div>
     }
 }
-@* @if (Model.IsAdmin)
-{
-    <td>
-        <a asp-page="AddEntry" class="btn btn-primary">Opret et nyt emne</a>
-    </td>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Emner</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i=0; i < Model.Entries.Count; i++)
-            {
-                <tr>
-                    <td>@Model.Entries[i]</td>
-                    <td>
-                        <a asp-page="EditEntry" asp-route-id="@i">Opdater</a> |
-                        <a asp-page="DeleteEntry" asp-route-id="@i">Slet</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Emner</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var e in Model.Entries)
-            {
-                <tr>
-                    <td>@e</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-} *@
