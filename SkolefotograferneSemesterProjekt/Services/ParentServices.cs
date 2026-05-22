@@ -127,7 +127,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             }
         }
 
-        public async Task deleteParent(Parent parent)
+        public async Task DeleteParent(Parent parent)
         {
             using SqlConnection conn = new SqlConnection(connectionString);
             {

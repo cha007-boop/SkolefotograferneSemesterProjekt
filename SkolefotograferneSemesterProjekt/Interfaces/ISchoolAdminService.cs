@@ -19,7 +19,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         /// Method for adding a school admin user to the database.
         /// </summary>
         /// <param name="schoolAdmin">The school admin to add</param>
-        /// <returns>A task representing the asynchronous operation</returns>
+        /// <returns>A task representing the asynchronous operation, containing the id of the added school admin</returns>
         Task<int> Add(SchoolAdmin schoolAdmin);
 
         /// <summary>
