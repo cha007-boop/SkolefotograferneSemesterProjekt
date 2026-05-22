@@ -32,7 +32,7 @@ body {
 }
 
 .costume-collapsible {
-    background-color: white;
+    background-color: inherit;
     color: black;
     cursor: pointer;
     padding: 8px;
@@ -40,15 +40,15 @@ body {
     font-size: 20px;
 }
 
-.active, .costume-collapsible:hover {
-    background-color: white;
-}
+    .active, .costume-collapsible:hover {
+        background-color: inherit
+    }
 
 .content {
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: ButtonShadow
+    background-color: inherit
 }
 }
 
