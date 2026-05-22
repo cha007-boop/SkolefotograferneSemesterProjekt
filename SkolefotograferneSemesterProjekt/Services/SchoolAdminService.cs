@@ -45,14 +45,12 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task<int> Add(SchoolAdmin schoolAdmin)
         {
-            int userID;
+            int userID = await _userService.Add(schoolAdmin); 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     await conn.OpenAsync();
-
-                    userID = await _userService.Add(conn, schoolAdmin);
 
                     var cmd = new SqlCommand(@"
                 INSERT INTO SchoolAdmin (ID, PhoneNumber, ContactPerson, SchoolID)

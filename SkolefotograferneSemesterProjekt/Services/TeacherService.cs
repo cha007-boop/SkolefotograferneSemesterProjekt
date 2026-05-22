@@ -14,11 +14,10 @@ namespace SkolefotograferneSemesterProjekt.Services
         private ISchoolService _schoolService = new SchoolService();
         public async Task<int> Add(Teacher teacher)
         {
-            int userID;
+            int userID = await _userService.Add(teacher); ;
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                userID = await _userService.Add(connection, teacher);
 
                 SqlCommand cmd = new SqlCommand(@"
                     INSERT INTO Teacher 
