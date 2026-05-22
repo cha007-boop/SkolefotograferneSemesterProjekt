@@ -10,14 +10,14 @@
 <form method="post">
     <input type="hidden" asp-for="EntryID" />
     <div class="form-group">
-        <label asp-for="@Model.CurrentEntry.Question" class="control-label">Spørgsmål</label>
-        <input asp-for="@Model.CurrentEntry.Question" class="form-control" />
-        <span asp-validation-for="@Model.CurrentEntry.Question" class="text-danger"></span>
+        <label asp-for="CurrentEntry.Question" class="control-label">Spørgsmål</label>
+        <input asp-for="CurrentEntry.Question" class="form-control" />
+        <span asp-validation-for="CurrentEntry.Question" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="@Model.CurrentEntry.Answer" class="control-label">Svar</label>
-        <input asp-for="@Model.CurrentEntry.Answer" class="form-control" />
-        <span asp-validation-for="@Model.CurrentEntry.Answer" class="text-danger"></span>
+        <label asp-for="CurrentEntry.Answer" class="control-label">Svar</label>
+        <textarea asp-for="CurrentEntry.Answer" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="CurrentEntry.Answer" class="text-danger"></span>
     </div>
 
     <div class="form-group mt-2">

@@ -12,7 +12,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         [BindProperty]
         public List<FAQEntry> Entries { get; set; } = [];
         [BindProperty]
-        public FAQEntry NewEntry { get; set; }
+        public FAQEntry NewEntry { get; set; } = new();
         [BindProperty]
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
