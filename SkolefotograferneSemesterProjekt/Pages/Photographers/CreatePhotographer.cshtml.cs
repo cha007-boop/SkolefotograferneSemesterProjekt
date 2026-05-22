@@ -36,7 +36,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
             try
             {
                 if (NewPhotographer.Password == VerifyPassword)
-                await _photographerService.Add(NewPhotographer);
+                NewPhotographer.ID = await _photographerService.Add(NewPhotographer);
                 else
                 {
                     ModelState.AddModelError("NewPhotographer.Password", "Password not the same");
