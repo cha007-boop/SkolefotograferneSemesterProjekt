@@ -1,7 +1,7 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.FAQ.EditEntryModel
 @{
-    ViewData["Title"] = "Opdater entry";
+    ViewData["Title"] = "Opdater FAQ-Indlægget";
 }
 
 <a asp-page="Index">Tilbage</a>
@@ -9,15 +9,19 @@
 
 <form method="post">
     <input type="hidden" asp-for="EntryID" />
-
     <div class="form-group">
-        <label asp-for="@Model.NewEntry" class="control-label">Tekst</label>
-        <input asp-for="@Model.NewEntry" class="form-control" />
-        <span asp-validation-for="@Model.NewEntry" class="text-danger"></span>
-
-        <div class="form-group mt-2">
-            <input type="submit" value="Opdater" class="btn btn-primary" />
-            <a asp-page="Index" class="btn btn-secondary">Fortryd</a>
-        </div>
+        <label asp-for="@Model.CurrentEntry.Question" class="control-label">Spørgsmål</label>
+        <input asp-for="@Model.CurrentEntry.Question" class="form-control" />
+        <span asp-validation-for="@Model.CurrentEntry.Question" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="@Model.CurrentEntry.Answer" class="control-label">Svar</label>
+        <input asp-for="@Model.CurrentEntry.Answer" class="form-control" />
+        <span asp-validation-for="@Model.CurrentEntry.Answer" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <input type="submit" value="Opdater" class="btn btn-primary" />
+        <a asp-page="Index" class="btn btn-secondary">Fortryd</a>
+    </div>    
 </form>

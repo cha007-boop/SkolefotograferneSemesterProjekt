@@ -1,16 +1,21 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.FAQ.AddEntryModel
 @{
-    ViewData["Title"] = "Opret et nyt entry"; 
+    ViewData["Title"] = "Opret et nyt FAQ-Indlæg"; 
 }
 
 <a asp-page="Index">Tilbage</a>
 
 <form method="post">
     <div class="form-group">
-        <label asp-for="@Model.NewEntry" class="control-label">Tekst</label>
-        <input asp-for="@Model.NewEntry" class="form-control" />
-        <span asp-validation-for="@Model.NewEntry" class="text-danger"></span>      
+        <label asp-for="@Model.NewEntry.Question" class="control-label">Spørgsmål</label>
+        <input asp-for="@Model.NewEntry.Question" class="form-control" />
+        <span asp-validation-for="@Model.NewEntry.Question" class="text-danger"></span>      
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.NewEntry.Answer" class="control-label">Svar</label>
+        <input asp-for="@Model.NewEntry.Answer" class="form-control" />
+        <span asp-validation-for="@Model.NewEntry.Answer" class="text-danger"></span>      
     </div>
 
     <div class="form-group mt-1">
