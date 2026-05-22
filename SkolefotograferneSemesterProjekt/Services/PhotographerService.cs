@@ -61,10 +61,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     string? surname = reader["Surname"] as string;
                     string? phoneNumber = reader["PhoneNumber"] as string;
                     string? website = reader["Website"] as string;
-                    string? cVR = reader["CVR"] as string;
+                    string? cvr = reader["CVR"] as string;
                     string? facebook = reader["Facebook"] as string;
                     string? instagram = reader["Instagram"] as string;
-                    Photographer photographer = new Photographer { ID = id, FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cVR, Facebook = facebook, Instagram = instagram };
+                    string? email = reader["Email"] as string;
+                    Photographer photographer = new Photographer { ID = id, FirstName = firstName, Surname = surname, PhoneNumber = phoneNumber, Website = website, CVR = cvr, Facebook = facebook, Instagram = instagram, Email = email };
                     photographers.Add(photographer);
                 }
                 await reader.CloseAsync();
