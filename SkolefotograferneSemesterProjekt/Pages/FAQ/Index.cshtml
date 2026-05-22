@@ -4,6 +4,7 @@
     ViewData["Title"] = "FAQ";
 }
 <h1 style="text-align: center">FAQ</h1>
+
 @if (Model.IsAdmin)
 {
     <p>
@@ -11,9 +12,9 @@
     </p>
     @for (int i = 0; i < Model.Entries.Count; i++)
     {
-        <div>
-            <h2>@Model.Entries[i].Question</h2>
-            <p1>@Model.Entries[i].Answer</p1>
+        <h2 class="costume-collapsible">@Model.Entries[i].Question</h2>
+        <div class="content">
+            <p>@Model.Entries[i].Answer</p>
         </div>
         <div class="form-group mt-2">
             <a asp-page="EditEntry" asp-route-id="@i" class="btn btn-primary btn-sm">Opdater</a>
@@ -25,9 +26,30 @@ else
 {
     @foreach (var e in Model.Entries)
     {
-        <div>
-            <h2>@e.Question</h2>
+        <h2 class="costume-collapsible">@e.Question</h2>
+        <div class="content">
             <p>@e.Answer</p>
         </div>
     }
+
 }
+
+@* Used for the accordion *@
+<script>
+    document.addEventListener("click", function(event) {
+        var trigger = event.target.closest(".costume-collapsible");
+
+        if (!trigger) return;
+
+        trigger.classList.toggle("active");
+
+        var content = trigger.nextElementSibling;
+        if (content && content.classList.contains("content")) {
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+    });
+</script>
