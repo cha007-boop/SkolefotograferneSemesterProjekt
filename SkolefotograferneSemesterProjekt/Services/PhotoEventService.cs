@@ -158,10 +158,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     photoEvent.ID = reader.GetInt32("ID");
                     photoEvent.StartTime = reader.GetDateTime("StartTime");
                     photoEvent.EndTime = reader.GetDateTime("EndTime");
-                    //photoEvent.Location = reader.GetString("Location");
                     photoEvent.Location = reader.IsDBNull("Location") ? "Location is not set" : reader.GetString("Location");
-                    //photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber = reader.GetString("PhoneNumber"), Website = reader.GetString("Website"), CVR = reader.GetString("CVR"), Facebook = reader.GetString("Facebook"), Instagram = reader.GetString("Instagram") };
-                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber = reader.GetString("PhoneNumber"), Website = reader.IsDBNull("Website") ? "Website is not set" : reader.GetString("Website"), CVR = reader.IsDBNull("CVR") ? "CVR is not set" : reader.GetString("CVR"), Facebook = reader.IsDBNull("Facebook") ? "Facebook is not set" : reader.GetString("Facebook"), Instagram = reader.IsDBNull("Instagram") ? "Instagram is not set" : reader.GetString("Instagram") };
+                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber  = reader.GetString("PhoneNumber"), Website = reader.IsDBNull("Website") ? "Website is not set" : reader.GetString("Website"), CVR = reader.IsDBNull("CVR") ? "CVR is not set" : reader.GetString("CVR"), Facebook = reader.IsDBNull("Facebook") ? "Facebook is not set" : reader.GetString("Facebook"), Instagram = reader.IsDBNull("Instagram") ? "Instagram is not set" : reader.GetString("Instagram") };
                     photoEvent.TheSchoolAdmin = new SchoolAdmin { ID = reader.GetInt32("SchoolAdminID"), PhoneNumber = reader.GetString("PhoneNumber"), ContactPerson = reader.GetString("ContactPerson"), TheSchool = await _schoolService.GetById(reader.GetInt32("SchoolID")) };
                     photoEventList.Add(photoEvent);
                 }
@@ -192,9 +190,8 @@ namespace SkolefotograferneSemesterProjekt.Services
                     photoEvent.ID = reader.GetInt32("ID");
                     photoEvent.StartTime = reader.GetDateTime("StartTime");
                     photoEvent.EndTime = reader.GetDateTime("EndTime");
-                    //photoEvent.Location = reader.GetString("Location");
                     photoEvent.Location = reader.IsDBNull("Location") ? "Location is not set" : reader.GetString("Location");
-                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber = reader.GetString("PhoneNumber"), Website = reader.GetString("Website"), CVR = reader.GetString("CVR"), Facebook = reader.GetString("Facebook"), Instagram = reader.GetString("Instagram") };
+                    photoEvent.ThePhotographer = new Photographer { ID = reader.GetInt32("PhotographerID"), FirstName = reader.GetString("FirstName"), Surname = reader.GetString("Surname"), PhoneNumber  = reader.GetString("PhoneNumber"), Website = reader.IsDBNull("Website") ? "Website is not set" : reader.GetString("Website"), CVR = reader.IsDBNull("CVR") ? "CVR is not set" : reader.GetString("CVR"), Facebook = reader.IsDBNull("Facebook") ? "Facebook is not set" : reader.GetString("Facebook"), Instagram = reader.IsDBNull("Instagram") ? "Instagram is not set" : reader.GetString("Instagram") };
                     photoEvent.TheSchoolAdmin = new SchoolAdmin { ID = reader.GetInt32("SchoolAdminID"), PhoneNumber = reader.GetString("PhoneNumber"), ContactPerson = reader.GetString("ContactPerson"), TheSchool = await _schoolService.GetById(reader.GetInt32("SchoolID")) };
                     return photoEvent;
                 }

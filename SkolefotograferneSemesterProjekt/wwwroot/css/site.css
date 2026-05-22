@@ -31,6 +31,27 @@ body {
     background-size: 2.5rem 2.5rem;
 }
 
+.costume-collapsible {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    padding: 8px;
+    width: 100%;
+    font-size: 20px;
+}
+
+.active, .costume-collapsible:hover {
+    background-color: white;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: ButtonShadow
+}
+}
+
 .center-user-form {
     margin: auto;
     width: 50%;

@@ -54,37 +54,47 @@
     </div>
     <div class="row">
         <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Class</th>
-                        <th>Student ID</th>
-                        <th>Student Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var student in Model.Students)
-                    {
+            @if(Model.Students.Count == 0)
+            {
+                <p class="display-6">No classes have been created yet</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
-                            <td>@student.ID</td>
-                            <td>@student.FirstName @student.Surname</td>
-                            @if (HttpContext.Session.GetInt32("Role") == 1 || HttpContext.Session.GetInt32("Role") == 4)
-                            {
-                                <td>
-                                    <a asp-page="./UploadPortrait"
-                                       asp-route-photoeventid="@Model.Id"
-                                       asp-route-studentid="@student.ID" class="btn btn-secondary">
-                                        Upload Portrait
-                                    </a>
-                                </td>
-                            }
+                            <th>Class</th>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model.Students)
+                        {
+                            <tr>
+                                <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
+                                <td>@student.ID</td>
+                                <td>@student.FirstName @student.Surname</td>
+                                @if (HttpContext.Session.GetInt32("Role") == 1 || HttpContext.Session.GetInt32("Role") == 4)
+                                {
+                                    <td>
+                                        <a asp-page="./UploadPortrait"
+                                           asp-route-photoeventid="@Model.Id"
+                                           asp-route-studentid="@student.ID" class="btn btn-secondary">
+                                            Upload Portrait
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
 </div>
 
+<div>
+    <a asp-page="/PhotoEvents/ReadPhotoEvents">Back to Lists of PhotoEvents</a>
+</div>
