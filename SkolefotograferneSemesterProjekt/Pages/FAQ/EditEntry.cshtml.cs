@@ -27,53 +27,53 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             FolderName = "faq";
             FileName = "FAQtekst.txt";
         }
-        public async Task<IActionResult> OnGet(int? id)
-        {
-            if (!id.HasValue)
-            {
-                ModelState.AddModelError("EntryID", "Ugyldig entry...");
-                return RedirectToPage("/Users/AccessDenied");
-            }
-            EntryID = id.Value;
+        //public async Task<IActionResult> OnGet(int? id)
+        //{
+        //    if (!id.HasValue)
+        //    {
+        //        ModelState.AddModelError("EntryID", "Ugyldig entry...");
+        //        return RedirectToPage("/Users/AccessDenied");
+        //    }
+        //    EntryID = id.Value;
 
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (role != (int)UserRole.SysAdmin)
-            {
-                return RedirectToPage("/Users/AccessDenied");
-            }
-            try
-            {
-                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                NewEntry = Entries[EntryID];
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                ViewData["ErrorMessage"] = ex.Message;
-                return Page();
-            }
-        }
+        //    int? role = HttpContext.Session.GetInt32("Role");
+        //    if (role != (int)UserRole.SysAdmin)
+        //    {
+        //        return RedirectToPage("/Users/AccessDenied");
+        //    }
+        //    try
+        //    {
+        //        Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+        //        NewEntry = Entries[EntryID];
+        //        return Page();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewData["ErrorMessage"] = ex.Message;
+        //        return Page();
+        //    }
+        //}
 
-        public async Task<IActionResult> OnPost()
-        {
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (role != (int)UserRole.SysAdmin)
-            {
-                return RedirectToPage("/Users/AccessDenied");
-            }
-            try
-            {
-                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                Entries[EntryID] = NewEntry;
+        //public async Task<IActionResult> OnPost()
+        //{
+        //    int? role = HttpContext.Session.GetInt32("Role");
+        //    if (role != (int)UserRole.SysAdmin)
+        //    {
+        //        return RedirectToPage("/Users/AccessDenied");
+        //    }
+        //    try
+        //    {
+        //        Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+        //        Entries[EntryID] = NewEntry;
 
-                await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                return RedirectToPage("Index");
-            }
-            catch (Exception ex)
-            {
-                ViewData["ErrorMessage"] = ex.Message;
-                return Page();
-            }
-        }
+        //        await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+        //        return RedirectToPage("Index");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewData["ErrorMessage"] = ex.Message;
+        //        return Page();
+        //    }
+        //}
     }
 }
