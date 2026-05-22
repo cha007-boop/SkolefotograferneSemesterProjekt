@@ -10,9 +10,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
         private IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
-        public List<string> Entries { get; set; } = [];
+        public List<FAQEntry> Entries { get; set; } = [];
         [BindProperty]
-        public string NewEntry { get; set; }
+        public FAQEntry NewEntry { get; set; } = new();
         [BindProperty]
         public bool IsAdmin { get; set; }
         private string FileName { get; set; }
@@ -34,32 +34,32 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             return Page();
         }
 
-        //public async Task<IActionResult> OnPost()
-        //{
-        //    ModelState.CustomizedMessages("Felter Mangler");
+        public async Task<IActionResult> OnPost()
+        {
+            ModelState.CustomizedMessages("Felter Mangler");
 
-        //    int? role = HttpContext.Session.GetInt32("Role");
-        //    if (role != (int)UserRole.SysAdmin)
-        //    {
-        //        return RedirectToPage("/Users/AccessDenied");
-        //    }
-        //    if (string.IsNullOrWhiteSpace(NewEntry))
-        //    {
-        //        return Page();
-        //    }
-        //    try
-        //    {
-        //        Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-        //        Entries.Add(NewEntry);
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (role != (int)UserRole.SysAdmin)
+            {
+                return RedirectToPage("/Users/AccessDenied");
+            }
+            if (string.IsNullOrWhiteSpace(NewEntry.Question) || string.IsNullOrWhiteSpace(NewEntry.Answer))
+            {
+                return Page();
+            }
+            try
+            {
+                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName);
+                Entries.Add(NewEntry);
 
-        //        await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-        //        return RedirectToPage("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewData["ErrorMessage"] = ex.Message;
-        //        return Page();
-        //    }
-        //}
+                await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+                return RedirectToPage("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = ex.Message;
+                return Page();
+            }
+        }
     }
 }

@@ -28,7 +28,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             {
                 IsAdmin = true;
             }
-
             try
             {
                 Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName);
