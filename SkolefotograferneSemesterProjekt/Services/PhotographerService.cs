@@ -19,14 +19,12 @@ namespace SkolefotograferneSemesterProjekt.Services
         #region Methods
         public async Task<int> Add(Photographer photographer)
         {
-            int userID;
+            int userID = await userService.Add(photographer);
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     await connection.OpenAsync();
-
-                    userID = await userService.Add(connection, photographer);
 
                     SqlCommand sqlCommand = new SqlCommand(@"insert into Photographer 
                                          (ID, FirstName, Surname, PhoneNumber) 

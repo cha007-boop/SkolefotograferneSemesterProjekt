@@ -15,13 +15,12 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task<int> AddParent(Parent parent)
         {
-            int userID;
+            int userID = await userService.Add(parent); ;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 {
                     await connection.OpenAsync();
 
-                    userID = await userService.Add(connection, parent);
                     SqlCommand command = new SqlCommand(@"INSERT INTO Parent
                     (ID, FirstName, Surname, PhoneNumber) VALUES 
                     (@ID, @FirstName, @Surname, @PhoneNumber)", connection);

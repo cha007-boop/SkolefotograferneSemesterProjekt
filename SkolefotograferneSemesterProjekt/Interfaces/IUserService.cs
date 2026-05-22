@@ -11,7 +11,7 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         /// <param name="conn">The SQL connection to use for the operation</param>
         /// <param name="user">The user to add</param>
         /// <returns>A task representing the asynchronous operation, containing the ID of the added user, so it can be used for further operations</returns>
-        Task<int> Add(SqlConnection conn, User user);
+        Task<int> Add(User user);
 
         /// <summary>
         /// Method for deleting a user from the database.
