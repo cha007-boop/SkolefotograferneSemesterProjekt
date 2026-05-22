@@ -5,7 +5,6 @@ namespace SkolefotograferneSemesterProjekt.Helpers
 {
     public static class FAQHelper
     {
-        
         public async static Task<List<FAQEntry>> FAQReader(string webRootPath, string folderName, string fileName)
         {
             string? filePath = Path.Combine(webRootPath, folderName, fileName);
@@ -14,7 +13,6 @@ namespace SkolefotograferneSemesterProjekt.Helpers
             if (!System.IO.File.Exists(filePath))
             {
                 return list;
-                //return ["Ingen entry"];
             }
 
             string temp = await File.ReadAllTextAsync(filePath);
@@ -58,39 +56,5 @@ namespace SkolefotograferneSemesterProjekt.Helpers
             string temp = string.Join("|", entries);
             await File.WriteAllTextAsync(filePath, temp);
         }
-        //OG
-        //public async static Task<List<string>> FAQReader(string webRootPath, string folderName, string fileName, List<string> list)
-        //{
-        //    string? filePath = Path.Combine(webRootPath, folderName, fileName);
-
-        //    if (!System.IO.File.Exists(filePath))
-        //    {
-        //        return ["Ingen entry"];
-        //    }
-
-        //    string temp = "";
-        //    using (StreamReader reader = new StreamReader(filePath))
-        //    {
-        //        while (!reader.EndOfStream)
-        //        {
-        //            temp += await reader.ReadLineAsync();
-        //        }
-        //    }
-        //    list = temp.Split("|").ToList();
-        //    return list;
-        //}
-        //OG
-        //public async static Task FAQWriter(string webRootPath, string folderName, string fileName, List<string> list)
-        //{
-        //    string? filePath = Path.Combine(webRootPath, folderName, fileName);
-
-        //    if (!System.IO.File.Exists(filePath))
-        //    {
-        //        return;
-        //    }
-
-        //    string temp = string.Join("|", list);
-        //    await File.WriteAllTextAsync(filePath, temp);
-        //}
     }
 }
