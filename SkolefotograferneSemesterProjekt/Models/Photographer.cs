@@ -6,7 +6,7 @@
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
         public string? Website { get; set; }
-        public string? CVR { get; set; }
+        public string? CVR { get; set; } 
         public string? Facebook { get; set; }
         public string? Instagram { get; set; }
         public Photographer()

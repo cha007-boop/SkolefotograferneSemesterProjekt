@@ -37,7 +37,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 
         public async Task<IActionResult> OnGet()
         {
-
             ThePhotoEvent = await _photoEventService.GetByID(Id);
             if (ThePhotoEvent == null)
             {
