@@ -16,8 +16,8 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         /// Method for adding a photo to the database.
         /// </summary>
         /// <param name="photo">The photo to add</param>
-        /// <returns>A task representing the asynchronous operation</returns>
-        Task Add(Photo photo);
+        /// <returns>A task representing the asynchronous operation, containing the filename of the added photo</returns>
+        Task<string> Add(Photo photo);
         /// <summary>
         /// Method for getting a photo by its filename.
         /// </summary>
@@ -50,9 +50,9 @@ namespace SkolefotograferneSemesterProjekt.Interfaces
         /// <summary>
         /// Method for removing a photo from the database.
         /// </summary>
-        /// <param name="photo">The photo to remove</param>
+        /// <param name="filename">The filename of the photo to remove</param>
         /// <returns>A task representing the asynchronous operation</returns>
-        Task RemovePhoto(Photo photo);
+        Task RemovePhoto(string filename);
         /// <summary>
         /// Method for searching photos based on a filter column, filter value, sort column, sort order, and optional conditions.
         /// </summary>

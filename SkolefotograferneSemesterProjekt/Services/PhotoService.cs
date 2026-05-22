@@ -40,7 +40,7 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         };
 
-        public async Task Add(Photo photo)
+        public async Task<string> Add(Photo photo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -62,6 +62,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw;
                 }
             }
+            return photo.Filename;
         }
 
         public async Task<List<Photo>> GetAll()
@@ -275,7 +276,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             return photos;
         }
 
-        public async Task RemovePhoto(Photo photo)
+        public async Task RemovePhoto(string filename)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -283,7 +284,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 {
                     string query = "DELETE FROM Photo WHERE Filename = @Filename";
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Filename", photo.Filename);
+                    command.Parameters.AddWithValue("@Filename", filename);
                     await connection.OpenAsync();
                     await command.ExecuteNonQueryAsync();
                 }
