@@ -34,32 +34,32 @@ namespace SkolefotograferneSemesterProjekt.Pages.FAQ
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
-        {
-            ModelState.CustomizedMessages("Felter Mangler");
+        //public async Task<IActionResult> OnPost()
+        //{
+        //    ModelState.CustomizedMessages("Felter Mangler");
 
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (role != (int)UserRole.SysAdmin)
-            {
-                return RedirectToPage("/Users/AccessDenied");
-            }
-            if (string.IsNullOrWhiteSpace(NewEntry))
-            {
-                return Page();
-            }
-            try
-            {
-                Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                Entries.Add(NewEntry);
+        //    int? role = HttpContext.Session.GetInt32("Role");
+        //    if (role != (int)UserRole.SysAdmin)
+        //    {
+        //        return RedirectToPage("/Users/AccessDenied");
+        //    }
+        //    if (string.IsNullOrWhiteSpace(NewEntry))
+        //    {
+        //        return Page();
+        //    }
+        //    try
+        //    {
+        //        Entries = await FAQHelper.FAQReader(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+        //        Entries.Add(NewEntry);
 
-                await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
-                return RedirectToPage("Index");
-            }
-            catch (Exception ex)
-            {
-                ViewData["ErrorMessage"] = ex.Message;
-                return Page();
-            }
-        }
+        //        await FAQHelper.FAQWriter(_webHostEnvironment.WebRootPath, FolderName, FileName, Entries);
+        //        return RedirectToPage("Index");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewData["ErrorMessage"] = ex.Message;
+        //        return Page();
+        //    }
+        //}
     }
 }
