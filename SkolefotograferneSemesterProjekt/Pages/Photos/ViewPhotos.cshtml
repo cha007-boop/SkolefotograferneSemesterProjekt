@@ -7,93 +7,107 @@
 <div class="display-3">
     <h1>Photos</h1>
 </div>
+@if (Model.Photos.Count() <= 0)
+{
+    if (HttpContext.Session.GetInt32("Role") == 1)
+    {
+        <p class="display-6">You have not Uploaded a Photo</p>
+    }
+    else if (HttpContext.Session.GetInt32("Role") == 3)
+    {
+        <p class="display-6">Photographer has not uploaded a photo</p>
+    }
+}
+else
+{
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <form method="get">
+                    @* <div asp-validation-summary="" class="text-danger"></div> *@
+                    <input type="hidden" asp-for=SortColumn />
+                    <input type="hidden" asp-for=SortOrder />
+                    <div class="form-group">
+                        search: <input type="text" asp-for="FilterValue" />
+                        <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+                            <option value="All">-- Select Column --</option>
+                            @foreach (var column in Model.FilterableColumns)
+                            {
+                                <option value="@column.Key">@column.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group mt-3">
+                        Type:
+                        <select asp-for="Type" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
+                            <option value="All">All</option>
+                            <option value="Portraits">Portraits</option>
+                            <option value="ClassPhotos">Class Photos</option>
+                        </select>
+                    </div>
+                    <div class="mt-2">
+                        <input type="submit" value="Search" />
+                    </div>
+                </form>
+            </div>
 
-<div class="container mt-3">
-    <div class="row">
-        <div class="col">
-            <form method="get">
-                @* <div asp-validation-summary="" class="text-danger"></div> *@
-                <input type="hidden" asp-for=SortColumn />
-                <input type="hidden" asp-for=SortOrder />
-                <div class="form-group">
-                    search: <input type="text" asp-for="FilterValue" />
-                    <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
-                        <option value="All">-- Select Column --</option>
-                        @foreach (var column in Model.FilterableColumns)
-                        {
-                            <option value="@column.Key">@column.Value</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group mt-3">
-                    Type:
-                    <select asp-for="Type" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
-                        <option value="All">All</option>
-                        <option value="Portraits">Portraits</option>
-                        <option value="ClassPhotos">Class Photos</option>
-                    </select>
-                </div>
-                <div class="mt-2">
-                    <input type="submit" value="Search" />
-                </div>
-            </form>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                @foreach (var column in Model.SortableColumns)
+                                {
+                                    <th>
+                                        <a asp-page="./ViewPhotos"
+                                           asp-route-FilterColumn="@Model.FilterColumn"
+                                           asp-route-FilterValue="@Model.FilterValue"
+                                           asp-route-SortColumn="@column.Key"
+                                           asp-route-SortOrder="@Model.Toggle(column.Key)" class="text-decoration-none text-dark">
+                                            @column.Value @(Model.SortColumn == column.Key ? (Model.SortOrder == "ASC" ? "▲" : "▼") : "")
+                                        </a>
+                                    </th>
+                                }
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var photo in Model.Photos)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename"
+                                             class="img-thumbnail"
+                                             style="height:60px; cursor:pointer;"
+                                             onclick="showImage(
+                                                         '/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename'
+                                                     )" />
+                                    </td>
+                                    <td>@photo.ThePhotoEvent.ID</td>
+                                    <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
+                                    <td>@photo.TheSchoolClass.Grade @(photo.TheSchoolClass.Letter ?? "")</td>
+                                    <td>@(photo.Child?.FirstName ?? "")</td>
+                                    <td>@(photo.Child?.Surname ?? "")</td>
+                                    <td>@photo.UploadedAt.ToString("G")</td>
+                                    <form method="post">
+                                        <input type="hidden" asp-for="SortColumn" />
+                                        <input type="hidden" asp-for="SortOrder" />
+                                        <input type="hidden" asp-for="FilterColumn" />
+                                        <input type="hidden" asp-for="FilterValue" />
+                                    <td><button type="button" class="btn btn-danger" asp-route-filename="@photo.Filename" onclick="DisplayConfirmDeleteModal('@photo.Filename')">Delete</button></td>
+                                    </form>
+                                </tr>
+                            }
+                        </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        @foreach (var column in Model.SortableColumns)
-                        {
-                            <th>
-                                <a asp-page="./ViewPhotos"
-                                   asp-route-FilterColumn="@Model.FilterColumn"
-                                   asp-route-FilterValue="@Model.FilterValue"
-                                   asp-route-SortColumn="@column.Key"
-                                   asp-route-SortOrder="@Model.Toggle(column.Key)" class="text-decoration-none text-dark">
-                                    @column.Value @(Model.SortColumn == column.Key ? (Model.SortOrder == "ASC" ? "▲" : "▼") : "")
-                                </a>
-                            </th>
-                        }
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var photo in Model.Photos)
-                    {
-                        <tr>
-                            <td>
-                                <img src="~/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename"
-                                     class="img-thumbnail"
-                                     style="height:60px; cursor:pointer;"
-                                     onclick="showImage(
-                                     '/images/@(photo.Child != null ? "Portraits" : "ClassPhotos")/@photo.Filename'
-                                 )" />
-                            </td>
-                            <td>@photo.ThePhotoEvent.ID</td>
-                            <td>@photo.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</td>
-                            <td>@photo.TheSchoolClass.Grade @(photo.TheSchoolClass.Letter ?? "")</td>
-                            <td>@(photo.Child?.FirstName ?? "")</td>
-                            <td>@(photo.Child?.Surname ?? "")</td>
-                            <td>@photo.UploadedAt.ToString("G")</td>
-                            <form method="post">
-                                <input type="hidden" asp-for="SortColumn" />
-                                <input type="hidden" asp-for="SortOrder" />
-                                <input type="hidden" asp-for="FilterColumn" />
-                                <input type="hidden" asp-for="FilterValue" />
-                            <td><button type="button" class="btn btn-danger" asp-route-filename="@photo.Filename" onclick="DisplayConfirmDeleteModal('@photo.Filename')">Delete</button></td>
-                            </form>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-</div>
+}
 
 <form method="post" asp-page-handler="Delete" id="deleteForm">
     <input type="hidden" name="filename" id="deleteFile" />
@@ -145,7 +159,9 @@
         </div>
     </div>
 </div>
-
+<div>
+    <a asp-page="/Index">Back to Homepage</a>
+</div>
 
 
 @section Scripts {

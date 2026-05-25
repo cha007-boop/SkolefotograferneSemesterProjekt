@@ -21,6 +21,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         public string FilterCriteria { get; set; }
         [BindProperty(SupportsGet = true)]
         public string FilterBy { get; set; }
+
         public ReadPhotoEventsModel(IPhotoEventService pEService)
         {
             PEService = pEService;

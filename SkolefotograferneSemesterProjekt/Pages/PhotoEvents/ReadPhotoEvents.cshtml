@@ -30,71 +30,81 @@
         </select>
     </form>
 }
-<form method="get">
-    <input type="radio"
-           asp-for="EventType"
-           value="" />
-    <label>All</label>
-    <br />
-    <input type="radio"
-           asp-for="EventType"
-           value="1" />
-    <label>Active</label>
-    <br />
-    <input type="radio"
-           asp-for="EventType"
-           value="2" />
-    <label>Past</label>
-    <br />
-    <input type="submit" value="Filter" />
-</form>
 
-<h2>PhotoEvents</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>SchoolName</th>
-            <th>SchoolAddress</th>
-            <th>ZipCode</th>
-            <th>StudenCount</th>
-            <th>StartTime</th>
-            <th>EndTIme</th>
-            <th>Photographer</th>
-            <th>Location</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    @foreach (var photoEventItem in Model.PhotoEvents)
-    {
-        <tbody>
+
+@if (Model.PhotoEvents.Count <= 0)
+{
+    <p class="display-6">You have no PhotoEvents</p>
+}
+else
+{
+    <form method="get">
+        <input type="radio"
+               asp-for="EventType"
+               value="" />
+        <label>All</label>
+        <br />
+        <input type="radio"
+               asp-for="EventType"
+               value="1" />
+        <label>Active</label>
+        <br />
+        <input type="radio"
+               asp-for="EventType"
+               value="2" />
+        <label>Past</label>
+        <br />
+        <input type="submit" value="Filter" />
+    </form>
+
+    <h2>PhotoEvents</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td>@photoEventItem.ID</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
-                <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
-                <td>@photoEventItem.StartTime</td>
-                <td>@photoEventItem.EndTime</td>
-                <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
-                <td>@photoEventItem.Location</td>
-                <td>
-                    @if (HttpContext.Session.GetInt32("Role") != 0)
-                    {
-                        <a asp-page="/Photoevents/PhotoEventDetails" class="btn btn-primary" asp-route-id="@photoEventItem.ID">
-                            Details
-                        </a>
-                    }
-                </td>
-                @if (HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 0)
-                {
-                    <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
-                }
+                <th>ID</th>
+                <th>SchoolName</th>
+                <th>SchoolAddress</th>
+                <th>ZipCode</th>
+                <th>StudenCount</th>
+                <th>StartTime</th>
+                <th>EndTIme</th>
+                <th>Photographer</th>
+                <th>Location</th>
+                <th></th>
+                <th></th>
             </tr>
-        </tbody>
-    }
-</table>
+        </thead>
+        @foreach (var photoEventItem in Model.PhotoEvents)
+        {
+            <tbody>
+                <tr>
+                    <td>@photoEventItem.ID</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.Name</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.Street</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.ZipCode</td>
+                    <td>@photoEventItem.TheSchoolAdmin.TheSchool.StudentCount</td>
+                    <td>@photoEventItem.StartTime</td>
+                    <td>@photoEventItem.EndTime</td>
+                    <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
+                    <td>@photoEventItem.Location</td>
+                    <td>
+                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        {
+                            <a asp-page="/Photoevents/PhotoEventDetails" class="btn btn-primary" asp-route-id="@photoEventItem.ID">
+                                Details
+                            </a>
+                        }
+                    </td>
+                    @if (HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 0)
+                    {
+                        <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Delete</button></td>
+                    }
+                </tr>
+            </tbody>
+        }
+    </table>
+
+}
 
 
 <form method="post" asp-page-handler="DeletePhotoEvents" id="deleteForm">
@@ -129,12 +139,9 @@
 </div>
 
 <form method="post">
-    @if (HttpContext.Session.GetInt32("Role") != 0)
-    {
-        <div>
-            <a asp-page="/Index">Back to Homepage</a>
-        </div>
-    }
+    <div>
+        <a asp-page="/Index">Back to Homepage</a>
+    </div>
 </form>
 
 @section Scripts {
@@ -151,4 +158,3 @@
         });
     </script>
 }
-
