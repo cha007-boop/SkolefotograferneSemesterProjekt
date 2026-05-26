@@ -65,7 +65,7 @@ else
                                 <td>@sc.TheSchool.Name</td>
                             }
                             <td>
-                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Opdater/Rediger</a>
+                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Opdater</a>
                             </td>
                             <form method="post" asp-page-handler="Delete">
                             <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@sc.ID')">Slet</button></td>
@@ -89,21 +89,21 @@ else
         <div class="modal-content">
 
             <div class="modal-header bg-warning">
-                <h5 class="modal-title">Confirm Delete</h5>
+                <h5 class="modal-title">Bekræft sletning</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <p>Are you sure you want to delete this Class?</p>
+                <p>Er du sikker på, at du vil slette denne klasse?</p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancel
+                    Annuller
                 </button>
 
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                    Delete
+                    Slet
                 </button>
             </div>
 

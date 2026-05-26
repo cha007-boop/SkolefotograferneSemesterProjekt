@@ -2,9 +2,9 @@
 @model SkolefotograferneSemesterProjekt.Pages.Students.UpdateStudentModel
 @{
 	if (HttpContext.Session.GetInt32("Role") == 0)
-		ViewData["Title"] = "Update Student";
+		ViewData["Title"] = "Opdater elev";
 	else
-		ViewData["Title"] = "View Student Details";
+		ViewData["Title"] = "Se elevoplysninger";
 }
 
 
@@ -25,7 +25,7 @@
 				asp-items="Model.Schools"
 				id="schoolSelect"
 				class="form-select">
-			<option value="">-- Select School --</option>
+			<option value="">-- Vælg skole --</option>
 		</select>
 	</div>
 	<div class="form-group">
@@ -39,29 +39,29 @@
 			<span asp-validation-for="ClassLetter" class="text-danger"></span>
 	</div>
 		<div class="form-group">
-			<input type="submit" asp-page-handler="Update" value="Update" class="btn btn-primary" />
+			<input type="submit" asp-page-handler="Update" value="Opdater" class="btn btn-primary" />
 		</div>
 	</form>
 	<div>
-		<a asp-page="/Users/EditProfile">Return</a>
+		<a asp-page="/Users/EditProfile">Tilbage</a>
 	</div>
 }
 else
 {
-	<h1>Student Information</h1>
+	<h1>Elevoplysninger</h1>
 
-	<p>First Name: @Model.NewStudent.FirstName</p>
-	<p>Surname: @Model.NewStudent.Surname</p>
+	<p>Fornavn: @Model.NewStudent.FirstName</p>
+	<p>Efternavn: @Model.NewStudent.Surname</p>
 	@if(HttpContext.Session.GetInt32("Role") == 4)
 	{
-		<p>Parent ID: @Model.NewStudent.TheParent.ID</p>
+		<p>Forælder ID: @Model.NewStudent.TheParent.ID</p>
 	}
-	<p>School: @Model.NewStudent.TheSchool.Name</p>
-	<p>Class: @Model.NewStudent.TheSchoolClass.Grade @Model.NewStudent.TheSchoolClass.Letter</p>
+	<p>Skole: @Model.NewStudent.TheSchool.Name</p>
+	<p>Klasse: @Model.NewStudent.TheSchoolClass.Grade @Model.NewStudent.TheSchoolClass.Letter</p>
 
 	<form>
 	<div>
-	<a asp-page="Students/ListStudents">Back to List of Students</a>
+	<a asp-page="Students/ListStudents">Tilbage til liste over elever</a>
 	</div>
 	</form>
 }

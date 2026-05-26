@@ -1,12 +1,11 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Schools.UpdateSchoolModel
 @{
-	ViewData["Title"] = "Update School";
+	ViewData["Title"] = "Opdater skole";
 }
 
 
-<h1>Editing the school @Model.NewSchool.Name's information</h1>
-
+<h1>Opdater oplysningerne for skolen @Model.NewSchool.Name</h1>
 
 <form method="post" enctype="multipart/form-data">
 	<input hidden asp-for="@Model.NewSchool.ID" />
@@ -41,5 +40,5 @@
 	</div>
 </form>
 <div>
-	<a asp-page="/Schools/GetAllSchool">Return</a> @*hvorfor fuck går den ind i OnGet!?!?!*@
+	<a asp-page="/Schools/GetAllSchool">Tilbage</a>
 </div>

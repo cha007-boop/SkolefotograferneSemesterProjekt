@@ -1,10 +1,10 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Students.CreateStudentModel
 @{
-	ViewData["Title"] = "Signup a Student";
+	ViewData["Title"] = "Tilmeld en elev";
 }
 
-<h1>Create Student</h1>
+<h1>Tilmeld elev</h1>
 
 <form method="Post" enctype="multipart/form-data">
 	<div class="form-group">
@@ -21,7 +21,7 @@
 				asp-items="Model.Schools"
 				id="schoolSelect"
 				class="form-select">
-			<option value="">-- Select School --</option>
+			<option value="">-- Vælg skole --</option>
 		</select>
 	</div>
 	<div class="form-group">
@@ -34,12 +34,12 @@
 		<input asp-for="@Model.ClassLetter" class="form-control" />
 	</div>
 
-	<p>By clicking singup you hereby consent that your child can be fotographed</p>
+	<p>Ved at klikke på tilmeld accepterer du, at dit barn kan blive fotograferet</p>
 	<div class="form-group">
-		<input type="submit" value="Signup" class="btn-primary" />
+		<input type="submit" value="Tilmeld" class="btn-primary" />
 	</div>
 
 	<div>
-		<a asp-page="/Index">Back to Homepage</a>
+		<a asp-page="/Index">Tilbage til forsiden</a>
 	</div>
 </form>

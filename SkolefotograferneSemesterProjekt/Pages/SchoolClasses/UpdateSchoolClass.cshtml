@@ -1,12 +1,11 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.SchoolClasses.UpdateSchoolClassModel
 @{
-	ViewData["Title"] = "Update Class";
+	ViewData["Title"] = "Opdater klasse";
 }
 
 
-<h1>Update/Edit</h1>
-
+<h1>Opdater oplysningerne for klassen @Model.NewSchoolClass.Grade@Model.NewSchoolClass.Letter</h1>
 
 <form method="post">
     <input type="hidden" asp-for="@Model.NewSchoolClass.ID" />

@@ -2,14 +2,14 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Parents.ListOfChildrenModel
 @{
-    ViewData["Title"] = "List of Children";
+    ViewData["Title"] = "Liste over børn";
 }
 
-<h1>List of Childrens</h1>
+<h1>Liste over børn</h1>
 
 @if (Model.Students.Count <= 0)
 {
-    <p class="display-6">You currently have no childrens connected to this your account</p>
+    <p class="display-6">Du har endnu ikke registreret nogle børn til din konto</p>
 }
 else
 {
@@ -34,7 +34,7 @@ else
                     <td>@student.TheSchoolClass.TheSchool.Name</td>
                     <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
                     <td>
-                        <a asp-page="/Parents/StudentPictures" asp-route-id="@student.ID">See Pictures</a>
+                        <a asp-page="/Parents/StudentPictures" asp-route-id="@student.ID">Se billeder</a>
                     </td>
                 </tr>
             }
@@ -43,5 +43,5 @@ else
 }
 
 <div>
-    <a asp-page="/Index">Back to Homepage</a>
+    <a asp-page="/Index">Tilbage til forsiden</a>
 </div>

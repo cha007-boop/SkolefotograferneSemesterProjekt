@@ -2,13 +2,13 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Parents.StudentPicturesModel
 @{
-    ViewData["Title"] = "Student Pictures";
+    ViewData["Title"] = "Elev billeder";
 }
 
-<h1> Pictures of @Model.TheStudent.FirstName </h1>
+<h2> Billeder af @Model.TheStudent.FirstName </h2>
 
 <p>
-    The Parent is @Model.TheParent.FirstName With the email @Model.TheParent.Email <br />
+    Tilhører forældren @Model.TheParent.FirstName med email @Model.TheParent.Email <br />
 </p>
 
 <div class="container-md">
@@ -41,30 +41,30 @@
 
 </div>
 <h4>
-    The Class Photo
+    Klasse billeder
 </h4>
 @if (Model.ClassPhoto != null)
 {
     @foreach (Photo cp in Model.ClassPhoto)
     {
-        <img style="width:auto; max-height:500px" src="~/images/ClassPhotos/@cp.Filename" alt="Class Photo" />
+        <img style="width:auto; max-height:500px" src="~/images/ClassPhotos/@cp.Filename" alt="Klasse billede" />
 
     }
 }
 else
 {
-    <p>There is not a Class Photo yet</p>
+    <p>Der er endnu ikke et klassebillede</p>
 }
 <br />
 <br />
-<h4>All Pictures</h4>
+<h4>Alle billeder</h4>
 @if (Model.Photos != null)
 {
     <div class="row" style="display:flex; flex-wrap:wrap">
         <div class="column" style="flex:50%">
             @foreach (Photo p in Model.Photos)
             {
-                <img style="width:auto; max-height:300px; " src="~/images/Portraits/@p.Filename" alt="Student Photo" />
+                <img style="width:auto; max-height:300px; " src="~/images/Portraits/@p.Filename" alt="Elev billede" />
             }
         </div>
     </div>

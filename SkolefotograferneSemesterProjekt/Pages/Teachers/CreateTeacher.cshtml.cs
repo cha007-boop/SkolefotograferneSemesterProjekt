@@ -7,6 +7,7 @@ using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
 using SkolefotograferneSemesterProjekt.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SkolefotograferneSemesterProjekt.Pages.Teachers
@@ -22,6 +23,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Teachers
         [BindProperty]
         public string Password { get; set; } = "";
         [BindProperty]
+        [Display(Name = "Bekræft password")]
         public string Pass2 { get; set; } = "";
         public IEnumerable<SelectListItem> Schools { get; set; } = [];
 
