@@ -2,16 +2,15 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Parents.ParentInformationModel
 @{
-    ViewData["Title"] = "Parent Information";
+    ViewData["Title"] = "Forælder oplysninger";
 }
 
 
-<h1>Welcome @Model.Parent.FirstName</h1>
-
+<h1>Velkommen @Model.Parent.FirstName</h1>
 @if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Parent)
 {
     <p style="text-align:right">
-        <a asp-page="/Parents/EditParents" asp-route-id="@Model.Parent.ID">Edit Parent Information</a>
+        <a asp-page="/Users/EditProfile">Rediger oplysninger</a>
     </p>
 }
 
@@ -50,22 +49,22 @@
 @if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Parent)
 {
 <br />
-    <p>You have registered @Model.Students.Count() child/children to you.</p>
+    <p>Du har registreret @Model.Students.Count() barn/børn til dig.</p>
 <br />
 <br />
 <p>
-    <a asp-page="/Students/CreateStudent">Add Child</a>
+    <a asp-page="/Students/CreateStudent">Tilføj barn</a>
 </p>
 }
 
 <table class="table">
     <thead>
         <tr>
-            <th>Child ID</th>
-            <th>Child First Name</th>
-            <th>Child Surname</th>
-            <th>Child School</th>
-            <th>Child Class</th>
+            <th>Barn ID</th>
+            <th>Barn Fornavn</th>
+            <th>Barn Efternavn</th>
+            <th>Barn Skole</th>
+            <th>Barn Klasse</th>
         </tr>
     </thead>
     <tbody>
@@ -85,8 +84,8 @@
     @foreach (Student s in @Model.Students)
     {
     <p>
-        Here you can see the pictures of your child @s.FirstName
-        <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
+        Her kan du se billederne af dit barn @s.FirstName
+        <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">Se billeder</a>
         <br />
     </p>
     }

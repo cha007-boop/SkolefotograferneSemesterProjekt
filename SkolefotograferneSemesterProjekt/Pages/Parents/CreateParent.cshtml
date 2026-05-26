@@ -1,10 +1,10 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Parents.CreateParentModel
 @{
-    ViewData["Title"] = "Register New Parent";
+    ViewData["Title"] = "Opret forælder";
 }
 
-<h1>Register new Parent</h1>
+<h2>Opret ny forælder</h2>
 
 <form method="post" enctype="multipart/form-data">
     @* <div asp-validation-summary="All" class="text-danger"></div> *@
@@ -43,21 +43,21 @@
     <h4>Acceptere du at vi må fotografere dit barn/Børn</h4>
     <div class="form-group">
         <input type="checkbox" asp-for="Consent" required />
-        <label asp-for="Consent">I accept that my child/children may be photographed</label>
+        <label asp-for="Consent">Jeg accepterer, at mit barn/børn må blive fotograferet</label>
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Create a parent" class="btn btn-primary" />
+        <input type="submit" value="Opret forælder" class="btn btn-primary" />
     </div>
 
     <div>
         @if (HttpContext.Session.GetInt32("ID") == null)
         {
-            <a asp-page="/Users/SignUp">Back to Signup page</a>
+            <a asp-page="/Users/SignUp">Tilbage til tilmeldingsside</a>
         }
         else
         {
-            <a asp-page="index">Back to list of parents</a>
+            <a asp-page="index">Tilbage til listen over forældre</a>
         }
     </div>
 </form>

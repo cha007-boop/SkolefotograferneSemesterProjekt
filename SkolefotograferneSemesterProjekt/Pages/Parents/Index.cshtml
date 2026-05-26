@@ -2,14 +2,14 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Parents.IndexModel
 @{
-    ViewData["Title"] = "Parents";
+    ViewData["Title"] = "Forældre";
 }
 
 
-<h1>List of Parents</h1>
+<h2>Liste over forældre</h2>
 <form>
-    search: <input type="text" asp-for="@Model.Filter" />
-    <input type="submit" value="Filter" />
+    Søg: <input type="text" asp-for="@Model.Filter" />
+    <input type="submit" value="Filtrer" />
 </form>
 
 @if (HttpContext.Session.GetInt32("Role") == 4)
@@ -29,7 +29,7 @@
                 asp-route-SortBy="FirstName" 
                 asp-route-SortOrder="@Model.Toggle("FirstName")"
                 asp-route-Filter="@Model.Filter"
-                class="text-decoration-none text-dark" name="SortBy" value="FirstName">FirstName
+                class="text-decoration-none text-dark" name="SortBy" value="FirstName">Fornavn
                     @(Model.SortBy == "FirstName" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
                 </a>
             </th>
@@ -40,7 +40,7 @@
                    asp-route-SortOrder="@Model.Toggle("Surname")"
                    asp-route-Filter="@Model.Filter"
                    class="text-decoration-none text-dark" name="SortBy" value="Surname">
-                    Surname
+                    Efternavn
                     @(Model.SortBy == "Surname" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
                 </a>
             </th>
@@ -51,7 +51,7 @@
                    asp-route-SortOrder="@Model.Toggle("PhoneNumber")"
                    asp-route-Filter="@Model.Filter"
                    class="text-decoration-none text-dark" name="SortBy" value="PhotoNumber">
-                    PhoneNumber
+                    Telefon
                     @(Model.SortBy == "PhoneNumber" ? (Model.SortOrder == "asc" ? "▲" : "▼") : "")
                 </a>
             </th>
@@ -69,7 +69,7 @@
                 <td>@p.PhoneNumber</td>
                 <td>@p.Email</td>
                 <td>
-                    <a asp-page="ParentInformation" asp-route-ID="@p.ID">More Information</a>
+                    <a asp-page="ParentInformation" asp-route-ID="@p.ID">Mere information</a>
                 </td>
             </tr>
         }
