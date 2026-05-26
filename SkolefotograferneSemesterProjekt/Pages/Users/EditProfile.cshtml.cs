@@ -188,7 +188,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 }
                 if (user.Password != VerifyPassword)
                 {
-                    ModelState.AddModelError($"{thisuser}.Password", "Password not the same");
+                    ModelState.AddModelError($"{thisuser}.Password", "Password er ikke ens");
                 }
                 return false;
             }

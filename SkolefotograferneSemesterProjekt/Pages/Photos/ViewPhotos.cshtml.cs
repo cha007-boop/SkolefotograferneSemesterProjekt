@@ -33,6 +33,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
         public List<string> Conditions { get; set; } = new List<string>();
 
         public List<Photo> Photos { get; set; } = new List<Photo>();
+        [BindProperty]
+        public string? Message { get; set; } = null;
 
         public ViewPhotosModel(IPhotoService photoService, IWebHostEnvironment webHostEnvironment)
         {
@@ -92,7 +94,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photos
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Delete", $"Error deleting photo: {ex.Message}");
+                //ModelState.AddModelError("Message", $"Fejl ved sletning: {ex.Message}");
+                
+                Message = $"Fejl ved sletning: {ex.Message}";
                 await OnGet();
                 return Page();
             }

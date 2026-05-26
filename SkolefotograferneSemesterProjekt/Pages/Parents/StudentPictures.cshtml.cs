@@ -33,7 +33,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             {
                 if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 4)
                 {
-                    throw new UnauthorizedAccessException("You do not have permission to access this page.");
+                    throw new UnauthorizedAccessException("Du har ikke adgang til denne side");
                 }
                 TheStudent = await _studentService.GetById(id);
                 TheParent = TheStudent.TheParent;

@@ -45,13 +45,13 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                    ModelState.AddModelError(string.Empty, "Forkert email eller adgangskode.");
                     return Page();
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                ModelState.AddModelError(string.Empty, $"Der opstod en fejl: {ex.Message}");
                 return Page();
             }
 

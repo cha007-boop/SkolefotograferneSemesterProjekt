@@ -29,7 +29,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
             {
                 if ( HttpContext.Session.GetInt32("Role") != 4)
                 {
-                    throw new UnauthorizedAccessException("You do not have permission to access this page.");
+                    throw new UnauthorizedAccessException("Du har ikke adgang til den side");
                 }
                 Parent = await _parentService.SearchParent(Id);
                 Students = await _studentService.GetAllByParent(Id);

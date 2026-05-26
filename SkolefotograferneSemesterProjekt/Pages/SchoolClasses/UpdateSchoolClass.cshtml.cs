@@ -58,19 +58,19 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             TryValidateModel(NewSchoolClass);
             try
             {
-                if(NewSchoolClass.Grade > 10)
+                if(NewSchoolClass.Grade > 10 || NewSchoolClass.Grade < 0 )
                 {
-                    ModelState.AddModelError("NewSchoolClass.Grade", "Grade cannot exceed 10");
+                    ModelState.AddModelError("NewSchoolClass.Grade", "Klassetrin skal være et tal fra 0 til 10");
                     return Page();
                 }
                 if(NewSchoolClass.Letter.Length > 1)
                 {
-                    ModelState.AddModelError("NewSchoolClass.Letter", "Letter cannot contain multiple letters");
+                    ModelState.AddModelError("NewSchoolClass.Letter", "Bogstav må højst være et enkelt tegn");
                     return Page();
                 }
-                if(DateTime.Now.Year.ToString() != NewSchoolClass.SchoolYear || DateTime.Now.Year+1.ToString() != NewSchoolClass.SchoolYear)
+                if(DateTime.Now.Year.ToString() != NewSchoolClass.SchoolYear && (DateTime.Now.Year+1).ToString() != NewSchoolClass.SchoolYear)
                 {
-                    ModelState.AddModelError("NewSchoolClass.SchoolYear", "School year can only be edited to current or next year");
+                    ModelState.AddModelError("NewSchoolClass.SchoolYear", "Skoleåret kan kun redigeres til nuværende eller næste år");
                     return Page();
                 }
                 await _schoolClassService.Update(NewSchoolClass);

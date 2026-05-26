@@ -22,28 +22,20 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
-                {
-                    await conn.OpenAsync();
 
-                    var command = new SqlCommand(@"
+                await conn.OpenAsync();
+
+                var command = new SqlCommand(@"
                     INSERT INTO School (Name, StudentCount, Street, ZipCode, Country)
                     VALUES (@Name, @StudentCount, @Street, @ZipCode, @Country)", conn);
 
-                    command.Parameters.AddWithValue("@Name", school.Name);
-                    command.Parameters.AddWithValue("@StudentCount", school.StudentCount);
-                    command.Parameters.AddWithValue("@Street", school.Street);
-                    command.Parameters.AddWithValue("@ZipCode", school.ZipCode);
-                    command.Parameters.AddWithValue("@Country", school.Country);
+                command.Parameters.AddWithValue("@Name", school.Name);
+                command.Parameters.AddWithValue("@StudentCount", school.StudentCount);
+                command.Parameters.AddWithValue("@Street", school.Street);
+                command.Parameters.AddWithValue("@ZipCode", school.ZipCode);
+                command.Parameters.AddWithValue("@Country", school.Country);
 
-                    await command.ExecuteNonQueryAsync();
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                await command.ExecuteNonQueryAsync();
             }
         }
 
@@ -51,23 +43,15 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    SqlCommand command = new SqlCommand("delete from Users where ID in (SELECT ID FROM Teacher WHERE SchoolID = @ID) OR ID in (SELECT ID FROM SchoolAdmin WHERE SchoolID = @ID)", connection);
-                    command.Parameters.AddWithValue("@ID", id);
-                    
-                    connection.Open();
-                    await command.ExecuteNonQueryAsync();
+                SqlCommand command = new SqlCommand("delete from Users where ID in (SELECT ID FROM Teacher WHERE SchoolID = @ID) OR ID in (SELECT ID FROM SchoolAdmin WHERE SchoolID = @ID)", connection);
+                command.Parameters.AddWithValue("@ID", id);
 
-                    command = new SqlCommand("delete from School where ID = @ID", connection);
-                    command.Parameters.AddWithValue("@ID", id);
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                connection.Open();
+                await command.ExecuteNonQueryAsync();
+
+                command = new SqlCommand("delete from School where ID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                await command.ExecuteNonQueryAsync();
             }
         }
 
@@ -76,24 +60,17 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<School> schools = new List<School>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                await conn.OpenAsync();
+                SqlCommand command = new SqlCommand(@"SELECT * FROM School", conn);
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
                 {
-                    await conn.OpenAsync();
-                    SqlCommand command = new SqlCommand(@"SELECT * FROM School", conn);
-
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-
-                    while (await reader.ReadAsync())
-                    {
-                        School school = SchoolReader(reader);
-                        schools.Add(school);
-                    }
-                    reader.Close();
+                    School school = SchoolReader(reader);
+                    schools.Add(school);
                 }
-                catch
-                {
-
-                }
+                reader.Close();
             }
             return schools;
         }
@@ -103,26 +80,19 @@ namespace SkolefotograferneSemesterProjekt.Services
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 School school = new School();
-                try
-                {
-                    await conn.OpenAsync();
-                    SqlCommand command = new SqlCommand(@"SELECT * FROM School Where ID = @ID", conn);
 
-                    command.Parameters.AddWithValue("@ID", id);
+                await conn.OpenAsync();
+                SqlCommand command = new SqlCommand(@"SELECT * FROM School Where ID = @ID", conn);
 
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                command.Parameters.AddWithValue("@ID", id);
 
-                    await reader.ReadAsync();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                    school = SchoolReader(reader);
-                    reader.Close();
+                await reader.ReadAsync();
 
-                    return school;
-                }
-                catch
-                {
+                school = SchoolReader(reader);
+                reader.Close();
 
-                }
                 return school;
             }
         }
@@ -132,7 +102,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<School> schools = new List<School>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                
+
                 IEnumerable<string> validColumns = Columns.Keys;
 
                 if (string.IsNullOrWhiteSpace(sortColumn))
@@ -149,38 +119,31 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw new ArgumentException("Invalid column name");
                 }
 
-                try
+                await conn.OpenAsync();
+                string query = "SELECT * FROM School";
+                if (!string.IsNullOrWhiteSpace(filterValue))
                 {
-                    await conn.OpenAsync();
-                    string query = "SELECT * FROM School";
-                    if (!string.IsNullOrWhiteSpace(filterValue))
+                    if (filterColumn == "All")
                     {
-                        if (filterColumn == "All")
-                        {
-                            query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
-                        }
-                        else
-                        {
-                            query += $" WHERE {filterColumn} LIKE @FilterValue";
-                        }
+                        query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
                     }
-                    query += $" ORDER BY {sortColumn} {sortOrder}";
+                    else
+                    {
+                        query += $" WHERE {filterColumn} LIKE @FilterValue";
+                    }
+                }
+                query += $" ORDER BY {sortColumn} {sortOrder}";
 
 
-                    SqlCommand command = new SqlCommand(query, conn);
-                    command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        School school = SchoolReader(reader);
-                        schools.Add(school);
-                    }
-                    reader.Close();
-                }
-                catch
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
+                    School school = SchoolReader(reader);
+                    schools.Add(school);
                 }
-                
+                reader.Close();
             }
             return schools;
         }
@@ -189,26 +152,18 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
-                {
-                    SqlCommand command = new SqlCommand(@"
+                SqlCommand command = new SqlCommand(@"
                     UPDATE School 
                     SET Name = @Name, StudentCount = @StudentCount, Street = @Street, ZipCode = @ZipCode, Country = @Country
                     WHERE ID = @ID", conn);
-                    await command.Connection.OpenAsync();
-                    command.Parameters.AddWithValue("@ID", school.ID);
-                    command.Parameters.AddWithValue("@Name", school.Name);
-                    command.Parameters.AddWithValue("@StudentCount", school.StudentCount);
-                    command.Parameters.AddWithValue("@Street", school.Street);
-                    command.Parameters.AddWithValue("@ZipCode", school.ZipCode);
-                    command.Parameters.AddWithValue("@Country", school.Country);
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", school.ID);
+                command.Parameters.AddWithValue("@Name", school.Name);
+                command.Parameters.AddWithValue("@StudentCount", school.StudentCount);
+                command.Parameters.AddWithValue("@Street", school.Street);
+                command.Parameters.AddWithValue("@ZipCode", school.ZipCode);
+                command.Parameters.AddWithValue("@Country", school.Country);
+                await command.ExecuteNonQueryAsync();
             }
         }
 

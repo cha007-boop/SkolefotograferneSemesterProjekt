@@ -72,7 +72,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 }
                 if (ClassGrade > 10 || ClassGrade < 0)
                 {
-                    ModelState.AddModelError("ClassGrade", "Invalid Grade");
+                    ModelState.AddModelError("ClassGrade", "Klassetrin skal være et tal fra 0 til 10");
                     return Page();
                 }
                 string year = SchoolYearCalc.GetSchoolYear();
@@ -88,7 +88,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             }
             catch (ArgumentException)
             {
-                ModelState.AddModelError("ClassGrade", "Class doesn't exist");
+                ModelState.AddModelError("ClassGrade", "Klasse findes ikke");
                 await OnGetAsync();
                 return Page();
             }
