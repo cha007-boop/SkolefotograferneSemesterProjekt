@@ -104,6 +104,12 @@ else
                     {
                         <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Slet Fotoevent</button></td>
                     }
+                    @if(HttpContext.Session.GetInt32("Role") == (int)UserRole.Teacher)
+                    {
+                        <td>
+                            <a asp-page="/Bookings/CreateBooking" asp-route-id="@photoEventItem.ID" class="btn btn-primary">Book</a>
+                        </td>
+                    }
                 </tr>
             </tbody>
         }

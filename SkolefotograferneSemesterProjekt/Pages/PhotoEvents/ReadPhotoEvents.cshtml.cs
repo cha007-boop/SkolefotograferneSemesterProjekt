@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SkolefotograferneSemesterProjekt.Helpers.Filter;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
-using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
+using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
     public class ReadPhotoEventsModel : PageModel
     {
         private IPhotoEventService PEService;
+        private ITeacherService _teacherService;
 
         [BindProperty]
         public PhotoEvent PhotoEvent { get; set; }
@@ -22,26 +23,33 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         [BindProperty(SupportsGet = true)]
         public string FilterBy { get; set; }
 
-        public ReadPhotoEventsModel(IPhotoEventService pEService)
+        public ReadPhotoEventsModel(IPhotoEventService pEService, ITeacherService teacherService)
         {
             PEService = pEService;
+            _teacherService = teacherService;
         }
         public async Task<IActionResult> OnGet()
         {
             try
             {
-                if(HttpContext.Session.GetInt32("Role") == 0)
+                if (HttpContext.Session.GetInt32("Role") == 0)
                 {
                     PhotoEvents = PhotoEventsFilter(await PEService.GetByParent((int)HttpContext.Session.GetInt32("ID"))).OrderBy(p => p.StartTime).ToList();
                 }
                 else if (HttpContext.Session.GetInt32("Role") == 1)
                 {
                     PhotoEvents = PhotoEventsFilter(await PEService.SearchEventByPhortographerID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
-                } else if (HttpContext.Session.GetInt32("Role") == 3)
+                }
+                else if (HttpContext.Session.GetInt32("Role") == 2)
+                {
+                    Teacher teacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
+                    PhotoEvents = PhotoEventsFilter(await PEService.GetAll()).Where(p => teacher.TheSchool.ID == p.TheSchoolAdmin.TheSchool.ID).ToList();
+                }
+                else if (HttpContext.Session.GetInt32("Role") == 3)
                 {
                     PhotoEvents = PhotoEventsFilter(await PEService.SearchEventBySchoolAdminID((int)HttpContext.Session.GetInt32("ID"))).OrderBy(n => n.StartTime).ToList();
                 }
-                else if(HttpContext.Session.GetInt32("Role") == 4)
+                else if (HttpContext.Session.GetInt32("Role") == 4)
                 {
                     PhotoEvents = PhotoEventsFilter(await PEService.GetAll()).OrderBy(n => n.StartTime).ToList();
                 }
@@ -50,7 +58,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     throw new UnauthorizedAccessException();
                 }
             }
-            catch(UnauthorizedAccessException uax)
+            catch (UnauthorizedAccessException uax)
             {
                 ViewData["ErrorMessage"] = uax.Message;
                 return RedirectToPage("/Users/AccessDenied");
