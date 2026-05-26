@@ -11,11 +11,11 @@ namespace SkolefotograferneSemesterProjekt.Services
         public Dictionary<string, string> Columns { get; } = new Dictionary<string, string>
         {
             { "ID", "ID" },
-            { "Name", "Name" },
-            { "Street", "Street" },
-            { "ZipCode", "Zip Code" },
-            { "Country", "Country" },
-            { "StudentCount", "Student Count" }
+            { "Name", "Navn" },
+            { "Street", "Vej" },
+            { "ZipCode", "Postnr" },
+            { "Country", "Land" },
+            { "StudentCount", "Antal elever" }
         };
 
         public async Task Add(School school)

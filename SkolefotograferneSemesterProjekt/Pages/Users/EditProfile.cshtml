@@ -12,7 +12,7 @@
 	{
 		<input type="hidden" asp-for="@Model.ThisParent.ID" />
 
-		<h1>Welcome @Model.ThisParent.FirstName</h1>
+		<h1>Velkommen @Model.ThisParent.FirstName</h1>
 
 		@* <p style="text-align:right">
     <a asp-page="/Parents/EditParents" asp-route-id="@Model.ThisParent.ID">Edit Parent Information</a>
@@ -79,25 +79,25 @@
 			</div>
 		</div>
 		<br />
-		<p>You have registered @Model.Students.Count() child/children to you.</p>
+		<p>Du har registreret @Model.Students.Count() barn/børn til dig.</p>
 		<br />
 		<p>
-			<a asp-page="/Students/CreateStudent">Add Child</a>
+			<a asp-page="/Students/CreateStudent">Tilføj barn</a>
 		</p>
 		@if (Model.Students.Count() <= 0)
 		{
-			<h1>There are no child added to your account</h1>
+			<h1>Der er ingen børn tilføjet til din konto</h1>
 		}
 		else
 		{
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Child ID</th>
-						<th>Child First Name</th>
-						<th>Child Surname</th>
-						<th>Child School</th>
-						<th>Child Class</th>
+						<th>Barn ID</th>
+						<th>Barn Fornavn</th>
+						<th>Barn Efternavn</th>
+						<th>Barn Skole</th>
+						<th>Barn Klasse</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -110,11 +110,11 @@
 							<td>@student.TheSchoolClass.TheSchool.Name</td>
 							<td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
 							<td>
-								<a asp-page="/Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Update child</a>
+								<a asp-page="/Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Opdater barn</a>
 							</td>
 							<td>
 								<form method="post">
-									<button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteStudentModal('@student.ID')">Delete</button>
+									<button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteStudentModal('@student.ID')">Slet</button>
 								</form>
 							</td>
 						</tr>
