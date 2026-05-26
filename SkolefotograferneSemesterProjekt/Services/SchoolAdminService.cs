@@ -20,26 +20,26 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             { "ID", "ID" },
             { "Email", "Email" },
-            { "PhoneNumber", "PhoneNumber" },
-            { "ContactPerson", "ContactPerson" },
-            { "SchoolID", "SchoolID" },
-            { "Name", "School Name" },
-            { "Street", "School Street" },
-            { "ZipCode", "School ZipCode" },
-            { "Country", "School Country" },
-            { "StudentCount", "School Student Count" }
+            { "PhoneNumber", "Telefon" },
+            { "ContactPerson", "Kontaktperson" },
+            { "SchoolID", "Skole ID" },
+            { "Name", "Skole navn" },
+            { "Street", "Skole gade" },
+            { "ZipCode", "Skole postnummer" },
+            { "Country", "Skole land" },
+            { "StudentCount", "Antal elever" }
         };
 
         public Dictionary<string, string> SortableColumns { get; } = new Dictionary<string, string>
         {
             { "ID", "ID" },
             { "Email", "Email" },
-            { "PhoneNumber", "PhoneNumber" },
-            { "ContactPerson", "ContactPerson" },
-            { "Name", "School Name" },
-            { "Street", "School Street" },
-            { "ZipCode", "School ZipCode" },
-            { "StudentCount", "School Student Count" }
+            { "PhoneNumber", "Telefon" },
+            { "ContactPerson", "Kontaktperson" },
+            { "Name", "Skole navn" },
+            { "Street", "Skole gade" },
+            { "ZipCode", "Skole postnummer" },
+            { "StudentCount", "Antal elever" }
         };
 
 

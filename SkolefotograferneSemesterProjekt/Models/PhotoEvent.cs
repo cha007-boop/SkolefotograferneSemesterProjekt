@@ -12,10 +12,15 @@ namespace SkolefotograferneSemesterProjekt.Models
     public class PhotoEvent
     {
         public int ID { get; set; }
+        [Display(Name = "Starttid")]
         public DateTime StartTime { get; set; }
+        [Display(Name = "Sluttid")]
         public DateTime EndTime { get; set; }
+        [Display(Name = "Fotograf")]
         public Photographer ThePhotographer { get; set; }
+        [Display(Name = "Skoleadministrator")]
         public SchoolAdmin TheSchoolAdmin { get; set; }
+        [Display(Name = "Lokation")]
         public string Location { get; set; }
         public PhotoEvent()
         {

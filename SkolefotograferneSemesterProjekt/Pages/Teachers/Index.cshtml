@@ -21,13 +21,13 @@
     }
 
     <p>
-        <a asp-page="CreateTeacher">Opret en Teacher</a>
+        <a asp-page="CreateTeacher">Opret en lærer</a>
     </p>
 
     <a asp-page="/Teachers/ViewSchoolClasses" class="btn btn-primary">Se klasser</a>
     @if (Model.TeacherFList.Count() <= 0)
     {
-        <p class="display-6">There are currently no teachers linked to this school</p>
+        <p class="display-6">Der er i øjeblikket ingen lærere tilknyttet denne skole</p>
     }
     else
     {
@@ -140,7 +140,7 @@ else if (Model.IsUser)
 }
 else
 {
-    <h1 style="text-align: center;">Access denied...</h1>
+    <h1 style="text-align: center;">Adgang nægtet...</h1>
     
     <h2 style="text-align: center">
         <a asp-page="CreateTeacher">Opret en bruger</a>
@@ -148,5 +148,5 @@ else
 }
 
 <div>
-    <a asp-page="/Index">Back to Homepage</a>
+    <a asp-page="/Index">Tilbage til forsiden</a>
 </div>

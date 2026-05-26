@@ -2,17 +2,17 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Users.ViewProfileModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Profil";
 }
 
-<h1>Profile</h1>
+<h1>Profil</h1>
 
 <form method="post">
     @if (HttpContext.Session.GetInt32("Role") == 0)
     {
         <input type="hidden" asp-for="@Model.ThisParent.ID" />
 
-        <h1>Welcome @Model.ThisParent.FirstName</h1>
+        <h1>Velkommen @Model.ThisParent.FirstName</h1>
 
         <div class="row" style="padding:5px">
             <div class="col-5">
@@ -48,20 +48,20 @@
             <div class="col-1"></div>
         </div>
         <br />
-        <p>You have registered @Model.Students.Count() child/children to you.</p>
+        <p>Du har registreret @Model.Students.Count() barn/børn til dig.</p>
         <br />@* 
         <p>
-            <a asp-page="/Students/CreateStudent">Add Child</a>
+            <a asp-page="/Students/CreateStudent">Tilføj barn</a>
         </p> *@
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Child ID</th>
-                    <th>Child First Name</th>
-                    <th>Child Surname</th>
-                    <th>Child School</th>
-                    <th>Child Class</th>
+                    <th>Barn ID</th>
+                    <th>Barn Fornavn</th>
+                    <th>Barn Efternavn</th>
+                    <th>Barn Skole</th>
+                    <th>Barn Klasse</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,8 +81,8 @@
             @foreach (Student s in @Model.Students)
             {
             <p>
-                Here you can see the pictures of your child @s.FirstName
-                <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">See Pictures</a>
+                Her kan du se billederne af dit barn @s.FirstName
+                <a asp-page="/Parents/StudentPictures" asp-route-id="@s.ID">Se billeder</a>
                 <br />
             </p>
         }
@@ -176,10 +176,10 @@
 </form>
 @*update button*@
 <form>
-    <a asp-page="/Users/EditProfile" type="button" class="btn btn-primary">Edit Info</a>
+    <a asp-page="/Users/EditProfile" type="button" class="btn btn-primary">Rediger oplysninger</a>
 </form>
 
 <div>
-    <a asp-page="/Index">Back to Homepage</a>
+    <a asp-page="/Index">Tilbage til forsiden</a>
 </div>
 

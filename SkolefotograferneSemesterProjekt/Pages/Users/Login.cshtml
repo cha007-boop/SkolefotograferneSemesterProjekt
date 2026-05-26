@@ -1,6 +1,7 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Users.LoginModel
 @{
+	ViewData["Title"] = "Login";
 }
 
 <div class="center-user-form">
@@ -20,10 +21,10 @@
 				<div class="form-group mt-3">
 					<input type="submit" value="Login" class="btn btn-primary" />
 
-					<a asp-page="/Users/SignUp" class="btn btn-warning">Sign Up</a>
+					<a asp-page="/Users/SignUp" class="btn btn-warning">Opret bruger</a>
 				</div>
 				<div>
-					<a asp-page="/Index">Back to HomePage</a>
+					<a asp-page="/Index">Tilbage til forside</a>
 				</div>
 			</form>
 		</div>
