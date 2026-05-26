@@ -82,48 +82,40 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
-                if (PhotoEvent.StartTime > PhotoEvent.EndTime)
+                if (PhotoEvent.StartTime > PhotoEvent.EndTime || PhotoEvent.StartTime == default || PhotoEvent.EndTime == default || PhotoEvent.StartTime < DateTime.Now ||PhotographerID == null|| SchoolAdminID == null ||PhotoEvent.Location == null)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
+                    if (PhotoEvent.StartTime > PhotoEvent.EndTime)
+                    {
+                        ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
+                    }
+                    if (PhotoEvent.StartTime == default)
+                    {
+                        ModelState.AddModelError("PhotoEvent.StartTime", "Vælg et starttidspunkt");
+                    }
+                    if (PhotoEvent.EndTime == default)
+                    {
+                        ModelState.AddModelError("PhotoEvent.EndTime", "vælg et sluttidspunkt");
+                    }
+                    if (PhotoEvent.StartTime < DateTime.Now)
+                    {
+                        ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunktet skal være senere end dags dato");
+                    }
+                    if (PhotographerID == null)
+                    {
+                        ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Vælg en Fotograf");
+                    }
+                    if (SchoolAdminID == null)
+                    {
+                        ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
+                    }
+                    if (PhotoEvent.Location == null)
+                    {
+                        ModelState.AddModelError("PhotoEvent.Location", "Vælg en lokation");
+                    }
                     await OnGet();
                     return Page();
                 }
-                if (PhotoEvent.StartTime == default)
-                {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "Vælg et starttidspunkt");
-                    await OnGet();
-                    return Page();
-                }
-                if (PhotoEvent.EndTime == default)
-                {
-                    ModelState.AddModelError("PhotoEvent.EndTime", "vælg et sluttidspunkt");
-                    await OnGet();
-                    return Page();
-                }
-                if (PhotoEvent.StartTime < DateTime.Now)
-                {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunktet skal være senere end dags dato");
-                    await OnGet();
-                    return Page();
-                } 
-                if(PhotographerID == null)
-                {
-                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Vælg en Fotograf");
-                    await OnGet();
-                    return Page();
-                }
-                if (SchoolAdminID == null)
-                {
-                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
-                    await OnGet();
-                    return Page();
-                }
-                if (PhotoEvent.Location == null)
-                {
-                    ModelState.AddModelError("PhotoEvent.Location", "Vælg en lokation");
-                    await OnGet();
-                    return Page();
-                }
+                
                 
                 await _photoEventService.Add(PhotoEvent);
             } 
