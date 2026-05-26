@@ -40,12 +40,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 SchoolAdmins = schoolAdmins.Select(s => new SelectListItem
                 {
                     Value = Convert.ToString(s.ID),
-                    Text = $"ID: {s.ID}, Name: {s.ContactPerson} - School: {s.TheSchool.Name}, PhoneNumber: {s.PhoneNumber}"
+                    Text = $"ID: {s.ID}, Navn: {s.ContactPerson} - Skole: {s.TheSchool.Name}, Tlf: {s.PhoneNumber}"
                 });
                 Photographers = photographers.Select(s => new SelectListItem
                 {
                     Value = Convert.ToString(s.ID),
-                    Text = $"ID: {s.ID}, Name: {s.FirstName} - CVR: {s.CVR}, PhoneNumber: {s.PhoneNumber}"
+                    Text = $"ID: {s.ID}, Navn: {s.FirstName} - CVR: {s.CVR}, Tlf: {s.PhoneNumber}"
                 });
             }
             catch (UnauthorizedAccessException uax)
@@ -68,30 +68,30 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 TryValidateModel(PhotoEvent);
                 if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be before the Date of EndTime");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }
                 if (PhotoEvent.StartTime < DateTime.Now)
                 {
-                    ModelState.AddModelError("PhotoEvent.StartTime", "The Date for StartTime needs to be after the current todays date");
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunktet skal være senere end dags dato");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }if(PhotoEvent.ThePhotographer.ID == default)
                 {
-                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Please pick a photographer");
+                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Vælg en Fotograf");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }
                 if (PhotoEvent.TheSchoolAdmin.ID == default)
                 {
-                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Please pick a school admin");
+                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }
                 if (PhotoEvent.Location == null)
                 {
-                    ModelState.AddModelError("PhotoEvent.Location", "Please pick a location");
+                    ModelState.AddModelError("PhotoEvent.Location", "Vælg en lokation");
                     await OnGet(PhotoEvent.ID);
                     return Page();
                 }

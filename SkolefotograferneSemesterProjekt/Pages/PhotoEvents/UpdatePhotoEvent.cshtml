@@ -1,23 +1,23 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.UpdatePhotoEventModel
 @{
-    ViewData["Title"] = "Update PhotoEvent";
+    ViewData["Title"] = "Opdater Fotoevent";
 }
 
-<h4>The PhotoEvent that is chosen:</h4>
+<h4>Det valgte Fotoevent:</h4>
 
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>StartTime</th>
-            <th>EndTIme</th>
-            <th>Photographer</th>
+            <th>Start Tidspunkt</th>
+            <th>Slut Tidspunkt</th>
+            <th>Fotograf</th>
             @if (HttpContext.Session.GetInt32("Role") != 3)
             {
-                <th>SchoolAdminID</th>
+                <th>SkolesekretærID</th>
             }
-            <th>Location</th>
+            <th>Lokation</th>
         </tr>
     </thead>
     <tbody>
@@ -50,12 +50,12 @@
     </div>
 
     <div class="form-group">
-        <h6>PhotographerID</h6>
+        <h6>FotografID</h6>
         <select asp-for="@Model.PhotoEvent.ThePhotographer.ID"
                 asp-items="@Model.Photographers"
                 id="photographerSelect"
                 class="form-select">
-            <option value="">-- Select Photographer --</option>
+            <option value="">-- Vælg Fotograf --</option>
         </select>
         <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
@@ -66,12 +66,12 @@
         }
         else
         {
-            <h6>SchoolAdminID</h6>
+            <h6>SkolesekretærID</h6>
             <select asp-for="@Model.PhotoEvent.TheSchoolAdmin.ID"
                     asp-items="@Model.SchoolAdmins"
                     id="schoolAdminSelect"
                     class="form-select">
-                <option value="">-- Select SchoolAdmin --</option>
+                <option value="">-- Vælg Skolesekretær --</option>
             </select>
             <span asp-validation-for="PhotoEvent.TheSchoolAdmin.ID" class="text-danger"></span>
         }
@@ -83,10 +83,10 @@
         <span asp-validation-for="PhotoEvent.Location" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Click here to Update the PhotoEvent" class="btn btn-primary" />
+        <input type="submit" value="Opdater Fotoevent" class="btn btn-primary" />
     </div>
 
     <div>
-        <a asp-page="/Photoevents/PhotoEventDetails" asp-route-id="@Model.PhotoEvent.ID">Back to Details</a>
+        <a asp-page="/Photoevents/PhotoEventDetails" asp-route-id="@Model.PhotoEvent.ID">Se detaljer for Fotoeventet</a>
     </div>
 </form>

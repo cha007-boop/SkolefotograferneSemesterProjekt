@@ -1,12 +1,12 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.UploadPortraitModel
 @{
-    ViewData["Title"] = "Upload Portrait";
+    ViewData["Title"] = "Upload Portrætbillede";
 }
 
 <div>
     <h3 class="Display-3">
-        Upload Portrait for @Model.TheStudent.FirstName @Model.TheStudent.Surname
+        Upload Portrætbillede for @Model.TheStudent.FirstName @Model.TheStudent.Surname
     </h3>
 </div>
 
@@ -37,6 +37,6 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-4">
-        <a asp-page="/PhotoEvents/PhotoEventDetails" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-secondary">Back to PhotoEvent Details</a>
+        <a asp-page="/PhotoEvents/PhotoEventDetails" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-secondary">Tilbage Til Fotoeventet</a>
     </div>
 </div>

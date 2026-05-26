@@ -1,10 +1,10 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.CreatePhotoEventsModel
 @{
-    ViewData["Title"] = "Create PhotoEvent";
+    ViewData["Title"] = "Opret Fotoevent";
 }
 
-<h1>Create PhotoEvent</h1>
+<h1>Opret Fotoevent</h1>
 
 <form method="post">
     <div class="form-group">
@@ -20,24 +20,24 @@
     </div>
 
     <div class="form-group">
-        <h6>PhotographerID</h6>
+        <h6>Fotograf ID</h6>
         <select asp-for="PhotographerID"
                 asp-items="@Model.Photographers"
                 id="photographerSelect"
                 class="form-select">
-            <option value="">-- Select Photographer --</option>
+            <option value="">-- Vælg Fotograf --</option>
         </select>
         <span asp-validation-for="PhotoEvent.ThePhotographer.ID" class="text-danger"></span>
     </div>
     @if (HttpContext.Session.GetInt32("Role") == 4)
     {
-        <h6>SchoolAdminID</h6>
+        <h6>Skolesekretær ID</h6>
         <div class="form-group">
             <select asp-for="SchoolAdminID"
                     asp-items="@Model.SchoolAdmins"
                     id="schoolAdminSelect"
                     class="form-select">
-                <option value="">-- Select SchoolAdmin --</option>
+                <option value="">-- Vælg Skolesekretær --</option>
             </select>
             <span asp-validation-for="PhotoEvent.TheSchoolAdmin.ID" class="text-danger"></span>
         </div>
@@ -49,11 +49,11 @@
         <span asp-validation-for="PhotoEvent.Location" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Click here to create a PhotoEvent" class="btn btn-primary" />
+        <input type="submit" value="Opret Fotoevent" class="btn btn-primary" />
     </div>
 
     <div>
-        <a asp-page="ReadPhotoEvents">Back to Photo Events</a> @* to index in the photoevents folder *@
+        <a asp-page="ReadPhotoEvents">Tilbage til Fotoevents</a> @* to index in the photoevents folder *@
     </div>
 
     </form>

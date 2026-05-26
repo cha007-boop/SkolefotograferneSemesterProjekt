@@ -49,7 +49,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             }
             catch (UnauthorizedAccessException)
             {
-                ViewData["ErrorMessage"] = "You do not have permission to access this page.";
+                ViewData["ErrorMessage"] = "Du har ikke adgang til denne side.";
                 return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
@@ -93,7 +93,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                         };
                         await _photoService.Add(photo);
                     }
-                    ViewData["SuccessMessage"] = $"{FileUpload.Files.Count} Files uploaded successfully!";
+                    ViewData["SuccessMessage"] = $"{FileUpload.Files.Count} Filer uploaded successfuldt!";
                 }
                 catch (Exception ex)
                 {
@@ -102,7 +102,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Please select at least one file to upload.");
+                ModelState.AddModelError(string.Empty, "Vælg en mindst en fil af uploade.");
             }
             
             return Page();

@@ -48,7 +48,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             }
             catch (UnauthorizedAccessException)
             {
-                ViewData["ErrorMessage"] = "You do not have permission to access this page.";
+                ViewData["ErrorMessage"] = "Du har ikke adgang til denne side.";
                 return RedirectToPage("/Users/AccessDenied");
             }
             catch (Exception exc)
@@ -83,7 +83,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
                 catch (Exception exc)
                 {
-                    ModelState.AddModelError(string.Empty, $"An error occurred while uploading the photo: {exc.Message}");
+                    ModelState.AddModelError(string.Empty, $"Der opstod en fejl ved upload af billedet: {exc.Message}");
                     return Page();
                 }
 

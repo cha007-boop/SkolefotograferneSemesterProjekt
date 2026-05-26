@@ -1,11 +1,12 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.PhotoEvents.UploadClassPhotoModel
 @{
+    ViewData["Title"] = "Upload Klassebillede";
 }
 
 <div>
     <h3 class="Display-3">
-        Upload class photo for @Model.TheSchoolClass.Grade @Model.TheSchoolClass.Letter
+        Upload Klassebillede for @Model.TheSchoolClass.Grade @Model.TheSchoolClass.Letter
     </h3>
 </div>
 
@@ -21,7 +22,7 @@
                 </div>
             </div>
             <div class="formgroup mt-3">
-                <input type="submit" value="Upload" class="btn btn-primary" />
+                <input type="submit" value="Opload" class="btn btn-primary" />
             </div>
         </form>
     </div>
