@@ -82,11 +82,16 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
-                if (PhotoEvent.StartTime > PhotoEvent.EndTime || PhotoEvent.StartTime == default || PhotoEvent.EndTime == default || PhotoEvent.StartTime < DateTime.Now ||PhotographerID == null|| SchoolAdminID == null ||PhotoEvent.Location == null)
+                bool temporarilyFalse = false; //im using this boolean just to go through every if statement
+                if (temporarilyFalse == false)
                 {
                     if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                     {
                         ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
+                    }
+                    if (PhotoEvent.EndTime <= PhotoEvent.StartTime.AddDays(5))
+                    {
+                        ModelState.AddModelError("PhotoEvent.EndTime", "sluttidspunktet må ikke vare længere end 5 dage");
                     }
                     if (PhotoEvent.StartTime == default)
                     {
@@ -112,6 +117,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     {
                         ModelState.AddModelError("PhotoEvent.Location", "Vælg en lokation");
                     }
+                    temporarilyFalse = true;
                     await OnGet();
                     return Page();
                 }
