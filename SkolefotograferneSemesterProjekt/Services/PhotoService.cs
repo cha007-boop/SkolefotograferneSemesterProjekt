@@ -13,30 +13,29 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public Dictionary<string, string> SortableColumns { get; } = new Dictionary<string, string>
         {
-            { "Photo.PhotoEventID", "Photo Event ID" },
-            { "School.Name", "School Name" },
-            { "SchoolClass.Grade, SchoolClass.Letter", "Class" },
-            { "Student.FirstName", "Child first name" },
-            { "Student.Surname", "Child surname" },
-            { "Photo.UploadedAt", "Uploaded At" }
+            { "Photo.PhotoEventID", "Fotoevent ID" },
+            { "School.Name", "Skole navn" },
+            { "Student.FirstName", "Barnets fornavn" },
+            { "Student.Surname", "Barnets efternavn" },
+            { "Photo.UploadedAt", "Uploadet den" }
         };
 
         public Dictionary<string, string> FilterableColumns { get; } = new Dictionary<string, string>
         {
-            { "Filename", "Filename" },
-            { "Photographer.FirstName", "Photographer first name" },
-            { "Photographer.Surname", "Photographer surname" },
-            { "Photographer.ID", "Photographer ID" },
-            { "School.Name", "School name" },
-            { "SchoolID", "School ID" },
-            { "Student.FirstName", "Child first name" },
-            { "Student.Surname", "Child surname" },
-            { "PhotoEventID", "Photo Event ID" },
-            { "Student.ClassID", "Class ID" },
-            { "ChildID", "Child ID" },
-            { "Student.ParentID", "Parent ID" },
-            { "Parent.FirstName", "Parent first name" },
-            { "Parent.Surname", "Parent surname" }
+            { "Filename", "Filnavn" },
+            { "Photographer.FirstName", "Fotograf fornavn" },
+            { "Photographer.Surname", "Fotograf efternavn" },
+            { "Photographer.ID", "Fotograf ID" },
+            { "School.Name", "Skole navn" },
+            { "SchoolID", "Skole ID" },
+            { "Student.FirstName", "Barnets fornavn" },
+            { "Student.Surname", "Barnets efternavn" },
+            { "PhotoEventID", "Fotoevent ID" },
+            { "Student.ClassID", "Klasse ID" },
+            { "ChildID", "Barn ID" },
+            { "Student.ParentID", "Forælder ID" },
+            { "Parent.FirstName", "Forælder fornavn" },
+            { "Parent.Surname", "Forælder efternavn" }
 
         };
 
@@ -122,7 +121,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 try
                 {
-                    string query = "SELECT * FROM Photo WHERE ClassId = @SchoolClassId AND ChildID IS NULL";
+                    string query = "SELECT * FROM Photo WHERE ClassID = @SchoolClassId AND ChildID IS NULL";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
                     await conn.OpenAsync();
@@ -220,11 +219,11 @@ namespace SkolefotograferneSemesterProjekt.Services
                     filterColumn = "All";
                 }
 
-                if ((!FilterableColumns.Keys.Contains(filterColumn) && filterColumn != "All" && filterColumn != "Class"))
+                if (!FilterableColumns.ContainsKey(filterColumn) && filterColumn != "All")
                 {
                     throw new ArgumentException("Invalid column name");
                 }
-                if (!SortableColumns.Keys.Contains(sortColumn))
+                if (!SortableColumns.ContainsKey(sortColumn))
                 {
                     throw new ArgumentException("Invalid column name");
                 }
