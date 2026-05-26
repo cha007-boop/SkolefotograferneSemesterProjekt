@@ -20,11 +20,11 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Hjem</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privatlivspolitik</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/FAQ/Index">FAQ</a>
@@ -44,12 +44,12 @@
                 {
                     <div class="dropdown">
                         <button type="button" class="btn btn-outline-success rounded-pill dropdown-toggle" data-bs-toggle="dropdown">
-                            @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("Role")) user
+                            @((UserRole)HttpContextAccessor.HttpContext.Session.GetInt32("Role")) bruger
                         </button>
                         <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Users/ViewProfile" class="dropdown-item">My Profile</a></li>
-                            <li><hr class="dropdown-divider"></hr></li>
-                            <li><a asp-area="" asp-page="/Users/Login" asp-page-handler="Logout" class="dropdown-item">Log out</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Users/ViewProfile" class="dropdown-item">Min profil</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                            <li><a asp-area="" asp-page="/Users/Login" asp-page-handler="Logout" class="dropdown-item">Log ud</a></li>
                         </ul>
                     </div>
                 }
@@ -64,7 +64,7 @@
  
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - SkolefotograferneSemesterProjekt - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2026 - SkolefotograferneSemesterProjekt - <a asp-area="" asp-page="/Privacy">Privatlivspolitik</a>
             &copy; 2026 - SkolefotograferneSemesterProjekt - <a asp-area="" asp-page="/FAQ/Index">FAQ</a>
         </div>
     </footer>

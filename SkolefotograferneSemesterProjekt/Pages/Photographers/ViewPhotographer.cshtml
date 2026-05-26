@@ -2,30 +2,29 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Photographers.ViewPhotographerModel
 @{
-	ViewData["Title"] = "Photographer Info";
+    ViewData["Title"] = "Fotograf info";
 }
 
-<h1>Viewing @Model.Photographer.FirstName @Model.Photographer.Surname's information</h1>
+<h1>Viser @Model.Photographer.FirstName @Model.Photographer.Surname's information</h1>
 
 
+<p>Email: @Model.Photographer.Email</p>
+<p>Telefonnummer: @Model.Photographer.PhoneNumber</p>
+<p>Hjemmeside: @Model.Photographer.Website</p>
+<p>CVR: @Model.Photographer.CVR</p>
+<p>Facebook: @Model.Photographer.Facebook</p>
+<p>Instagram: @Model.Photographer.Instagram</p>
 
-	<p>Email: @Model.Photographer.Email</p>
-	<p>Phonenumber: @Model.Photographer.PhoneNumber</p>
-	<p>Website: @Model.Photographer.Website</p>
-	<p>CVR: @Model.Photographer.CVR</p>
-	<p>Facebook: @Model.Photographer.Facebook</p>
-	<p>Instagram: @Model.Photographer.Instagram</p>
-
-	<form>
-		<div>
-			<a asp-page="ShowPhotographers" class="btn btn-primary">Back to Photographers</a>
-		</div>
-	</form>
+<form>
+    <div>
+        <a asp-page="ShowPhotographers" class="btn btn-primary">Tilbage til fotografer</a>
+    </div>
+</form>
 
 @if (HttpContext.Session.GetInt32("Role") == 4)
 {
     <form method="post">
-        <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@Model.Photographer.ID')">Delete</button></td>
+        <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@Model.Photographer.ID')">Slet</button></td>
     </form>
 }
 <form method="post" asp-page-handler="Delete" id="deleteForm">
@@ -37,38 +36,38 @@
         <div class="modal-content">
 
             <div class="modal-header bg-warning">
-                <h5 class="modal-title">Confirm Delete</h5>
+                <h5 class="modal-title">Bekræft sletning</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <p>Are you sure you want to delete this user?</p>
+                <p>Er du sikker på, at du vil slette denne bruger?</p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancel
+                    Annuller
                 </button>
 
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                    Delete
+                    Slet
                 </button>
             </div>
 
         </div>
     </div>
+</div>
+@section Scripts {
+    <script>
+        function DisplayConfirmDeleteModal(id) {
+            document.getElementById("deleteId").value = id;
 
-@section Scripts{
-        <script>
-            function DisplayConfirmDeleteModal(id) {
-                document.getElementById("deleteId").value = id;
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
 
-                var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-                modal.show();
-            }
-
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
-                document.getElementById("deleteForm").submit();
-            });
-        </script>
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
 }

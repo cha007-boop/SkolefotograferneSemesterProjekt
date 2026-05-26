@@ -2,48 +2,47 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.SysAdmins.ListOfAllUsersModel
 @{
-    ViewData["Title"] = "List of Users";
+    ViewData["Title"] = "Bruger oversigt";
 }
 
 
-<h1>List of Users</h1>
-
+<h1>Brugeroversigt</h1>
 <table class="table">
     <thead>
         <tr>
-            <th>The Role</th>
-            <th>The List</th>
+            <th>Rolle</th>
+            <th>Listen</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Parents</td>
+            <td>Forældre</td>
             <td>
-                <a asp-page="/Parents/Index">View Parents</a>
+                <a asp-page="/Parents/Index">Se forældre</a>
             </td>
         </tr >
         <tr>
-            <td>Photographers</td>
+            <td>Fotografer</td>
             <td>
-                <a asp-page="/Photographers/ShowPhotographers">View Photographers</a>
+                <a asp-page="/Photographers/ShowPhotographers">Se fotografer</a>
             </td>
         </tr>
         <tr>
-            <td>Teacher</td>
+            <td>Lærere</td>
             <td>
-                <a asp-page="/Teachers/Index">View Teachers</a>
+                <a asp-page="/Teachers/Index">Se lærere</a>
             </td>
         </tr>
         <tr>
-            <td>SchoolAdmin</td>
+            <td>Skole administrator</td>
             <td>
-                <a asp-page="/SchoolAdmins/GetAllSchoolAdmin">View school Admin</a>
+                <a asp-page="/SchoolAdmins/GetAllSchoolAdmin">Se skole administratorer</a>
             </td>
         </tr>
         <tr>
             <td>SysAdmin</td>
             <td>
-                <a asp-page="/SysAdmins/ListSysAdmins">View SysAmin</a>
+                <a asp-page="/SysAdmins/ListSysAdmins">Se SysAdmin</a>
             </td>
         </tr>
     </tbody>

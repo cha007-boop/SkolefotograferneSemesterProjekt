@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
 {
@@ -19,6 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
         public string SchoolID { get; set; }
 
         [BindProperty]
+        [Display(Name = "Bekræft password")]
         public string VerifyPassword { get; set; }
 
         public IEnumerable<SelectListItem> Schools { get; set; }

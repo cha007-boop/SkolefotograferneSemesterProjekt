@@ -4,6 +4,7 @@ using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Users
 {
@@ -32,6 +33,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
         [BindProperty]
         public List<Student> Students { get; set; }
         [BindProperty]
+        [Display(Name = "Bekræft password")]
         public string VerifyPassword { get; set; }
         [BindProperty]
         public bool Check { get; set; }

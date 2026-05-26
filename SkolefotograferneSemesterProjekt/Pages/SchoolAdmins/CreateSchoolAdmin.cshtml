@@ -1,11 +1,11 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.SchoolAdmins.CreateSchoolAdminModel
 @{
-    ViewData["Title"] = "Create School Admin";
+    ViewData["Title"] = "Opret skoleadministrator";
 }
 
 <div>
-    <h2 class="display-3">Create School Admin</h2>
+    <h2 class="display-3">Opret skoleadministrator</h2>
 </div>
 
 <div class="row">
@@ -26,7 +26,7 @@
                         asp-items="@Model.Schools"
                         id="schoolSelect"
                         class="form-select">
-                    <option value="">-- Select School --</option>
+                    <option value="">-- Vælg skole --</option>
                 </select>
             </div>
             <div class="form-group">
@@ -47,18 +47,18 @@
                 <span asp-validation-for="VerifyPassword" class="text-danger"></span>
             </div>
             <div class="formgroup mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Opret" class="btn btn-primary" />
             </div>
         </form>
     </div>
     <div>
         @if(HttpContext.Session.GetInt32("ID") == null)
         {
-            <a asp-page="/Users/SignUp">Back to Signup page</a>
+            <a asp-page="/Users/SignUp">Tilbage til tilmeldingsside</a>
         }
         else
         {
-            <a asp-page="/GetAllSchoolAdmin">Back to List</a>
+            <a asp-page="/GetAllSchoolAdmin">Tilbage til liste</a>
         }
     </div>
 </div>
