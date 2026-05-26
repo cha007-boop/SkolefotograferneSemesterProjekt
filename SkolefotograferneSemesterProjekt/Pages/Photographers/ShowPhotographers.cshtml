@@ -2,11 +2,11 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Photographers.ShowPhotographersModel
 @{
-	ViewData["Title"] = "List Photographers";
+	ViewData["Title"] = "Liste af Fotografer";
 }
 
 
-<h2>Liste over fotografer</h2>
+<h2>Liste over Fotografer</h2>
 
 @if (HttpContext.Session.GetInt32("Role") == 4)
 {
