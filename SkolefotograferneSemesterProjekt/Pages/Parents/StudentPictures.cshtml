@@ -2,14 +2,17 @@
 @using SkolefotograferneSemesterProjekt.Models
 @model SkolefotograferneSemesterProjekt.Pages.Parents.StudentPicturesModel
 @{
-    ViewData["Title"] = "Elev billeder";
+    ViewData["Title"] = "Se billeder";
 }
 
 <h2> Billeder af @Model.TheStudent.FirstName </h2>
 
-<p>
-    Tilhører forældren @Model.TheParent.FirstName med email @Model.TheParent.Email <br />
-</p>
+@if (HttpContext.Session.GetInt32("Role") != (int)UserRole.Parent)
+{
+    <p>
+        Tilhører forældren @Model.TheParent.FirstName med email @Model.TheParent.Email <br />
+    </p>
+}
 
 <div class="container-md">
 
@@ -41,7 +44,7 @@
 
 </div>
 <h4>
-    Klasse billeder
+    Klassebilleder
 </h4>
 @if (Model.ClassPhoto != null)
 {
