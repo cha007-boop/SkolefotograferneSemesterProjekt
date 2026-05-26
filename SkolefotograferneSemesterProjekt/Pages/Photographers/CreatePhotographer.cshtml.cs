@@ -39,7 +39,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Photographers
                 NewPhotographer.ID = await _photographerService.Add(NewPhotographer);
                 else
                 {
-                    ModelState.AddModelError("NewPhotographer.Password", "Password not the same");
+                    ModelState.AddModelError("NewPhotographer.Password", "Password er ikke ens");
                     return Page();
                 }
                 if (!HttpContext.Session.GetInt32("Role").HasValue)
