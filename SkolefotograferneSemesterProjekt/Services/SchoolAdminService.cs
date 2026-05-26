@@ -45,30 +45,23 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task<int> Add(SchoolAdmin schoolAdmin)
         {
-            int userID = await _userService.Add(schoolAdmin); 
+            int userID = await _userService.Add(schoolAdmin);
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
-                {
-                    await conn.OpenAsync();
 
-                    var cmd = new SqlCommand(@"
+                await conn.OpenAsync();
+
+                var cmd = new SqlCommand(@"
                 INSERT INTO SchoolAdmin (ID, PhoneNumber, ContactPerson, SchoolID)
                 VALUES (@ID, @PhoneNumber, @ContactPerson, @SchoolID);
                 ", conn);
 
-                    cmd.Parameters.AddWithValue("@ID", userID);
-                    cmd.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
-                    cmd.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
-                    cmd.Parameters.AddWithValue("@SchoolID", schoolAdmin.TheSchool.ID);
+                cmd.Parameters.AddWithValue("@ID", userID);
+                cmd.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
+                cmd.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
+                cmd.Parameters.AddWithValue("@SchoolID", schoolAdmin.TheSchool.ID);
 
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                await cmd.ExecuteNonQueryAsync();
             }
             return userID;
         }
@@ -78,31 +71,24 @@ namespace SkolefotograferneSemesterProjekt.Services
             List<SchoolAdmin> schoolAdmins = new List<SchoolAdmin>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                SqlCommand cmd = new SqlCommand(_getAllSql, conn);
+                await cmd.Connection.OpenAsync();
+
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    SqlCommand cmd = new SqlCommand(_getAllSql, conn);
-                    await cmd.Connection.OpenAsync();
+                    int id = reader.GetInt32("ID");
+                    string email = reader.GetString("Email");
+                    string phoneNumber = reader.GetString("PhoneNumber");
+                    string contactPerson = reader.GetString("ContactPerson");
+                    int schoolID = reader.GetInt32("SchoolID");
 
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        int id = reader.GetInt32("ID");
-                        string email = reader.GetString("Email");
-                        string phoneNumber = reader.GetString("PhoneNumber");
-                        string contactPerson = reader.GetString("ContactPerson");
-                        int schoolID = reader.GetInt32("SchoolID");
-
-                        SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson };
-                        School school = await _schoolService.GetById(schoolID);
-                        schoolAdmin.TheSchool = school;
-                        schoolAdmins.Add(schoolAdmin);
-                    }
-                    reader.Close();
+                    SchoolAdmin schoolAdmin = new SchoolAdmin { ID = id, Email = email, PhoneNumber = phoneNumber, ContactPerson = contactPerson };
+                    School school = await _schoolService.GetById(schoolID);
+                    schoolAdmin.TheSchool = school;
+                    schoolAdmins.Add(schoolAdmin);
                 }
-                catch
-                {
-
-                }
+                reader.Close();
             }
             return schoolAdmins;
         }
@@ -129,42 +115,34 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw new ArgumentException("Invalid column name");
                 }
 
-                try
+                await conn.OpenAsync();
+                string query = "Select Users.ID, Users.Email, SchoolAdmin.ContactPerson, SchoolAdmin.PhoneNumber, SchoolAdmin.SchoolID, School.[Name], School.Street, School.ZipCode, School.Country, School.StudentCount " +
+                    "FROM Users " +
+                    "INNER JOIN SchoolAdmin ON Users.ID = SchoolAdmin.ID " +
+                    "INNER JOIN School ON SchoolAdmin.SchoolID = School.ID";
+                if (!string.IsNullOrWhiteSpace(filterValue))
                 {
-                    await conn.OpenAsync();
-                    string query = "Select Users.ID, Users.Email, SchoolAdmin.ContactPerson, SchoolAdmin.PhoneNumber, SchoolAdmin.SchoolID, School.[Name], School.Street, School.ZipCode, School.Country, School.StudentCount " +
-                        "FROM Users " +
-                        "INNER JOIN SchoolAdmin ON Users.ID = SchoolAdmin.ID " +
-                        "INNER JOIN School ON SchoolAdmin.SchoolID = School.ID";
-                    if (!string.IsNullOrWhiteSpace(filterValue))
+                    if (filterColumn == "All")
                     {
-                        if (filterColumn == "All")
-                        {
-                            query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
-                        }
-                        else
-                        {
-                            query += $" WHERE {filterColumn} LIKE @FilterValue";
-                        }
+                        query += " WHERE " + string.Join(" OR ", validColumns.Select(col => $"{col} LIKE @FilterValue"));
                     }
-                    query += $" ORDER BY {sortColumn} {sortOrder}";
-
-
-                    SqlCommand command = new SqlCommand(query, conn);
-                    command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
+                    else
                     {
-                        SchoolAdmin schoolAdmin = SchoolAdminReader(reader);
-                        schoolAdmins.Add(schoolAdmin);
+                        query += $" WHERE {filterColumn} LIKE @FilterValue";
                     }
-                    reader.Close();
                 }
-                catch
+                query += $" ORDER BY {sortColumn} {sortOrder}";
+
+
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    throw;
+                    SchoolAdmin schoolAdmin = SchoolAdminReader(reader);
+                    schoolAdmins.Add(schoolAdmin);
                 }
-
+                reader.Close();
             }
             return schoolAdmins;
         }
@@ -174,53 +152,38 @@ namespace SkolefotograferneSemesterProjekt.Services
             SchoolAdmin schoolAdmin = null;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM SchoolAdmin sa join Users u on u.ID = sa.ID WHERE u.ID = @ID", conn);
-                    await cmd.Connection.OpenAsync();
-                    cmd.Parameters.AddWithValue("@ID", id);
+                SqlCommand cmd = new SqlCommand(@"SELECT * FROM SchoolAdmin sa join Users u on u.ID = sa.ID WHERE u.ID = @ID", conn);
+                await cmd.Connection.OpenAsync();
+                cmd.Parameters.AddWithValue("@ID", id);
 
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    if (await reader.ReadAsync())
-                    {
-                        schoolAdmin = SchoolAdminReader(reader);
-                    }
-                    reader.Close();
-                }
-                catch
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
                 {
-
+                    schoolAdmin = SchoolAdminReader(reader);
                 }
+                reader.Close();
             }
             return schoolAdmin;
         }
 
         public async Task Update(SchoolAdmin schoolAdmin)
         {
-            try
+            await _userService.ValidateUpdate(schoolAdmin);
+            using SqlConnection conn = new SqlConnection(connectionString);
             {
-                await _userService.ValidateUpdate(schoolAdmin);
-                using SqlConnection conn = new SqlConnection(connectionString);
-                {
-                    SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
-                    await command.Connection.OpenAsync();
-                    command.Parameters.AddWithValue("@ID", schoolAdmin.ID);
-                    command.Parameters.AddWithValue("@Email", schoolAdmin.Email);
-                    command.Parameters.AddWithValue("@Password", schoolAdmin.Password);
-                    await command.ExecuteNonQueryAsync();
+                SqlCommand command = new SqlCommand(@"UPDATE Users SET Email = @Email, Password = @Password WHERE ID = @ID", conn);
+                await command.Connection.OpenAsync();
+                command.Parameters.AddWithValue("@ID", schoolAdmin.ID);
+                command.Parameters.AddWithValue("@Email", schoolAdmin.Email);
+                command.Parameters.AddWithValue("@Password", schoolAdmin.Password);
+                await command.ExecuteNonQueryAsync();
 
-                    command.CommandText = @"UPDATE SchoolAdmin SET PhoneNumber = @PhoneNumber, ContactPerson = @ContactPerson WHERE ID = @ID";
-                   
-                    command.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
-                    command.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
+                command.CommandText = @"UPDATE SchoolAdmin SET PhoneNumber = @PhoneNumber, ContactPerson = @ContactPerson WHERE ID = @ID";
 
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine(exc.Message);
-                throw;
+                command.Parameters.AddWithValue("@PhoneNumber", schoolAdmin.PhoneNumber);
+                command.Parameters.AddWithValue("@ContactPerson", schoolAdmin.ContactPerson);
+
+                await command.ExecuteNonQueryAsync();
             }
         }
 

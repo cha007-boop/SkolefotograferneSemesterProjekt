@@ -15,6 +15,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             { "Photo.PhotoEventID", "Fotoevent ID" },
             { "School.Name", "Skole navn" },
+            { "SchoolClass.Grade, SchoolClass.Letter", "Klasse" },
             { "Student.FirstName", "Barnets fornavn" },
             { "Student.Surname", "Barnets efternavn" },
             { "Photo.UploadedAt", "Uploadet den" }
@@ -43,23 +44,16 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID, UploadedAt) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID, @UploadedAt)";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Filename", photo.Filename);
-                    command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent?.ID ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@ClassID", photo.TheSchoolClass?.ID ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@ChildID", photo.Child?.ID ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@UploadedAt", photo.UploadedAt);
-                    connection.Open();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+
+                string query = "INSERT INTO Photo (Filename, PhotoEventID, ClassID, ChildID, UploadedAt) VALUES (@Filename, @PhotoEventID, @ClassID, @ChildID, @UploadedAt)";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Filename", photo.Filename);
+                command.Parameters.AddWithValue("@PhotoEventID", photo.ThePhotoEvent?.ID ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@ClassID", photo.TheSchoolClass?.ID ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@ChildID", photo.Child?.ID ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@UploadedAt", photo.UploadedAt);
+                connection.Open();
+                await command.ExecuteNonQueryAsync();
             }
             return photo.Filename;
         }
@@ -68,25 +62,17 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                string query = "SELECT * FROM Photo";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                List<Photo> photos = new List<Photo>();
+                while (await reader.ReadAsync())
                 {
-                    string query = "SELECT * FROM Photo";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    List<Photo> photos = new List<Photo>();
-                    while (await reader.ReadAsync())
-                    {
-                        Photo photo = await PhotoReader(reader);
-                        photos.Add(photo);
-                    }
-                    return photos;
+                    Photo photo = await PhotoReader(reader);
+                    photos.Add(photo);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return photos;
             }
         }
 
@@ -94,24 +80,16 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                string query = "SELECT * FROM Photo WHERE Filename = @Filename";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Filename", filename);
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
                 {
-                    string query = "SELECT * FROM Photo WHERE Filename = @Filename";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Filename", filename);
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    if (await reader.ReadAsync())
-                    {
-                        return await PhotoReader(reader);
-                    }
-                    return null;
+                    return await PhotoReader(reader);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return null;
             }
         }
 
@@ -119,26 +97,18 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                string query = "SELECT * FROM Photo WHERE ClassID = @SchoolClassId AND ChildID IS NULL";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                List<Photo> photos = new List<Photo>();
+                while (await reader.ReadAsync())
                 {
-                    string query = "SELECT * FROM Photo WHERE ClassID = @SchoolClassId AND ChildID IS NULL";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@SchoolClassId", schoolClassId);
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    List<Photo> photos = new List<Photo>();
-                    while (await reader.ReadAsync())
-                    {
-                        Photo photo = await PhotoReader(reader);
-                        photos.Add(photo);
-                    }
-                    return photos;
+                    Photo photo = await PhotoReader(reader);
+                    photos.Add(photo);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return photos;
             }
         }
 
@@ -146,26 +116,18 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                string query = "SELECT * FROM Photo WHERE ChildID = @StudentId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@StudentId", studentId);
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                List<Photo> photos = new List<Photo>();
+                while (await reader.ReadAsync())
                 {
-                    string query = "SELECT * FROM Photo WHERE ChildID = @StudentId";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@StudentId", studentId);
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    List<Photo> photos = new List<Photo>();
-                    while (await reader.ReadAsync())
-                    {
-                        Photo photo = await PhotoReader(reader);
-                        photos.Add(photo);
-                    }
-                    return photos;
+                    Photo photo = await PhotoReader(reader);
+                    photos.Add(photo);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return photos;
             }
         }
 
@@ -173,26 +135,18 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                try
+                string query = "SELECT * FROM Photo WHERE PhotoEventID = @PhotoEventId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@PhotoEventId", photoEventId);
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                List<Photo> photos = new List<Photo>();
+                while (await reader.ReadAsync())
                 {
-                    string query = "SELECT * FROM Photo WHERE PhotoEventID = @PhotoEventId";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@PhotoEventId", photoEventId);
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    List<Photo> photos = new List<Photo>();
-                    while (await reader.ReadAsync())
-                    {
-                        Photo photo = await PhotoReader(reader);
-                        photos.Add(photo);
-                    }
-                    return photos;
+                    Photo photo = await PhotoReader(reader);
+                    photos.Add(photo);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return photos;
             }
         }
 
@@ -228,49 +182,48 @@ namespace SkolefotograferneSemesterProjekt.Services
                     throw new ArgumentException("Invalid column name");
                 }
 
-                try
+                if (!string.IsNullOrWhiteSpace(filterValue))
                 {
-                    if (!string.IsNullOrWhiteSpace(filterValue))
-                    {
-                        query += " WHERE ";
+                    query += " WHERE ";
 
-                        if (filterColumn == "All")
-                        {
-                            query += "(" + string.Join(" OR ", FilterableColumns.Keys.Select(col => $"{col} LIKE @FilterValue")) + ")";
-                        }
-                        else
-                        {
-                            query += $" {filterColumn} LIKE @FilterValue";
-                        }
-                        if (conditions != null && conditions.Count > 0)
-                        {
-                            query += " AND " + string.Join(" AND ", conditions);
-                        }
-                    }
-                    else if (conditions != null && conditions.Count > 0)
+                    if (filterColumn == "All")
                     {
-                        query += " WHERE " + string.Join(" AND ", conditions);
-                        
+                        query += "(" + string.Join(" OR ", FilterableColumns.Keys.Select(col => $"{col} LIKE @FilterValue")) + ")";
                     }
+                    else
+                    {
+                        query += $" {filterColumn} LIKE @FilterValue";
+                    }
+                    if (conditions != null && conditions.Count > 0)
+                    {
+                        query += " AND " + string.Join(" AND ", conditions);
+                    }
+                }
+                else if (conditions != null && conditions.Count > 0)
+                {
+                    query += " WHERE " + string.Join(" AND ", conditions);
 
+                }
+                if (sortColumn == "SchoolClass.Grade, SchoolClass.Letter")
+                {
+                    query += $" ORDER BY SchoolClass.Grade {sortOrder}, SchoolClass.Letter {sortOrder}";
+                }
+                else
+                {
                     query += $" ORDER BY {sortColumn} {sortOrder}";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
-
-                    await conn.OpenAsync();
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        Photo photo = await PhotoReader(reader);
-                        photos.Add(photo);
-                    }
-                    reader.Close();
                 }
-                catch
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@FilterValue", $"%{filterValue}%");
+
+                await conn.OpenAsync();
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    throw;
+                    Photo photo = await PhotoReader(reader);
+                    photos.Add(photo);
                 }
+                reader.Close();
             }
             return photos;
         }
@@ -279,19 +232,11 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    string query = "DELETE FROM Photo WHERE Filename = @Filename";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Filename", filename);
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                string query = "DELETE FROM Photo WHERE Filename = @Filename";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Filename", filename);
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
         }
 
