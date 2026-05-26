@@ -11,7 +11,7 @@
 
         <div class="container-md">
 
-            <div style="background-color:lightgray" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div style="background-color:#f1e9d2" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <ol class="carousel-indicators">
                     @for (int i = 0; i < 5; i++)
                     {
@@ -35,13 +35,13 @@
                         <img style="margin: auto; height:400px; width:auto" class="d-block" src="~/images/FrontWebPhotos/Old_Man5.jpg" alt="Slide">
                     </div>
                 </div>
-                <a class="carousel-control-prev custom-carousel-control" href="#carouselExampleIndicators" role="button" style="color:darkgrey;" data-bs-slide="prev">
+                <a class="carousel-control-prev custom-carousel-control" href="#carouselExampleIndicators" role="button" style="color:#c1b38d" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     @* <span class="sr-only" style="color:black">Previous</span> *@
                 </a>
-                <a class="carousel-control-next custom-carousel-control" href="#carouselExampleIndicators" role="button" style="color:darkgrey;" data-bs-slide="next">
+                <a class="carousel-control-next custom-carousel-control" href="#carouselExampleIndicators" role="button" style="color:#c1b38d" data-bs-slide="next">
                     @* <span class="sr-only" style="color:black">Next</span> *@
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>  
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </a>
                 @* OG
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" style="color:darkgrey" data-bs-slide="prev">
@@ -57,14 +57,14 @@
         <br />
         <br />
         <div style="text-align:center">
-            <h1>Welcome to SkoleFoto</h1>
+            <h1 style="color:#7a6e4a">Welcome to SkoleFoto</h1>
         </div>
         <br />
         <br />
         <div class="container-md">
             <div class="row" style="display:flex; flex-wrap:wrap">
                 <div class="column" style="flex:10%"></div>
-                <div class="column" style="flex:35%; padding: 14px; border: 2px solid darkgrey; text-align:center">
+                <div class="column" style="flex:35%; padding: 14px; border: 2px solid #c1b38d; text-align:center">
                     <div>
                         <img style="height:300px; width:auto; margin:auto;" src="~/images/FrontWebPhotos/Drawing2.jpeg" alt="Some other picture" />
                         <p>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="column" style="flex:10%"></div>
-                <div class="column" style="flex:35%; padding: 25px; border: 2px solid darkgrey; text-align:center">
+                <div class="column" style="flex:35%; padding: 25px; border: 2px solid #c1b38d; text-align:center">
                     <div>
                         <img style="height:300px; width:auto; margin:auto" src="~/images/FrontWebPhotos/Man_3.jpg" alt="Some other picture" />
                         <p>
@@ -94,13 +94,13 @@
 @if (HttpContext.Session.GetInt32("Role") == 0)
 {
 
-        <h1>Welcome Parent</h1>
-
+        <h1 style="color:#362e19">Welcome Parent</h1>
+        <br />
         <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/Students/createStudent" class="text-decoration-none">
-                    <div  class="text-white" style="border: 2px solid darkgrey;padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a;padding: 30px; text-align:center; background-color:#7a6e4a">
                         Tilføj Barn
                     </div>
                 </a>
@@ -108,7 +108,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Parents/ListOfChildren" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle Børn
                     </div>
                 </a>
@@ -116,7 +116,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Rediger Profil
                     </div>
                 </a>
@@ -126,7 +126,7 @@
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
                 <a asp-page="/PhotoEvents/ReadPhotoEvents" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle FotoEvents for dit barn/dine børn
                     </div>
                 </a>
@@ -144,13 +144,13 @@
 }
 @if (HttpContext.Session.GetInt32("Role") == 1)
 {
-        <h1>Welcome Photographer</h1>
-
+        <h1 style ="color:#362e19">Welcome Photographer</h1>
+        <br />
         <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/PhotoEvents/ReadPhotoEvents" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle FotoEvents
                     </div>
                 </a>
@@ -158,7 +158,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Photos/ViewPhotos" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle photos
                     </div>
                 </a>
@@ -166,7 +166,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Rediger Profil
                     </div>
                 </a>
@@ -177,13 +177,13 @@
 }
 @if (HttpContext.Session.GetInt32("Role") == 2)
 {
-        <h1>Welcome Teacher</h1>
-
+        <h1 style="color:#362e19">Welcome Teacher</h1>
+        <br />
         <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/Bookings/Index" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle aktive FotoEvents for din skole
                     </div>
                 </a>
@@ -191,7 +191,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Bookings/ListBookings" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se dine KlasseFotoEventer
                     </div>
                 </a>
@@ -199,7 +199,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Rediger Profil
                     </div>
                 </a>
@@ -211,7 +211,7 @@
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
                 <a asp-page="/Teachers/ViewSchoolClasses" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle klasser
                     </div>
                 </a>
@@ -220,13 +220,13 @@
 }
 @if (HttpContext.Session.GetInt32("Role") == 3)
 {
-        <h1>Welcome School Admin</h1>
-
+        <h1 style="color:#362e19">Welcome School Admin</h1>
+        <br />
         <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/PhotoEvents/ReadPhotoEvents" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle FotoEvents på skolen
                     </div>
                 </a>
@@ -234,7 +234,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Photos/ViewPhotos" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle photos
                     </div>
                 </a>
@@ -242,7 +242,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Rediger Profil
                     </div>
                 </a>
@@ -252,7 +252,7 @@
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
                 <a asp-page="/Teachers/Index" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle lærer (og deres klasser) for din skole
                     </div>
                 </a>
@@ -263,13 +263,13 @@
 
 @if (HttpContext.Session.GetInt32("Role") == 4)
 {
-        <h1>Welcome System Admin</h1>
-
+        <h1 style="color:#362e19">Welcome System Admin</h1>
+        <br />
         <div class="row" style="display:flex">
 
             <div class="col" style="flex: 30%">
                 <a asp-page="/PhotoEvents/ReadPhotoEvents" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle FotoEvents
                     </div>
                 </a>
@@ -277,7 +277,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Photos/ViewPhotos" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle photos
                     </div>
                 </a>
@@ -285,7 +285,7 @@
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Rediger Profil
                     </div>
                 </a>
@@ -295,14 +295,14 @@
         <div class="row" style="display:flex">
             <div class="col" style="flex: 30%">
                 <a asp-page="/Teachers/ViewSchoolClasses" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle klasser
                     </div>
                 </a>
             </div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/SysAdmins/ListOfAllUsers" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
-                    <div class="text-white" style="border: 2px solid darkgrey; padding: 30px; text-align:center; background-color:royalblue">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle bruger
                     </div>
                 </a>
