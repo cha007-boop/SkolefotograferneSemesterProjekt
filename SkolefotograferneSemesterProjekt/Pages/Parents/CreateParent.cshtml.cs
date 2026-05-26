@@ -9,8 +9,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
     public class CreateParentModel : PageModel
     {
         private IParentServices _parentservices;
-        private IWebHostEnvironment _webHost;
-        private IUserService _userService;
 
         [BindProperty]
         public Parent NewParent { get; set; }
@@ -21,11 +19,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
         [BindProperty]
         public string VerifyPassword { get; set; }
 
-        public CreateParentModel(IParentServices parentService, IWebHostEnvironment webHost, IUserService userService)
+        public CreateParentModel(IParentServices parentService)
         {
             _parentservices = parentService;
-            _webHost = webHost;
-            _userService = userService;
         }
         public void OnGet()
         {

@@ -43,7 +43,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 else if (HttpContext.Session.GetInt32("Role") == 2)
                 {
                     Teacher teacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
-                    PhotoEvents = PhotoEventsFilter(await PEService.GetAll()).Where(p => teacher.TheSchool.ID == p.TheSchoolAdmin.TheSchool.ID).ToList();
+                    PhotoEvents = PhotoEventsFilter(await PEService.GetAll()).Where(p => teacher.TheSchool.ID == p.TheSchoolAdmin.TheSchool.ID).OrderBy(n => n.StartTime).ToList();
                 }
                 else if (HttpContext.Session.GetInt32("Role") == 3)
                 {
