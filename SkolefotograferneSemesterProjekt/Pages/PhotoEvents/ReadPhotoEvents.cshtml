@@ -15,8 +15,15 @@
             <a asp-page="/PhotoEvents/CreatePhotoEvents" class="btn btn-primary">Opret Fotoevent</a>
         </div>
     }
+    <br />
 </form>
-<br />
+<form>
+    @if (HttpContext.Session.GetInt32("Role") == 2)
+    {
+        <a asp-page="/Bookings/ListBookings" class="btn btn-primary">Se dine aktive bookinger</a>
+    }
+    <br />
+</form>
 <form method="post">
     <div>
         <a asp-page="/Index" class="btn btn-primary">Tilbage til Startsiden</a>
@@ -93,18 +100,18 @@ else
                     <td>@photoEventItem.ThePhotographer.FirstName @photoEventItem.ThePhotographer.Surname</td>
                     <td>@photoEventItem.Location</td>
                     <td>
-                        @if (HttpContext.Session.GetInt32("Role") != 0)
+                        @if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 2)
                         {
                             <a asp-page="/Photoevents/PhotoEventDetails" class="btn btn-primary" asp-route-id="@photoEventItem.ID">
                                 Se Detaljer For Fotoeventet
                             </a>
                         }
                     </td>
-                    @if (HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 0)
+                    @if (HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
                     {
                         <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@photoEventItem.ID')">Slet Fotoevent</button></td>
                     }
-                    @if(HttpContext.Session.GetInt32("Role") == (int)UserRole.Teacher)
+                    @if(HttpContext.Session.GetInt32("Role") == (int)UserRole.Teacher && photoEventItem.StartTime > DateTime.Now)
                     {
                         <td>
                             <a asp-page="/Bookings/CreateBooking" asp-route-id="@photoEventItem.ID" class="btn btn-primary">Book</a>
