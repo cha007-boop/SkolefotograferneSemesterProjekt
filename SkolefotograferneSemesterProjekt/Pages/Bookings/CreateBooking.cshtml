@@ -5,11 +5,11 @@
 }
 
 <div>
-    <a asp-page="/Bookings/ListBookings" class="btn btn-primary">Tilbage</a>
+    <a asp-page="/PhotoEvents/ReadPhotoEvents" class="btn btn-primary">Tilbage</a>
 </div>
 
 <form method="post">
-    <input type="hidden" asp-for="@Model.ThePhotoEvent.ID" />
+    <input type="hidden" asp-for="@Model.ThePhotoEvent" />
 
     <div class="form-group">
         <label asp-for="@Model.NewBooking.TheSchoolClass.ID" class="control-label">Klasse</label>
