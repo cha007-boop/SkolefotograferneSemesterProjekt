@@ -133,6 +133,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             });
 
             DateTime peCurrent = ThePhotoEvent.StartTime;
+            // Make sure time slots minutes start on mulitples of BookingDurationMinutes (e.g., 0, 20, 40)
+            if (peCurrent.Minute % BookingDurationMinutes != 0)
+                peCurrent = peCurrent.AddMinutes(BookingDurationMinutes - (peCurrent.Minute % BookingDurationMinutes));
+
             DateTime peEnd = ThePhotoEvent.EndTime;
             List<SelectListItem> timeSlots = [];
             CultureInfo culture = new CultureInfo("da-DK");
