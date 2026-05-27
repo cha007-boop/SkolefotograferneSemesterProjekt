@@ -71,6 +71,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             }
 
             TheTeacher = await _teacherService.GetByID(userID.Value);
+            ThePhotoEvent = await _photoEventService.GetByID(ThePhotoEvent.ID);
             if (TheTeacher == null)
             {
                 return RedirectToPage("ListBookings");
