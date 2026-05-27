@@ -133,10 +133,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             });
 
             DateTime peCurrent = ThePhotoEvent.StartTime;
-            if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
-            {
-                peCurrent = peCurrent.AddDays(1).Date.AddHours(SchoolDayStartHour);
-            }
+
             // Make sure time slots minutes start on mulitples of BookingDurationMinutes (e.g., 0, 20, 40)
             if (peCurrent.Minute % BookingDurationMinutes != 0)
                 peCurrent = peCurrent.AddMinutes(BookingDurationMinutes - (peCurrent.Minute % BookingDurationMinutes));
@@ -167,10 +164,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 if (peCurrent.Hour >= SchoolDayEndHour)
                 {
                     peCurrent = peCurrent.Date.AddDays(1).AddHours(SchoolDayStartHour);
-                    if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        peCurrent = peCurrent.AddDays(1);
-                    }
+
                     if (peCurrent <= peEnd)
                     {
                         timeSlots.Add(new SelectListItem
