@@ -36,7 +36,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
                 {
                     Students = await _studentService.GetAllByParent((int)HttpContext.Session.GetInt32("ID"));
                 }
-                if (HttpContext.Session.GetInt32("Role") == 4)
+                else if (HttpContext.Session.GetInt32("Role") == 4)
                 {
                     Students = FilterStudents(await _studentService.GetAll());
                 }

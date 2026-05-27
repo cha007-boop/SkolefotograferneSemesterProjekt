@@ -17,13 +17,6 @@
     }
     <br />
 </form>
-<form>
-    @if (HttpContext.Session.GetInt32("Role") == 2)
-    {
-        <a asp-page="/Bookings/ListBookings" class="btn btn-primary">Se dine aktive bookinger</a>
-    }
-    <br />
-</form>
 <form method="post">
     <div>
         <a asp-page="/Index" class="btn btn-primary">Tilbage til Startsiden</a>
@@ -45,32 +38,30 @@
     </form>
 }
 
-
+<form method="get">
+    <input type="radio"
+           asp-for="EventType"
+           value="" />
+    <label>Alle</label>
+    <br />
+    <input type="radio"
+           asp-for="EventType"
+           value="1" />
+    <label>Aktive</label>
+    <br />
+    <input type="radio"
+           asp-for="EventType"
+           value="2" />
+    <label>Tidligere</label>
+    <br />
+    <input type="submit" value="Filtrer Fotoevents" />
+</form>
 @if (Model.PhotoEvents.Count <= 0)
 {
     <p class="display-6">Der er ingen Fotoevents</p>
 }
 else
 {
-    <form method="get">
-        <input type="radio"
-               asp-for="EventType"
-               value="" />
-        <label>Alle</label>
-        <br />
-        <input type="radio"
-               asp-for="EventType"
-               value="1" />
-        <label>Aktive</label>
-        <br />
-        <input type="radio"
-               asp-for="EventType"
-               value="2" />
-        <label>Tidligere</label>
-        <br />
-        <input type="submit" value="Filtrer Fotoevents" />
-    </form>
-
     <h2>Fotoevents</h2>
     <table class="table">
         <thead>

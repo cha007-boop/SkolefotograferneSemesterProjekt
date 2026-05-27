@@ -24,7 +24,10 @@
         <input type="submit" value="Filter" />
     </form>
 }
-
+@if (HttpContext.Session.GetInt32("Role") == (int)UserRole.Parent)
+{
+    <a asp-page="/Students/CreateStudent" class="btn btn-primary">Tilføj barn</a>
+}
 
 <table class="table">
     <thead>
@@ -34,6 +37,7 @@
             <th>Efternavn</th>
             <th>Skole</th>
             <th>Klasse</th>
+            <th>Billeder</th>
             </form>
         </tr>
     </thead>
@@ -46,15 +50,16 @@
                 <td>@student.TheSchool.Name</td>
                 <td>@student.TheSchoolClass.Grade @student.TheSchoolClass.Letter</td>
                 <td>
+                <td>
+                    <a asp-page="/Parents/StudentPictures" asp-route-id="@student.ID">Se billeder</a>
                     @if (HttpContext.Session.GetInt32("Role") == 0)
                     {
-                        <a asp-page="Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Opdater</a>
+                    <td><a asp-page="/Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Opdater</a></td>
                     }
                     else
                     {
-                        <a asp-page="Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Oplysninger</a>
+                    <td><a asp-page="/Students/UpdateStudent" asp-route-id="@student.ID" class="btn btn-primary">Oplysninger</a></td>
                     }
-                </td>
                 <form method="post">
                 <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@student.ID')">Slet</button></td>
                 </form>

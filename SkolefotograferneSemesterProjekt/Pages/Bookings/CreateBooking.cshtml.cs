@@ -112,7 +112,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("ListBookings");
+            return RedirectToPage("/PhotoEvents/ReadPhotoEvents");
         }
         private async Task LoadMenus()
         {
