@@ -119,7 +119,15 @@ else
         });
     </script>
 }
-
-<div>
-    <a asp-page="/Index">Back to Homepage</a>
-</div>
+@if (HttpContext.Session.GetInt32("Role") == 3)
+{
+    <div>
+        <a asp-page="/Teachers/Index">Tilbage til liste af lærer</a>
+    </div>
+}
+@if (HttpContext.Session.GetInt32("Role") == 2)
+{
+    <div>
+        <a asp-page="/Index">Tilbage til forside</a>
+    </div>
+}
