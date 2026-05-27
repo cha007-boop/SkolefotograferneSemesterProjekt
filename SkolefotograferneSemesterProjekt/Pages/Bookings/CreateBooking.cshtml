@@ -1,36 +1,36 @@
 ﻿@page
 @model SkolefotograferneSemesterProjekt.Pages.Bookings.CreateBookingModel
 @{
-    ViewData["Title"] = "Opret Booking";
+	ViewData["Title"] = "Opret Booking";
 }
 
 <div>
-    <a asp-page="/Bookings/ListBookings" class="btn btn-primary">Tilbage</a>
+	<a asp-page="/PhotoEvents/ReadPhotoEvents" class="btn btn-primary">Tilbage</a>
 </div>
 
 <form method="post">
-    <input type="hidden" asp-for="@Model.PhotoEventID" />
+    <input type="hidden" asp-for="@Model.ThePhotoEvent.ID" />
 
-    <div class="form-group">
-        <label asp-for="@Model.NewBooking.TheSchoolClass.ID" class="control-label">Klasse</label>
-        <select asp-for="@Model.NewBooking.TheSchoolClass.ID"
-                asp-items="@Model.Classes"
-                class="form-select">
-            <option value="">-- Vælg Klasse --</option>
-        </select>
-        <span asp-validation-for="@Model.NewBooking.TheSchoolClass.ID" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.NewBooking.StartTime" class="control-label">Starttidspunkt</label>
-        <select asp-for="@Model.NewBooking.StartTime"
-                asp-items="@Model.TimeSlots"
-                class="form-select">
-            <option value="">-- Vælg tidspunkt --</option>
-        </select>
-        <span asp-validation-for="@Model.NewBooking.StartTime" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="@Model.NewBooking.TheSchoolClass.ID" class="control-label">Klasse</label>
+		<select asp-for="@Model.NewBooking.TheSchoolClass.ID"
+				asp-items="@Model.Classes"
+				class="form-select">
+			<option value="">-- Vælg Klasse --</option>
+		</select>
+		<span asp-validation-for="@Model.NewBooking.TheSchoolClass.ID" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="@Model.NewBooking.StartTime" class="control-label">Starttidspunkt</label>
+		<select asp-for="@Model.NewBooking.StartTime"
+				asp-items="@Model.TimeSlots"
+				class="form-select">
+			<option value="">-- Vælg tidspunkt --</option>
+		</select>
+		<span asp-validation-for="@Model.NewBooking.StartTime" class="text-danger"></span>
+	</div>
 
-    <div class="form-group d-flex gap-2 mt-3">
-        <input type="submit" value="Opret booking" class="btn btn-primary" />
-    </div>
+	<div class="form-group d-flex gap-2 mt-3">
+		<input type="submit" value="Opret booking" class="btn btn-primary" />
+	</div>
 </form>

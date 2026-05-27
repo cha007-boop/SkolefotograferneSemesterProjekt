@@ -7,9 +7,6 @@
 <h2>Opret skoleklasse</h2>
 
 @{int? userID = HttpContext.Session.GetInt32("ID");}
-<div>
-	<a asp-page="/Teachers/ViewSchoolClasses">Tilbage</a>
-</div>
 
 <form method="Post" enctype="multipart/form-data">
 	@* <div asp-validation-summary="All" class="text-danger"></div> *@

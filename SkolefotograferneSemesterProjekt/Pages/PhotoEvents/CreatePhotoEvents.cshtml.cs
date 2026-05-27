@@ -1,14 +1,10 @@
+using System.Data.SqlTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
-using SkolefotograferneSemesterProjekt.Services;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
 {
@@ -53,10 +49,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
         }
         public async Task<IActionResult> OnPost()
         {
-            
+
             try
             {
-                if(HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
+                if (HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
                 {
                     var id = HttpContext.Session.GetInt32("ID");
                     if (!id.HasValue)
@@ -70,7 +66,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                         PhotoEvent.ThePhotographer = await _photographerService.SearchByID(Convert.ToInt32(PhotographerID));
                         PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(id.Value);
                         SchoolAdminID = id.Value.ToString();
-                    } else if (HttpContext.Session.GetInt32("Role") == 4)
+                    }
+                    else if (HttpContext.Session.GetInt32("Role") == 4)
                     {
                         PhotoEvent.TheSchoolAdmin = await _schoolAdminService.GetById(Convert.ToInt32(SchoolAdminID));
                         PhotoEvent.ThePhotographer = await _photographerService.SearchByID(Convert.ToInt32(PhotographerID));
@@ -82,41 +79,51 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
-                    if (PhotoEvent.StartTime > PhotoEvent.EndTime)
-                    {
-                        ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
-                    }
-                    if (PhotoEvent.EndTime <= PhotoEvent.StartTime.AddDays(5))
-                    {
-                        ModelState.AddModelError("PhotoEvent.EndTime", "sluttidspunktet må ikke vare længere end 5 dage");
-                    }
-                    if (PhotoEvent.StartTime == default)
-                    {
-                        ModelState.AddModelError("PhotoEvent.StartTime", "Vælg et starttidspunkt");
-                    }
-                    if (PhotoEvent.EndTime == default)
-                    {
-                        ModelState.AddModelError("PhotoEvent.EndTime", "vælg et sluttidspunkt");
-                    }
-                    if (PhotoEvent.StartTime < DateTime.Now)
-                    {
-                        ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunktet skal være senere end dags dato");
-                    }
-                    if (PhotographerID == null)
-                    {
-                        ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Vælg en Fotograf");
-                    }
-                    if (SchoolAdminID == null)
-                    {
-                        ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
-                    }
+                bool modelErrorFound = false;
+                if (PhotoEvent.StartTime > PhotoEvent.EndTime)
+                {
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
+                    modelErrorFound = true;
+                }
+                if (PhotoEvent.EndTime >= PhotoEvent.StartTime.AddDays(5))
+                {
+                    ModelState.AddModelError("PhotoEvent.EndTime", "sluttidspunktet må ikke vare længere end 5 dage");
+                    modelErrorFound = true;
+                }
+                if (PhotoEvent.StartTime == default)
+                {
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Vælg et starttidspunkt");
+                    modelErrorFound = true;
+                }
+                if (PhotoEvent.EndTime == default)
+                {
+                    ModelState.AddModelError("PhotoEvent.EndTime", "vælg et sluttidspunkt");
+                    modelErrorFound = true;
+                }
+                if (PhotoEvent.StartTime < DateTime.Now)
+                {
+                    ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunktet skal være senere end dags dato");
+                    modelErrorFound = true;
+                }
+                if (PhotographerID == null)
+                {
+                    ModelState.AddModelError("PhotoEvent.ThePhotographer.ID", "Vælg en Fotograf");
+                    modelErrorFound = true;
+                }
+                if (SchoolAdminID == null)
+                {
+                    ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
+                    modelErrorFound = true;
+                }
+                //temporarilyFalse = true;
+                if (modelErrorFound)
+                {
+                    modelErrorFound = false;
                     await OnGet();
                     return Page();
-                
-                
-                
+                }
                 await _photoEventService.Add(PhotoEvent);
-            } 
+            }
             catch (UnauthorizedAccessException uax)
             {
                 ViewData["ErrorMessage"] = uax.Message;

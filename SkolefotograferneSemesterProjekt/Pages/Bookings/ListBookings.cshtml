@@ -7,7 +7,7 @@
 
 @if (Model.Bookings.Count >= 1)
 {
-	<a asp-page="/PhotoEvents/ReadPhotoEvents" class="btn btn-primary">Tilbage</a>
+	<a asp-page="/Index" class="btn btn-primary">Tilbage</a>
 
 	<h1>Dine fotograferings bookinger</h1>
 	<table class="table">
@@ -23,7 +23,7 @@
 			@foreach (ClassBooking classBooking in Model.Bookings)
 			{
 				<tr>
-					<td>@classBooking.StartTime</td>
+					<td>@classBooking.StartTime.ToString("dd/MM/yyyy HH:mm")</td>
 					<td>@(classBooking.TheSchoolClass.Grade + "." + classBooking.TheSchoolClass.Letter)</td>
 					<td>
 						<a asp-page="/Bookings/ViewBooking" asp-route-id="@classBooking.ID" class="btn btn-primary">View more info</a> @*lav side til dette*@
@@ -39,6 +39,6 @@
 }
 else
 {
-	<a asp-page="/PhotoEvents/ReadPhotoEvents">Tilbage</a>
+	<a asp-page="/Index">Tilbage</a>
 	<h1>Du har ingen bookinger...</h1>
 }

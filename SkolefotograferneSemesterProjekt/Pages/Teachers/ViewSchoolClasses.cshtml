@@ -7,10 +7,6 @@
 
 @if (Model.ClassList.Count < 1)
 {
-    <div>
-        <a asp-page="Index">Tilbage</a>
-    </div>
-
     <span class="display-2">
         @(Model.Role == (int)UserRole.Teacher ? "Du har ingen klasser..." : "Ingen klasser at vise...")
     </span>
@@ -26,7 +22,6 @@ else
             <h1>Skoleklasser</h1>
 
             <div class="form-group d-flex gap-2 mt-3">
-                <a asp-page="Index" class="btn btn-secondary">Tilbage</a>
                 @if (Model.Role == (int)UserRole.Teacher)
                 {
                     <a asp-page="/SchoolClasses/AddSchoolClass" class="btn btn-primary">Opret en ny skoleklasse</a>
