@@ -31,7 +31,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
             try
             {
                 PhotoEvent = await _photoEventService.searchPhotoEvent(id);
-                if(HttpContext.Session.GetInt32("Role") != 1 && HttpContext.Session.GetInt32("Role") != 3 && HttpContext.Session.GetInt32("Role") != 4)
+                if(HttpContext.Session.GetInt32("Role") != 3 && HttpContext.Session.GetInt32("Role") != 4)
                 {
                     throw new UnauthorizedAccessException();
                 }

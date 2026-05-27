@@ -58,10 +58,10 @@ else
                             {
                                 <td>@sc.TheSchool.ID</td>
                                 <td>@sc.TheSchool.Name</td>
+                                <td>
+                                    <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Opdater</a>
+                                </td>
                             }
-                            <td>
-                                <a asp-page="/SchoolClasses/UpdateSchoolClass" asp-route-id="@sc.ID" class="btn btn-primary">Opdater</a>
-                            </td>
                             <form method="post" asp-page-handler="Delete">
                             <td><button type="button" class="btn btn-danger" onclick="DisplayConfirmDeleteModal('@sc.ID')">Slet</button></td>
                             </form>

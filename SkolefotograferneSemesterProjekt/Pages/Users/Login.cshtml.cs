@@ -49,9 +49,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Users
                     return Page();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                ModelState.AddModelError(string.Empty, $"Der opstod en fejl: {ex.Message}");
                 return Page();
             }
 
