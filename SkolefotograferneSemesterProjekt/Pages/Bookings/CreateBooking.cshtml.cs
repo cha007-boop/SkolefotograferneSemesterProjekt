@@ -133,11 +133,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             });
 
             DateTime peCurrent = ThePhotoEvent.StartTime;
-            if (peCurrent.DayOfWeek == DayOfWeek.Saturday)
-            {
-                peCurrent = peCurrent.AddDays(2).Date.AddHours(SchoolDayStartHour);
-            }
-            else if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
+            if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
             {
                 peCurrent = peCurrent.AddDays(1).Date.AddHours(SchoolDayStartHour);
             }
@@ -171,11 +167,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 if (peCurrent.Hour >= SchoolDayEndHour)
                 {
                     peCurrent = peCurrent.Date.AddDays(1).AddHours(SchoolDayStartHour);
-                    if (peCurrent.DayOfWeek == DayOfWeek.Saturday)
-                    {
-                        peCurrent = peCurrent.AddDays(2);
-                    }
-                    else if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
+                    if (peCurrent.DayOfWeek == DayOfWeek.Sunday)
                     {
                         peCurrent = peCurrent.AddDays(1);
                     }
