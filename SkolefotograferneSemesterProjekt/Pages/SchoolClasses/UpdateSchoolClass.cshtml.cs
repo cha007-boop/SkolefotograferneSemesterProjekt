@@ -29,7 +29,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
         {
             try
             {
-                if (HttpContext.Session.GetInt32("Role") != 2 && HttpContext.Session.GetInt32("Role") != 4)
+                if (HttpContext.Session.GetInt32("Role") != 2 && HttpContext.Session.GetInt32("Role") != 4 && HttpContext.Session.GetInt32("Role") != 3)
                 {
                     throw new UnauthorizedAccessException();
                 }
