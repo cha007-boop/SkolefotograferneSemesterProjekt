@@ -7,6 +7,10 @@
 
 <h1>Liste over børn</h1>
 
+<p>
+    <a asp-page="/Students/CreateStudent" class="btn btn-primary">Tilføj Barn</a>
+</p>
+
 @if (Model.Students.Count <= 0)
 {
     <p class="display-6">Du har endnu ikke registreret nogle børn til din konto</p>
