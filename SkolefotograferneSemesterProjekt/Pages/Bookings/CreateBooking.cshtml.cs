@@ -5,7 +5,6 @@ using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
-using SkolefotograferneSemesterProjekt.Services;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 {
@@ -19,8 +18,8 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         [BindProperty]
         public ClassBooking NewBooking { get; set; } = new ClassBooking();
         [BindProperty]
-        public int PhotoEventID { get; set; }
         public PhotoEvent? ThePhotoEvent { get; set; }
+        //public int PhotoEventID { get; set; }
         public Teacher? TheTeacher { get; set; }
         public IEnumerable<SelectListItem> Classes { get; set; } = [];
         public IEnumerable<SelectListItem> TimeSlots { get; set; } = [];
@@ -37,30 +36,22 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         {
             if (id.HasValue)
             {
-                int? userID = HttpContext.Session.GetInt32("ID");
-                int? role = HttpContext.Session.GetInt32("Role");
-                if (!userID.HasValue || role != (int)UserRole.Teacher)
+                if (HttpContext.Session.GetInt32("Role") != (int)UserRole.Teacher)
                 {
                     return RedirectToPage("/Users/AccessDenied");
                 }
 
-                PhotoEventID = id.Value;
                 ThePhotoEvent = await _photoEventService.GetByID(id.Value);
                 if (ThePhotoEvent == null)
                 {
                     return RedirectToPage("Index");
                 }
 
-                TheTeacher = await _teacherService.GetByID(userID.Value);
-                int? tSchoolID = TheTeacher?.TheSchool?.ID;
-                int? saSchoolID = ThePhotoEvent.TheSchoolAdmin?.TheSchool.ID;
-                if (saSchoolID.HasValue && tSchoolID.HasValue)
+                TheTeacher = await _teacherService.GetByID((int)HttpContext.Session.GetInt32("ID"));
+
+                if (TheTeacher?.TheSchool.ID != ThePhotoEvent.TheSchoolAdmin?.TheSchool.ID)
                 {
-                    bool sameSchool = tSchoolID == saSchoolID;
-                    if (!sameSchool)
-                    {
-                        return RedirectToPage("/Users/AccessDenied");
-                    }
+                    return RedirectToPage("/Users/AccessDenied");
                 }
 
                 await LoadMenus();
@@ -82,19 +73,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             TheTeacher = await _teacherService.GetByID(userID.Value);
             if (TheTeacher == null)
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("ListBookings");
             }
             NewBooking.TheTeacher = TheTeacher;
 
-            if(PhotoEventID <= 0)
+            if (ThePhotoEvent.ID <= 0)
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("ListBookings");
             }
 
-            ThePhotoEvent = await _photoEventService.GetByID(PhotoEventID);
             if (ThePhotoEvent == null)
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("ListBookings");
             }
             NewBooking.ThePhotoEvent = ThePhotoEvent;
 
@@ -111,7 +101,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             {
                 await _classBookingService.Book(NewBooking);
             }
-            catch(BookingTimeNotAvailableException ex)
+            catch (BookingTimeNotAvailableException ex)
             {
                 ModelState.AddModelError("NewBooking.StartTime", ex.Message);
                 return Page();
@@ -125,12 +115,11 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         }
         private async Task LoadMenus()
         {
-            int? userID = HttpContext.Session.GetInt32("ID");
-            if (!userID.HasValue || ThePhotoEvent == null)
+            if (ThePhotoEvent == null)
             {
                 return;
             }
-            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher(userID.Value);
+            List<SchoolClass> classes = await _schoolClassService.GetAllByTeacher((int)HttpContext.Session.GetInt32("ID"));
             Classes = classes.Select(c => new SelectListItem
             {
                 Value = Convert.ToString(c.ID),
