@@ -96,7 +96,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Students
             {
                 ViewData["ErrorMessage"] = exc;
             }
-            return RedirectToPage("/Parents/ListOfChildren");
+            return RedirectToPage("/Students/ListStudents");
         }
         #endregion
     }

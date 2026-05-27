@@ -107,7 +107,7 @@
             </div>
             <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
-                <a asp-page="/Parents/ListOfChildren" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
+                <a asp-page="/Students/ListStudents" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
                     <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle Børn
                     </div>
@@ -303,7 +303,7 @@
             <div class="col" style="flex: 30%">
                 <a asp-page="/SysAdmins/ListOfAllUsers" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
                     <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
-                        Se alle bruger
+                        Se alle brugere
                     </div>
                 </a>
             </div>

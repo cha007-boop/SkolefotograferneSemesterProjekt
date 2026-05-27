@@ -13,9 +13,12 @@
 <div>
     <div class="row">
         <div class="col">
-            <form>
-                <a asp-page="./UpdatePhotoEvent" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-primary">Rediger Fotoevent</a>
-            </form>
+            @if (HttpContext.Session.GetInt32("Role") == 3 || HttpContext.Session.GetInt32("Role") == 4)
+            {
+                <form>
+                    <a asp-page="./UpdatePhotoEvent" asp-route-id="@Model.ThePhotoEvent.ID" class="btn btn-primary">Rediger Fotoevent</a>
+                </form>
+            }
 
             <div>
                 <p><strong>Skole:</strong> @Model.ThePhotoEvent.TheSchoolAdmin.TheSchool.Name</p>
@@ -56,7 +59,7 @@
         <div>
             @if(Model.Students.Count == 0)
             {
-                <p class="display-6">Der er ingen Elever for dette skole</p>
+                <p class="display-6">Der er ingen elever tilmeldt til dette fotoevent</p>
             }
             else
             {

@@ -43,7 +43,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 sql.Parameters.AddWithValue("@EndTime", photoEvent.EndTime);
                 sql.Parameters.AddWithValue("@PhotographerID", photoEvent.ThePhotographer.ID);
                 sql.Parameters.AddWithValue("@SchoolAdminID", photoEvent.TheSchoolAdmin.ID);
-                sql.Parameters.AddWithValue("@Location", photoEvent.Location);
+                sql.Parameters.AddWithValue("@Location", photoEvent.Location ?? (object)DBNull.Value);
                 var result = await sql.ExecuteNonQueryAsync();
                 return Convert.ToInt32(result);
             }
@@ -64,7 +64,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int photographerID = sqlDataReader.GetInt32("PhotographerID");
                     int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
-                    string location = sqlDataReader.GetString("Location");
+                    string location = sqlDataReader.IsDBNull("Location") ? "Location is not set" : sqlDataReader.GetString("Location");
 
                     Photographer photographer = await _photographerService.SearchByID(photographerID);
                     SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(schoolAdminID);
@@ -93,7 +93,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     DateTime startTime = sqlDataReader.GetDateTime("StartTime");
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int schoolAdminID = sqlDataReader.GetInt32("SchoolAdminID");
-                    string location = sqlDataReader.GetString("Location");
+                    string location = sqlDataReader.IsDBNull("Location") ? "Location is not set" : sqlDataReader.GetString("Location");
 
                     Photographer photographer = await _photographerService.SearchByID(ID);
                     SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(schoolAdminID);
@@ -121,7 +121,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     DateTime startTime = sqlDataReader.GetDateTime("StartTime");
                     DateTime endTime = sqlDataReader.GetDateTime("EndTime");
                     int PhotographerID = sqlDataReader.GetInt32("PhotographerID");
-                    string location = sqlDataReader.GetString("Location");
+                    string location = sqlDataReader.IsDBNull("Location") ? "Location is not set" : sqlDataReader.GetString("Location");
 
                     Photographer photographer = await _photographerService.SearchByID(PhotographerID);
                     SchoolAdmin schoolAdmin = await _schoolAdminService.GetById(ID);
@@ -247,7 +247,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 command.Parameters.AddWithValue("@EndTime", photoEvent.EndTime);
                 command.Parameters.AddWithValue("@SchoolAdminID", photoEvent.TheSchoolAdmin.ID);
                 command.Parameters.AddWithValue("@PhotographerID", photoEvent.ThePhotographer.ID);
-                command.Parameters.AddWithValue("@Location", photoEvent.Location);
+                command.Parameters.AddWithValue("@Location", photoEvent.Location ?? (object)DBNull.Value);
                 await command.ExecuteNonQueryAsync();
             }
         }

@@ -42,7 +42,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     cmd.Parameters.AddWithValue("@Email", user.Email);
                     cmd.Parameters.AddWithValue("@Password", user.Password);
                     cmd.Parameters.AddWithValue("@Role", user.Role);
-                    
+
                     await connection.OpenAsync();
                     var result = await cmd.ExecuteScalarAsync();
                     return Convert.ToInt32(result);
@@ -132,17 +132,17 @@ namespace SkolefotograferneSemesterProjekt.Services
                 SqlDataReader reader = await command.ExecuteReaderAsync();
                 if (reader.HasRows)
                 {
-                    while (await reader.ReadAsync())
+                    await reader.ReadAsync();
+
+                    foundUser = new User
                     {
-                        foundUser = new User
-                        {
-                            ID = reader.GetInt32("ID"),
-                            Email = reader.GetString("Email"),
-                            Password = reader.GetString("Password"),
-                            Role = (UserRole)reader.GetInt32("Role")
-                        };
-                    }
+                        ID = reader.GetInt32("ID"),
+                        Email = reader.GetString("Email"),
+                        Password = reader.GetString("Password"),
+                        Role = (UserRole)reader.GetInt32("Role")
+                    };
                 }
+                await reader.CloseAsync();
             }
             return foundUser;
         }

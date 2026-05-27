@@ -5,6 +5,7 @@ namespace SkolefotograferneSemesterProjekt.Models
     public class User
     {
         public int ID { get; set; }
+        [Required]
         [Display(Name = "E-mail")]
         public string Email { get; set; }
         [Required]

@@ -5,6 +5,7 @@ using SkolefotograferneSemesterProjekt.Exceptions;
 using SkolefotograferneSemesterProjekt.Helpers;
 using SkolefotograferneSemesterProjekt.Interfaces;
 using SkolefotograferneSemesterProjekt.Models;
+using System.Globalization;
 
 namespace SkolefotograferneSemesterProjekt.Pages.Bookings
 {
@@ -14,6 +15,10 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
         private ITeacherService _teacherService;
         private IPhotoEventService _photoEventService;
         private ISchoolClassService _schoolClassService;
+
+        private const int BookingDurationMinutes = 20;
+        private const int SchoolDayStartHour = 8;
+        private const int SchoolDayEndHour = 15;
 
         [BindProperty]
         public ClassBooking NewBooking { get; set; } = new ClassBooking();
@@ -112,7 +117,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("ListBookings");
+            return RedirectToPage("/PhotoEvents/ReadPhotoEvents");
         }
         private async Task LoadMenus()
         {
@@ -128,9 +133,21 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
             });
 
             DateTime peCurrent = ThePhotoEvent.StartTime;
+
+            // Make sure time slots minutes start on mulitples of BookingDurationMinutes (e.g., 0, 20, 40)
+            if (peCurrent.Minute % BookingDurationMinutes != 0)
+                peCurrent = peCurrent.AddMinutes(BookingDurationMinutes - (peCurrent.Minute % BookingDurationMinutes));
+
             DateTime peEnd = ThePhotoEvent.EndTime;
             List<SelectListItem> timeSlots = [];
-            while (peCurrent.AddMinutes(20) <= peEnd)
+            CultureInfo culture = new CultureInfo("da-DK");
+            timeSlots.Add(new SelectListItem
+            {
+                Value = "",
+                Text = $"------ {culture.DateTimeFormat.GetDayName(peCurrent.DayOfWeek)} ------",
+                Disabled = true
+            });
+            while (peCurrent.AddMinutes(BookingDurationMinutes) <= peEnd)
             {
                 ClassBooking temp = new ClassBooking() { StartTime = peCurrent };
 
@@ -143,9 +160,23 @@ namespace SkolefotograferneSemesterProjekt.Pages.Bookings
                         Text = peCurrent.ToString("HH:mm")
                     });
                 }
-                peCurrent = peCurrent.AddMinutes(20);
-            }
+                peCurrent = peCurrent.AddMinutes(BookingDurationMinutes);
+                if (peCurrent.Hour >= SchoolDayEndHour)
+                {
+                    peCurrent = peCurrent.Date.AddDays(1).AddHours(SchoolDayStartHour);
 
+                    if (peCurrent <= peEnd)
+                    {
+                        timeSlots.Add(new SelectListItem
+                        {
+                            Value = "",
+                            Text = $"------ {culture.DateTimeFormat.GetDayName(peCurrent.DayOfWeek)} ------",
+                            Disabled = true
+                        });
+                    }
+                }
+
+            }
             TimeSlots = timeSlots;
         }
     }
