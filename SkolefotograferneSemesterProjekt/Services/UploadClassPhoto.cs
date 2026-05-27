@@ -20,7 +20,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/ClassPhotos");
                 uniqueFilename = _schoolClass.TheSchool.ID + "_" +
-                    _schoolClass.ID + "_" +
+                    _schoolClass.Grade.ToString()+_schoolClass.Letter + "_" +
                     Guid.NewGuid().ToString() + "_" + file.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFilename);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))

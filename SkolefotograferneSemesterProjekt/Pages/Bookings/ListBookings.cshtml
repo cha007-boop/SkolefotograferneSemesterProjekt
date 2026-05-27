@@ -23,7 +23,7 @@
 			@foreach (ClassBooking classBooking in Model.Bookings)
 			{
 				<tr>
-					<td>@classBooking.StartTime</td>
+					<td>@classBooking.StartTime.ToString("dd/MM/yyyy HH:mm")</td>
 					<td>@(classBooking.TheSchoolClass.Grade + "." + classBooking.TheSchoolClass.Letter)</td>
 					<td>
 						<a asp-page="/Bookings/ViewBooking" asp-route-id="@classBooking.ID" class="btn btn-primary">View more info</a> @*lav side til dette*@
