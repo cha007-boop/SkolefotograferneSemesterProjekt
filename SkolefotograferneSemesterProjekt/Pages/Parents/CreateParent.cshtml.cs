@@ -42,12 +42,12 @@ namespace SkolefotograferneSemesterProjekt.Pages.Parents
                         }
                         else
                         {
-                            throw new InvalidMailException("Must enter a Mail");
+                            throw new InvalidMailException("Skal udfylde email");
                         }
                     }
                     else
                     {
-                        throw new PasswordNotTheSameException("Passwords are not the same");
+                        throw new PasswordNotTheSameException("Passwords er ikke ens");
                     }
                 }
 

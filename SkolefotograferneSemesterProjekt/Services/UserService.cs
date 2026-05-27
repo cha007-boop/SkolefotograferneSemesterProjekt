@@ -13,7 +13,7 @@ namespace SkolefotograferneSemesterProjekt.Services
         {
             if (user.Password.Length < 6)
             {
-                throw new PasswordTooShortException("Password too short");
+                throw new PasswordTooShortException("Password er for kort");
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -25,7 +25,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                 if (reader.HasRows)
                 {
                     reader.Close();
-                    throw new TakenMailException("Email is already used");
+                    throw new TakenMailException("Email allerede i brug");
                 }
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -96,7 +96,7 @@ namespace SkolefotograferneSemesterProjekt.Services
             {
                 if (user.Password.Length < 6)
                 {
-                    throw new PasswordTooShortException("Password too short");
+                    throw new PasswordTooShortException("Password er for kort");
                 }
                 using SqlConnection connection = new SqlConnection(connectionString);
                 {
@@ -108,7 +108,7 @@ namespace SkolefotograferneSemesterProjekt.Services
                     if (reader.HasRows)
                     {
                         reader.Close();
-                        throw new TakenMailException("Email is already used");
+                        throw new TakenMailException("Email allerede i brug");
                     }
                 }
             }

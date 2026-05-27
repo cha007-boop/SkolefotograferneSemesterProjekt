@@ -39,18 +39,18 @@ namespace SkolefotograferneSemesterProjekt.Pages.SysAdmins
             {
                 if (NewSysAdmin.Email != VerifyEmail && NewSysAdmin.Password != VerifyPassword)
                 {
-                    ModelState.AddModelError("NewSysAdmin.Email", "Email not the same");
-                    ModelState.AddModelError("NewSysAdmin.Password", "Password not the same");
+                    ModelState.AddModelError("NewSysAdmin.Email", "Email er ikke ens");
+                    ModelState.AddModelError("NewSysAdmin.Password", "Password er ikke ens");
                     return Page();
                 }
                 if (NewSysAdmin.Email != VerifyEmail)
                 {
-                    ModelState.AddModelError("NewSysAdmin.Email", "Email not the same");
+                    ModelState.AddModelError("NewSysAdmin.Email", "Email er ikke ens");
                     return Page();
                 }
                 if (NewSysAdmin.Password != VerifyPassword)
                 {
-                    ModelState.AddModelError("NewSysAdmin.Password", "Password not the same");
+                    ModelState.AddModelError("NewSysAdmin.Password", "Password er ikke ens");
                     return Page();
                 }
                 else

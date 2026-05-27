@@ -88,7 +88,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 }
 
             }
-            return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = ThePhotoEvent.ID });
+            return RedirectToPage("/PhotoEvents/PhotoEventDetails", new { id = PhotoEventId});
         }
 
     }

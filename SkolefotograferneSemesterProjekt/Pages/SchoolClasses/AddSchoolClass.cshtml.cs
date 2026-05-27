@@ -104,9 +104,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
                     }
                         NewSchoolClass.SchoolYear = SchoolYearCalc.GetSchoolYear();
 
-                    if (NewSchoolClass.Grade >= 11)
+                    if (NewSchoolClass.Grade >= 11 || NewSchoolClass.Grade < 0)
                     {
-                        ModelState.AddModelError("NewSchoolClass", "Grade input incorrectly");
+                        ModelState.AddModelError("NewSchoolClass", "Klassetrin skal være et tal fra 0 til 10");
                         return Page();
                     }
                     await _schoolClassService.Add(NewSchoolClass);

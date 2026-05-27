@@ -52,7 +52,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolAdmins
             {
                 if (NewSchoolAdmin.Password != VerifyPassword)
                 {
-                    ModelState.AddModelError("VerifyPassword", "Passwords do not match");
+                    ModelState.AddModelError("VerifyPassword", "Passwords er ikke ens");
                     await OnGet();
                     return Page();
                 }

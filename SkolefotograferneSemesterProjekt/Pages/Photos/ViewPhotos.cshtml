@@ -24,7 +24,10 @@ else
         <div class="row">
             <div class="col">
                 <form method="get">
-                    @* <div asp-validation-summary="" class="text-danger"></div> *@
+                    @if (Model.Message != null)
+                    {
+                        <span class="text-danger">@Model.Message</span>
+                    }
                     <input type="hidden" asp-for=SortColumn />
                     <input type="hidden" asp-for=SortOrder />
                     <div class="form-group">
@@ -50,7 +53,6 @@ else
                     </div>
                 </form>
             </div>
-
         </div>
         <div class="row">
             <div class="col">
