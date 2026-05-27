@@ -151,7 +151,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 ViewData["ErrorMessage"] = ex.Message;
                 return Page();
             }
-            return RedirectToPage("/Index", null); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
+            return RedirectToPage("/PhotoEvents/ReadPhotoEvents", null); //return RedirectToPage("/Pages/PhotoEvents/Index"); 
         }
     }
 }

@@ -75,6 +75,7 @@ else
                 <th>Slut Tidspunkt</th>
                 <th>Fotograf</th>
                 <th>Lokation</th>
+                <th></th>
             </tr>
         </thead>
         @foreach (var photoEventItem in Model.PhotoEvents)
@@ -93,9 +94,7 @@ else
                     <td>
                         @if (HttpContext.Session.GetInt32("Role") != 0 && HttpContext.Session.GetInt32("Role") != 2)
                         {
-                            <a asp-page="/Photoevents/PhotoEventDetails" class="btn btn-primary" asp-route-id="@photoEventItem.ID">
-                                Se Detaljer For Fotoeventet
-                            </a>
+                            <a asp-page="/Photoevents/PhotoEventDetails" class="btn btn-primary" asp-route-id="@photoEventItem.ID">Info</a>
                         }
                     </td>
                     @if (HttpContext.Session.GetInt32("Role") == 3 && photoEventItem.StartTime > DateTime.Now || HttpContext.Session.GetInt32("Role") == 4)

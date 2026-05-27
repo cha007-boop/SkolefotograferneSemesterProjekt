@@ -79,7 +79,7 @@ namespace SkolefotograferneSemesterProjekt.Pages.SchoolClasses
             {
                 ViewData["ErrorMessage"] = exc.Message;
             }
-            return RedirectToPage("SchoolClasses/ListSchoolClasses");
+            return RedirectToPage("/Teachers/ViewSchoolClasses");
         }
         #endregion
     }
