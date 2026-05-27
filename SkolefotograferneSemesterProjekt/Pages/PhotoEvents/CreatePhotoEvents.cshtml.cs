@@ -82,9 +82,6 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                 {
                     throw new UnauthorizedAccessException();
                 }
-                bool temporarilyFalse = false; //im using this boolean just to go through every if statement
-                if (temporarilyFalse == false)
-                {
                     if (PhotoEvent.StartTime > PhotoEvent.EndTime)
                     {
                         ModelState.AddModelError("PhotoEvent.StartTime", "Starttidspunkt skal være før sluttidspunkt");
@@ -113,14 +110,9 @@ namespace SkolefotograferneSemesterProjekt.Pages.PhotoEvents
                     {
                         ModelState.AddModelError("PhotoEvent.TheSchoolAdmin.ID", "Vælg en Skolesekretær");
                     }
-                    if (PhotoEvent.Location == null)
-                    {
-                        ModelState.AddModelError("PhotoEvent.Location", "Vælg en lokation");
-                    }
-                    temporarilyFalse = true;
                     await OnGet();
                     return Page();
-                }
+                
                 
                 
                 await _photoEventService.Add(PhotoEvent);
