@@ -274,7 +274,6 @@
                     </div>
                 </a>
             </div>
-            <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Photos/ViewPhotos" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
                     <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
@@ -282,7 +281,6 @@
                     </div>
                 </a>
             </div>
-            <div class="column" style="flex:2%"></div>
             <div class="col" style="flex: 30%">
                 <a asp-page="/Users/EditProfile" class="text-decoration-none">
                     <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
@@ -304,6 +302,13 @@
                 <a asp-page="/SysAdmins/ListOfAllUsers" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
                     <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
                         Se alle brugere
+                    </div>
+                </a>
+            </div>
+            <div class="col" style="flex: 30%">
+                <a asp-page="/Schools/GetAllSchool" asp-route-id="@HttpContext.Session.GetInt32("ID")" class="text-decoration-none">
+                    <div class="text-white" style="border: 2px solid #7a6e4a; padding: 30px; text-align:center; background-color:#7a6e4a">
+                        Se alle skoler
                     </div>
                 </a>
             </div>

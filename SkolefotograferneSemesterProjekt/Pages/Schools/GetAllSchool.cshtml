@@ -9,6 +9,10 @@
     <h2 class="Display-3">Liste over skoler</h2>
 </div>
 
+<div class="mb-3">
+    <a asp-page="/Index" class="btn btn-secondary">Tilbage til forsiden</a>
+</div>
+
 <div>
     <button class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-page="/Schools/CreateSchool">Opret</a>
@@ -22,7 +26,7 @@
         Søg: <input type="text" asp-for="FilterValue" />
         <select asp-for="FilterColumn" class="form-select d-inline-block" style="width:auto; margin-left:8px;">
             <option value="All">-- Filtrer efter --</option>
-            @foreach(var column in Model.FilterableColumns)
+            @foreach (var column in Model.FilterableColumns)
             {
                 <option value="@column.Key">@column.Value</option>
             }
@@ -53,7 +57,7 @@
             @foreach (School s in Model.Schools)
             {
                 <tr>
-                    @foreach(var column in Model.FilterableColumns)
+                    @foreach (var column in Model.FilterableColumns)
                     {
                         <td>
                             @typeof(School).GetProperty(column.Key).GetValue(s)
@@ -70,7 +74,7 @@
                         <td><a asp-page="/Schools/UpdateSchool" asp-route-id="@s.ID" class="btn btn-primary">Opdater</a></td>
                     }
                 </tr>
-                
+
                 @* <tr>
                     <td>@s.ID</td>
                     <td>@s.Name</td>
@@ -115,17 +119,17 @@
         </div>
     </div>
 </div>
-@section Scripts{
-        <script>
-            function DisplayConfirmDeleteModal(id) {
-                document.getElementById("deleteId").value = id;
+@section Scripts {
+    <script>
+        function DisplayConfirmDeleteModal(id) {
+            document.getElementById("deleteId").value = id;
 
-                var modal = new bootstrap.Modal(document.getElementById('deleteModalSchool'));
-                modal.show();
-            }
+            var modal = new bootstrap.Modal(document.getElementById('deleteModalSchool'));
+            modal.show();
+        }
 
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
-                document.getElementById("deleteForm").submit();
-            });
-        </script>
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            document.getElementById("deleteForm").submit();
+        });
+    </script>
 }
