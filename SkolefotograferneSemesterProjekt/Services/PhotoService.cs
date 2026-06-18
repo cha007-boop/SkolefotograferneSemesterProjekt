@@ -31,9 +31,9 @@ namespace SkolefotograferneSemesterProjekt.Services
             { "SchoolID", "Skole ID" },
             { "Student.FirstName", "Barnets fornavn" },
             { "Student.Surname", "Barnets efternavn" },
-            { "PhotoEventID", "Fotoevent ID" },
-            { "Student.ClassID", "Klasse ID" },
-            { "ChildID", "Barn ID" },
+            { "Photo.PhotoEventID", "Fotoevent ID" },
+            { "Photo.ClassID", "Klasse ID" },
+            { "Photo.ChildID", "Barn ID" },
             { "Student.ParentID", "Forælder ID" },
             { "Parent.FirstName", "Forælder fornavn" },
             { "Parent.Surname", "Forælder efternavn" }
@@ -152,8 +152,19 @@ namespace SkolefotograferneSemesterProjekt.Services
 
         public async Task<List<Photo>> Search(string filterColumn, string filterValue, string sortColumn, string sortOrder, List<string> conditions = null)
         {
+            Dictionary<string, string> columns = new Dictionary<string, string>(FilterableColumns);
+            foreach (var col in SortableColumns)
+            {
+                if (!columns.ContainsKey(col.Key))
+                {
+                    columns.Add(col.Key, col.Value);
+                }
+            }
+
+            string columnstring = string.Join(", ", columns.Keys);
+
             List<Photo> photos = new List<Photo>();
-            string query = @"SELECT * FROM Photo
+            string query = $@"SELECT {columnstring} FROM Photo
                              JOIN PhotoEvent ON Photo.PhotoEventID = PhotoEvent.ID
                              JOIN Photographer on PhotoEvent.PhotographerID = Photographer.ID
                              LEFT OUTER JOIN Student ON Photo.ChildID = Student.ID
